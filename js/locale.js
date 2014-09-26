@@ -18,6 +18,14 @@ _localeStrList['cn_zh'] = {
 var _localeLangeCode = '';
 var _localeLang = [];
 
+var getLocale = function(s) {
+	return _localeLang[s] || s;
+}
+
+var localize = function(e, s) {
+	e.addClass('lang').data('lang', s).html(_localeLang[s] || s);
+}
+
 var getLocaleLanguage = function() {
 	return _localeLangeCode;
 }
@@ -27,10 +35,8 @@ var setLocaleLanguage = function(lang) {
 
 	$('.lang').each(function() {
 		var self = $(this);
-		self.html(getLocale(self.data('lang')));
+		var s = self.data('lang');
+		self.html(_localeLang[s] || s);
 	});
 };
 
-var getLocale = function(s) {
-	return _localeLang[s] || s;
-}

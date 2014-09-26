@@ -22,7 +22,7 @@ var mainPage = function() {
 		icon: false
 	});
 	var lnk_inbox = $('#lnk_inbox').click(function(){
-		txtTitle.html(getLocale('Inbox'));
+		localize(txtTitle, 'Inbox');
 
 		btnAskQ.hide();
 		tabTest.hide();
@@ -69,7 +69,7 @@ var mainPage = function() {
 		icon: false
 	});
 	var lnk_test = $('#lnk_test').click(function(){
-		txtTitle.html(getLocale('Test'));
+		localize(txtTitle, 'Test');
 
 		btnAskQ.hide();
 		tabInbox.hide();
@@ -97,7 +97,7 @@ var mainPage = function() {
 	});
 
 	var lnk_qa = $('#lnk_qa').click(function(){
-		txtTitle.html(getLocale('Q &amp; A'));
+		localize(txtTitle, 'Q &amp; A');
 
 		if ($.trim(searchQA.val()) != '') {
 			btnAskQ.show();
@@ -142,8 +142,8 @@ var mainPage = function() {
 				listQA.html(list.join(''))
 					.listview('refresh');
 			} else {
-				listQA.html('<li><a>' + getLocale('Sorry, no similar questions were found.') + '</a></li>')
-					.listview('refresh');
+				localize(listQA.html('<li><a></a></li>').find('a'), 'Sorry, no similar questions were found.');
+				listQA.listview('refresh');
 			}
 		} else{
 			btnAskQ.hide();

@@ -8,4 +8,15 @@ var settingPage = function() {
 
 		setLocaleLanguage(lang);
 	}).val([getLocaleLanguage()]);
+
+	$('#setClass a').click(function() {
+		captureQRCode(function(res) {
+			alert("We got a barcode\n" +
+			      "Result: " + res.text + "\n" +
+			      "Format: " + res.format + "\n" +
+                  "Cancelled: " + res.cancelled);
+		}, function(err) {
+			alert("Scanning failed: " + err);
+		});
+	});
 };
