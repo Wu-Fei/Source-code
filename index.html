@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parrot (Student)</title>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+  <style>
+  .list_read * {
+    font-weight: normal
+  }
+
+  .tab_content {
+  	left: 1em;
+  	right: 1em;
+  	bottom: 0;
+  	height: 100%;
+  	position: absolute;
+  	display: none;
+  }
+
+  a[data-transition].ui-icon-star:after {
+  	background-color: #ff8080
+  }
+
+  </style>
+  <script src="js/jquery-2.1.1.min.js"></script>
+  <script src="js/jquery.mobile-1.4.4.min.js"></script>
+
+  <script src="js/locale.js"></script>
+
+  <script src="js/inboxData.js"></script>
+  <script src="js/qaData.js"></script>
+
+  <script src="js/mainPage.js"></script>
+  <script src="js/inboxPage.js"></script>
+  <script src="js/testPage.js"></script>
+  <script src="js/qaPage.js"></script>
+  <script src="js/settingPage.js"></script>
+</head>
+<body>
+
+<div data-role="page" id="page_main">
+  <div data-role="header" data-position="fixed">
+  	<a id="btnAskQ" href="#page_askq" data-transition="pop" class="lang">Raise Question</a>
+    <h1 id="txtTitle"></h1>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#page_setting" class="ui-btn-right"></a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div id="tab_inbox" class="tab_content">
+  		<ul id="listInbox"></ul>
+  	</div>
+
+  	<div id="tab_test" class="tab_content">
+  		<ul id="listTest"></ul>
+  	</div>
+
+  	<div id="tab_qa" class="tab_content">
+  		<input type="search" id="searchQA" value="">
+  		<div style="margin-top:1em;padding:1em;overflow-y:auto;overflow-x:hidden"><ul id="listQA"></ul></div>
+  	</div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a id="lnk_inbox" data-icon="alert" class="lang">Inbox</a></li>
+        <li><a id="lnk_test" data-icon="bullets" class="lang">Test</a></li>
+        <li><a id="lnk_qa" data-icon="comment" class="lang">Q &amp; A</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="page_inbox">
+  <div data-role="header" data-position="fixed">
+    <a id="btnInboxFlag" data-icon="star" data-iconpos="notext"></a>
+    <h1 style="margin-left:2.5em;text-align:left"></h1>
+    <a data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Back</a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  </div>
+</div>
+
+<div data-role="page" id="page_test">
+  <div data-role="header" data-position="fixed">
+    <a id="btnTestCatelog" data-icon="bars" data-iconpos="notext" href="#test_catelog"></a>
+    <h1 style="margin-left:2.5em;text-align:left"></h1>
+    <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+    	<a id="btnTestSubmit" data-role="button" data-icon="action" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Submit</a>
+    	<a data-role="button" data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Back</a>
+    </div>
+  </div>
+
+  <div data-role="content">
+  	this is the test content
+  </div>
+
+  <div data-role="panel" id="test_catelog" data-display="overlay">
+    test catelog goes here
+  </div>
+</div>
+
+<div data-role="page" id="page_qa">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Q &amp; A</h1>
+    <a data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  </div>
+</div>
+
+<div data-role="page" id="page_askq">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Raise Question</h1>
+    <a data-icon="back" data-transition="pop" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content">
+  <form>
+  	<textarea></textarea>
+  	<a data-role="button" data-icon="action" class="lang" style="position:absolute;right:2em">Submit</a>
+  </form>
+  </div>
+</div>
+
+<div data-role="page" id="page_setting">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Settings</h1>
+    <a data-icon="back" data-transition="pop" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content">
+	  <div id="setLang" data-role="collapsible">
+		<h4>Language</h4>
+		<form><fieldset data-role="controlgroup">
+			<input type="radio" name="language" id="lang_cn_zh" value="cn_zh"/><label for="lang_cn_zh">Chinese</label>
+			<input type="radio" name="language" id="lang_us_en" value="us_en"/><label for="lang_us_en">English</label>
+		</fieldset></form>
+	  </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	var testList = [
+		['2014 Final Test', false],
+		['2014 Middle Test', true]
+	];
+
+var _storage = {
+};
+
+$(function() {
+	if (window.devicePixelRatio >= 2) {
+		$.event.special.swipe.horizontalDistanceThreshold = 15;
+	}
+
+	$('.lang').each(function() {
+		var self = $(this);
+		self.data('lang', self.html());
+	});
+	setLocaleLanguage('cn_zh');
+
+	mainPage();
+	inboxPage();
+	testPage();
+	qaPage();
+	settingPage();
+
+	$('#lnk_inbox').click();
+});
+</script>
+</body>
+</html>
