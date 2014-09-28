@@ -15,6 +15,19 @@ _localeStrList['cn_zh'] = {
 
 };
 
+_localeStrList['fr_fr'] = {
+    'Inbox': 'Inbox',
+    'Test': 'Test',
+    'Q &amp; A': 'Q &amp; A',
+    'Back': 'Retourner',
+    'Submit': 'Soumettre',
+    'Raise Question': 'Poser une question',
+    'Sorry, no similar questions were found.': 'Désole，réponse non-trouvée.',
+    'Please enter your question.': 'Replissez votre question',
+    'Failed to send your question. Please check your Internet connection and try again.': 'Envoi echoue，merci de verifiez la connexion internet et reessayer。'
+
+};
+
 var _localeLangeCode = '';
 var _localeLang = [];
 

@@ -5,8 +5,8 @@ var QaData = function(data){
 };
 
 var qaList = [
-	new QaData([1, 'What is a cat?', 'Cat is an animal which eats mice.']),
-	new QaData([2, 'What is the difference between cat and dog?', 'Dog chases cat.']),
+	new QaData([1, 'C&apos;est quoi la difference etre un peu et petit?', 'bla, bla, bla']),
+	new QaData([2, 'C&apos;est quoi la hat is the difference between cat and dog?', 'Dog chases cat.']),
 	new QaData([3, 'Is mice big?', 'No, it is small.']),
 	new QaData([4, 'How dog catches mice?', 'The dog does not like to catch mice.'])
 ];
