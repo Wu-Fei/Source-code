@@ -3,6 +3,7 @@ var _localeStrList = {
 };
 
 _localeStrList['cn_zh'] = {
+	'Login': '登录',
 	'Inbox': '邮箱',
 	'Test': '测试',
 	'Q &amp; A': '答疑',
@@ -15,6 +16,7 @@ _localeStrList['cn_zh'] = {
 	'Assignment': '作业',
 	'Exam': '测试',
 	'Raise Question': '提问',
+	'Language': '语言',
 	'Sorry, no similar questions were found.': '对不起，没有找到类似问题。',
 	'Please enter your question.': '请填写问题内容。',
 	'Failed to send your question. Please check your Internet connection and try again.': '问题发送失败，请检查网络连接，稍后再试。'

@@ -12,11 +12,11 @@ var InboxData = function(data){
 
 	this.setRead = function() {
 		this.isRead = true;
-		inboxDataStore.uipage.trigger('listchanged');
+		inboxDataStore.uipage.trigger('listchanged', [this]);
 	};
 	this.setMarked = function(isMarked) {
 		this.isMarked = isMarked;
-		inboxDataStore.uipage.trigger('listchanged');
+		inboxDataStore.uipage.trigger('listchanged', [this]);
 	};
 };
 
@@ -24,13 +24,19 @@ inboxDataStore.setUIPage = function(page) {
 	inboxDataStore.uipage = page;
 };
 
-var inboxDataList = [
-	new InboxData([1, 1410985475, 'You got an assignment from class B1', 'Here is the assignment', false, false, false]),
+var inboxPublicDataList = [
+	new InboxData([1, 1410985475, 'You got an assignment from class B1', 'Here is the assignment', false, false, false])
+];
+
+var inboxPrivateDataList = [
 	new InboxData([2, 1410905475, 'Welcome to class B1', 'Welcome', false, true, true]),
 	new InboxData([3, 1410805475, 'You requested to join class B1, pending approval', 'Waiting...', true, true, true])
 ];
 
-inboxDataStore.getAll = function() {
-	return inboxDataList;
+inboxDataStore.getPublicDataList = function() {
+	return inboxPublicDataList;
 };
 
+inboxDataStore.getPrivateDataList = function() {
+	return inboxPrivateDataList;
+};

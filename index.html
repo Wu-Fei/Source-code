@@ -50,7 +50,7 @@
   </div>
 
   <div data-role="content" style="position:relative">
-  	<a data-role="button" href="#inboxPage">Login</a>
+  	<a data-role="button" href="#inboxPage" class="lang">Login</a>
   </div>
 
   <div data-role="footer" data-position="fixed">
@@ -205,7 +205,7 @@
 
   <div data-role="content">
 	  <div id="setLang" data-role="collapsible">
-		<h4>Language</h4>
+		<h4 class="lang">Language</h4>
 		<form><fieldset data-role="controlgroup">
 			<input type="radio" name="language" id="lang_cn_zh" value="cn_zh"/><label for="lang_cn_zh">Chinese</label>
 			<input type="radio" name="language" id="lang_us_en" value="us_en"/><label for="lang_us_en">English</label>
@@ -222,7 +222,7 @@
 var _storage = {
 };
 
-var initPage = function() {
+$(function() {
 	if (window.devicePixelRatio >= 2) {
 		$.event.special.swipe.horizontalDistanceThreshold = 15;
 	}
@@ -243,11 +243,8 @@ var initPage = function() {
 	setLocaleLanguage('cn_zh');
 
 	settingPage();
-};
-
-$(function() {
-	document.addEventListener("deviceready", initPage);
 });
+
 </script>
 </body>
 </html>

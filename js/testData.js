@@ -9,7 +9,7 @@ var TestData = function(data){
 
 	this.setRead = function() {
 		this.isRead = true;
-		testDataStore.uipage.trigger('listchanged');
+		testDataStore.uipage.trigger('listchanged', [this]);
 	};
 };
 
@@ -17,9 +17,7 @@ testDataStore.setUIPage = function(page) {
 	testDataStore.uipage = page;
 };
 
-var testDataList = [
-	new TestData([1, '2014 Final Test', false, true]),
-	new TestData([2, '2014 Middle Test', true, true]),
+var testAssignmentDataList = [
 	new TestData([3, '1.1 Assignment', true, false]),
 	new TestData([4, '1.2 Assignment', true, false]),
 	new TestData([5, '2.1 Assignment', true, false]),
@@ -28,7 +26,15 @@ var testDataList = [
 	new TestData([8, '3.1 Assignment', true, false])
 ];
 
-testDataStore.getAll = function() {
-	return testDataList;
+var testExamDataList = [
+	new TestData([1, '2014 Final Test', false, true]),
+	new TestData([2, '2014 Middle Test', true, true])
+];
+
+testDataStore.getAssignmentDataList = function() {
+	return testAssignmentDataList;
 };
 
+testDataStore.getExamDataList = function() {
+	return testExamDataList;
+};

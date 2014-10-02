@@ -11,7 +11,7 @@ var testPage = function() {
 	var linkAssignment = $('#testLinkAssignment').on('tap', function() {
 		if (activeTab != linkAssignment) {
 			mainTab.hide();
-			prepareTestList(false);
+			prepareTestList(testDataStore.getAssignmentDataList());
 			mainTab.slideDown();
 			activeTab = linkAssignment;
 		}
@@ -20,7 +20,7 @@ var testPage = function() {
 	var linkExam = $('#testLinkExam').on('tap', function() {
 		if (activeTab != linkExam) {
 			mainTab.hide();
-			prepareTestList(true);
+			prepareTestList(testDataStore.getExamDataList());
 			mainTab.slideDown();
 			activeTab = linkExam;
 		}
@@ -36,17 +36,9 @@ var testPage = function() {
 		}
 	});
 
-	var prepareTestList = function(isExam) {
-		var testData = testDataStore.getAll();
-		var n = testData.length;
-		var list = [];
-		for (var i = 0; i < n; ++i) {
-			var data = testData[i];
-			if (data.isExam != isExam) continue;
-
-			list.push(data);
-		}
-		_storage.testData = list;
+	var prepareTestList = function(testData) {
+		var n;
+		_storage.testData = $.merge([], testData);
 
 		var list = new Array(n = _storage.testData.length);
 		for (var i = 0; i < n; ++i) {
@@ -65,9 +57,14 @@ var testPage = function() {
 		mainList.html(list.join('')).listview('refresh');
 	};
 
-	page.on('listchanged', function() {
-		prepareTestList(activeTab == linkExam);
-	}).trigger('listchanged');
+	page.on('listchanged', function(evt, data) {
+		if (data.isExam == (activeTab == linkExam)) {
+			prepareTestList(data.isExam
+				? testDataStore.getExamDataList()
+				: testDataStore.getAssignmentDataList()
+			);
+		}
+	}).trigger('listchanged', [{isExam: false}]);
 };
 
 var testContentPage = function() {

@@ -11,7 +11,7 @@ var inboxPage = function() {
 	var linkPublic = $('#inboxLinkPublic').on('tap', function() {
 		if (activeTab != linkPublic) {
 			mainTab.hide();
-			prepareInboxList(false);
+			prepareInboxList(inboxDataStore.getPublicDataList());
 			mainTab.slideDown();
 			_storage.activeTab = activeTab = linkPublic;
 		}
@@ -20,7 +20,7 @@ var inboxPage = function() {
 	var linkPrivate = $('#inboxLinkPrivate').on('tap', function() {
 		if (activeTab != linkPrivate) {
 			mainTab.hide();
-			prepareInboxList(true);
+			prepareInboxList(inboxDataStore.getPrivateDataList());
 			mainTab.slideDown();
 			_storage.activeTab = activeTab = linkPrivate;
 		}
@@ -36,13 +36,11 @@ var inboxPage = function() {
 		}
 	});
 
-	var prepareInboxList = function(isPrivate) {
-		var inboxData = inboxDataStore.getAll();
+	var prepareInboxList = function(inboxData) {
 		var n = inboxData.length;
 		var list0 = [], list1 = [];
 		for (var i = 0; i < n; ++i) {
 			var data = inboxData[i];
-			if (data.isPrivate != isPrivate) continue;
 
 			if (data.isMarked) {
 				list0.push(data);
@@ -74,9 +72,14 @@ var inboxPage = function() {
 		mainList.html(list.join('')).listview('refresh');
 	};
 
-	page.on('listchanged', function() {
-		prepareInboxList(activeTab == linkPrivate);
-	}).trigger('listchanged');
+	page.on('listchanged', function(evt, data) {
+		if (data.isPrivate == (activeTab == linkPrivate)) {
+			prepareInboxList(data.isPrivate
+				? inboxDataStore.getPrivateDataList()
+				: inboxDataStore.getPublicDataList()
+			);
+		}
+	}).trigger('listchanged', [{isPrivate: false}]);
 };
 
 var inboxContentPage = function() {
