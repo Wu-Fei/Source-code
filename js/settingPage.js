@@ -6,11 +6,11 @@ var settingPage = function() {
 
 	toolbox.setBack(header);
 
-	$('#setLang input').click(function() {
+	$('#setLang input').on('click', function() {
 		setLocaleLanguage($(this).val());
 	}).val([getLocaleLanguage()]);
 
-	$('#setClass a').click(function() {
+	$('#setClass a').on('click', function() {
 		captureQRCode(function(res) {
 			alert("We got a barcode\n" +
 			      "Result: " + res.text + "\n" +

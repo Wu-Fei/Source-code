@@ -118,7 +118,7 @@ var qaAskqPage = function() {
 		displayAskq();
 	});
 
-	form.children('a').on('tap', function() {
+	form.children('a').on('click', function() {
 		var question = $.trim(txtQuestion.val());
 		if (question == '') {
 			alert(getLocale('Please enter your question.'));

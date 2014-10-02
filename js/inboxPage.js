@@ -8,7 +8,7 @@ var inboxPage = function() {
 	});
 	var mainTab = mainList.parent();
 
-	var linkPublic = $('#inboxLinkPublic').on('tap', function() {
+	var linkPublic = $('#inboxLinkPublic').on('click', function() {
 		if (activeTab != linkPublic) {
 			mainTab.hide();
 			prepareInboxList(inboxDataStore.getPublicDataList());
@@ -17,7 +17,7 @@ var inboxPage = function() {
 		}
 	});
 
-	var linkPrivate = $('#inboxLinkPrivate').on('tap', function() {
+	var linkPrivate = $('#inboxLinkPrivate').on('click', function() {
 		if (activeTab != linkPrivate) {
 			mainTab.hide();
 			prepareInboxList(inboxDataStore.getPrivateDataList());
@@ -103,7 +103,7 @@ var inboxContentPage = function() {
 		].join(''));
 
 		btnFlag.css('background', data.isMarked ? '#ff8080' : 'transparent')
-			.off('tap').on('tap', function() {
+			.off('click').on('click', function() {
 				data.setMarked(!data.isMarked);
 				btnFlag.css('background', data.isMarked ? '#ff8080' : 'transparent');
 			});

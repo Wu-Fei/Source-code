@@ -8,7 +8,7 @@ var testPage = function() {
 	});
 	var mainTab = mainList.parent();
 
-	var linkAssignment = $('#testLinkAssignment').on('tap', function() {
+	var linkAssignment = $('#testLinkAssignment').on('click', function() {
 		if (activeTab != linkAssignment) {
 			mainTab.hide();
 			prepareTestList(testDataStore.getAssignmentDataList());
@@ -17,7 +17,7 @@ var testPage = function() {
 		}
 	});
 
-	var linkExam = $('#testLinkExam').on('tap', function() {
+	var linkExam = $('#testLinkExam').on('click', function() {
 		if (activeTab != linkExam) {
 			mainTab.hide();
 			prepareTestList(testDataStore.getExamDataList());

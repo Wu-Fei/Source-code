@@ -82,13 +82,13 @@ toolbox.initPage = function(pagename) {
 		.css({width: '9em', right: '0.5em', bottom:'2.5em'});
 	menu.children().listview({icon: false});
 	var overlay = page.append('<div class="ui-popup-screen"/>').children(':last')
-		.hide().on('tap', function() {
+		.hide().on('click', function() {
 			menu.hide();
 			overlay.hide();
 	});
-	$('#' + pagename + 'LinkMore').on('tap', function() {
-		menu.show();
+	$('#' + pagename + 'LinkMore').on('click', function() {
 		overlay.show();
+		menu.show();
 	});
 	page.on('pagehide', function() {
 		menu.hide();
@@ -99,7 +99,7 @@ toolbox.initPage = function(pagename) {
 };
 
 toolbox.setBack = function(header) {
-	header.find('a[data-icon=back]').on('tap', function() {
+	header.find('a[data-icon=back]').on('click', function() {
 		history.back(-1);
 	});
 };
