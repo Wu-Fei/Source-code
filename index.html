@@ -27,15 +27,16 @@
   </style>
   <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.mobile-1.4.4.min.js"></script>
-  <script src="cordova.js"></script>
+  <!--<script src="cordova.js"></script>-->
 
+  <script src="js/toolbox.js"></script>
   <script src="js/locale.js"></script>
   <script src="js/qrCode.js"></script>
 
   <script src="js/inboxData.js"></script>
+  <script src="js/testData.js"></script>
   <script src="js/qaData.js"></script>
 
-  <script src="js/mainPage.js"></script>
   <script src="js/inboxPage.js"></script>
   <script src="js/testPage.js"></script>
   <script src="js/qaPage.js"></script>
@@ -43,57 +44,123 @@
 </head>
 <body>
 
-<div data-role="page" id="page_main">
+<div data-role="page" id="loginPage">
   <div data-role="header" data-position="fixed">
-  	<a id="btnAskQ" href="#page_askq" data-transition="pop" class="lang">Raise Question</a>
-    <h1 id="txtTitle"></h1>
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#page_setting" class="ui-btn-right"></a>
+    <h1>Parrot (Student)</h1>
   </div>
 
   <div data-role="content" style="position:relative">
-  	<div id="tab_inbox" class="tab_content">
-  		<ul id="listInbox"></ul>
-  	</div>
+  	<a data-role="button" href="#inboxPage">Login</a>
+  </div>
 
-  	<div id="tab_test" class="tab_content">
-  		<ul id="listTest"></ul>
-  	</div>
+  <div data-role="footer" data-position="fixed">
+  </div>
+</div>
 
-  	<div id="tab_qa" class="tab_content">
-  		<input type="search" id="searchQA" value="">
-  		<div style="margin-top:1em;padding:1em;overflow-y:auto;overflow-x:hidden"><ul id="listQA"></ul></div>
+<div data-role="page" id="inboxPage">
+  <div data-role="header" data-position="fixed">
+    <h1 class="lang">Inbox</h1>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div class="tab_content"><ul id="inboxList"></ul></div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a id="inboxLinkPublic" class="lang">Notification</a></li>
+        <li><a id="inboxLinkPrivate" class="lang">Message</a></li>
+        <li><a id="inboxLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="testPage">
+  <div data-role="header" data-position="fixed">
+    <h1 class="lang">Test</h1>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div class="tab_content"><ul id="testList"></ul></div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a id="testLinkAssignment" class="lang">Assignment</a></li>
+        <li><a id="testLinkExam" class="lang">Exam</a></li>
+        <li><a id="testLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="qaPage">
+  <div data-role="header" data-position="fixed">
+  	<a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
+    <h1 class="lang">Q &amp; A</h1>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div class="tab_content">
+  		<input data-type="search" id="qaSearch" value="">
+  		<div style="margin-top:1em;padding:1em;overflow-y:auto;overflow-x:hidden"><ul id="qaList"></ul></div>
   	</div>
   </div>
 
   <div data-role="footer" data-position="fixed">
     <div data-role="navbar">
       <ul>
-        <li><a id="lnk_inbox" data-icon="alert" class="lang">Inbox</a></li>
-        <li><a id="lnk_test" data-icon="bullets" class="lang">Test</a></li>
-        <li><a id="lnk_qa" data-icon="comment" class="lang">Q &amp; A</a></li>
+        <li><a id="qaLink" class="lang">Q &amp; A</a></li>
+        <li><a id="qaLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
       </ul>
     </div>
   </div>
 </div>
 
-<div data-role="page" id="page_inbox">
+<div data-role="page" id="classPage">
   <div data-role="header" data-position="fixed">
-    <a id="btnInboxFlag" data-icon="star" data-iconpos="notext"></a>
+    <h1 class="lang">Class</h1>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div class="tab_content"><ul id="classList"></ul></div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a id="classLink" class="lang">Class</a></li>
+        <li><a id="classLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="inboxContentPage">
+  <div data-role="header" data-position="fixed">
+    <a id="inboxContentBtnFlag" data-icon="star" data-iconpos="notext"></a>
     <h1 style="margin-left:2.5em;text-align:left"></h1>
-    <a data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Back</a>
+    <a data-icon="back" data-transition="slide" data-direction="reverse" class="lang">Back</a>
   </div>
 
   <div data-role="content" style="position:relative">
   </div>
 </div>
 
-<div data-role="page" id="page_test">
+<div data-role="page" id="testContentPage">
   <div data-role="header" data-position="fixed">
-    <a id="btnTestCatelog" data-icon="bars" data-iconpos="notext" href="#test_catelog"></a>
+    <a data-icon="bars" data-iconpos="notext" href="#testContentCatelog"></a>
     <h1 style="margin-left:2.5em;text-align:left"></h1>
     <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
-    	<a id="btnTestSubmit" data-role="button" data-icon="action" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Submit</a>
-    	<a data-role="button" data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="lang">Back</a>
+    	<a id="testContentBtnSubmit" data-role="button" data-icon="action" data-transition="slide" data-direction="reverse" class="lang">Submit</a>
+    	<a data-role="button" data-icon="back" data-transition="slide" data-direction="reverse" class="lang">Back</a>
     </div>
   </div>
 
@@ -101,25 +168,25 @@
   	this is the test content
   </div>
 
-  <div data-role="panel" id="test_catelog" data-display="overlay">
+  <div data-role="panel" id="testContentCatelog" data-display="overlay">
     test catelog goes here
   </div>
 </div>
 
-<div data-role="page" id="page_qa">
+<div data-role="page" id="qaContentPage">
   <div data-role="header" data-position="fixed">
     <h1 style="margin-left:1em;text-align:left" class="lang">Q &amp; A</h1>
-    <a data-icon="back" data-transition="slide" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+    <a data-icon="back" data-transition="slide" data-direction="reverse" class="ui-btn-right lang">Back</a>
   </div>
 
   <div data-role="content" style="position:relative">
   </div>
 </div>
 
-<div data-role="page" id="page_askq">
+<div data-role="page" id="qaAskqPage">
   <div data-role="header" data-position="fixed">
     <h1 style="margin-left:1em;text-align:left" class="lang">Raise Question</h1>
-    <a data-icon="back" data-transition="pop" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+    <a data-icon="back" data-transition="pop" data-direction="reverse" class="ui-btn-right lang">Back</a>
   </div>
 
   <div data-role="content">
@@ -130,10 +197,10 @@
   </div>
 </div>
 
-<div data-role="page" id="page_setting">
+<div data-role="page" id="settingPage">
   <div data-role="header" data-position="fixed">
     <h1 style="margin-left:1em;text-align:left" class="lang">Settings</h1>
-    <a data-icon="back" data-transition="pop" data-direction="reverse" href="#page_main" class="ui-btn-right lang">Back</a>
+    <a data-icon="back" data-transition="pop" data-direction="reverse" class="ui-btn-right lang">Back</a>
   </div>
 
   <div data-role="content">
@@ -142,6 +209,7 @@
 		<form><fieldset data-role="controlgroup">
 			<input type="radio" name="language" id="lang_cn_zh" value="cn_zh"/><label for="lang_cn_zh">Chinese</label>
 			<input type="radio" name="language" id="lang_us_en" value="us_en"/><label for="lang_us_en">English</label>
+			<input type="radio" name="language" id="lang_fr_fr" value="fr_fr"/><label for="lang_fr_fr">French</label>
 		</fieldset></form>
 	  </div>
 	  <div id="setClass">
@@ -151,18 +219,22 @@
 </div>
 
 <script type="text/javascript">
-	var testList = [
-		['2014 Final Test', false],
-		['2014 Middle Test', true]
-	];
-
 var _storage = {
 };
 
-$(function() {
+var initPage = function() {
 	if (window.devicePixelRatio >= 2) {
 		$.event.special.swipe.horizontalDistanceThreshold = 15;
 	}
+
+	inboxPage();
+	testPage();
+	qaPage();
+
+	inboxContentPage();
+	testContentPage();
+	qaContentPage();
+	qaAskqPage();
 
 	$('.lang').each(function() {
 		var self = $(this);
@@ -170,13 +242,11 @@ $(function() {
 	});
 	setLocaleLanguage('cn_zh');
 
-	mainPage();
-	inboxPage();
-	testPage();
-	qaPage();
 	settingPage();
+};
 
-	$('#lnk_inbox').click();
+$(function() {
+	document.addEventListener("deviceready", initPage);
 });
 </script>
 </body>

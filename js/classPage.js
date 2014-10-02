@@ -1,48 +1,30 @@
-var testPage = function() {
-	var page = toolbox.initPage('test');
-	testDataStore.setUIPage(page);
+var classPage = function() {
+	var page = toolbox.initPage('class');
 
-	var mainList = $('#testList').listview({
+	var mainList = $('#classList').listview({
 		filter: true,
 		icon: false
 	});
 	var mainTab = mainList.parent();
 
-	var linkAssignment = $('#testLinkAssignment').on('tap', function() {
-		if (activeTab != linkAssignment) {
-			mainTab.hide();
-			prepareTestList(false);
-			mainTab.slideDown();
-			activeTab = linkAssignment;
-		}
-	});
+	var link = $('#classLink');
 
-	var linkExam = $('#testLinkExam').on('tap', function() {
-		if (activeTab != linkExam) {
-			mainTab.hide();
-			prepareTestList(true);
-			mainTab.slideDown();
-			activeTab = linkExam;
-		}
-	});
-
-	var activeTab = linkAssignment;
+	var activeTab = link;
 	page.on('pageshow', function() {
 		activeTab.addClass('ui-btn-active');
-		if (_storage.activePage != 'test') {
+		if (_storage.activePage != 'class') {
 			mainTab.hide();
 			mainTab.slideDown();
-			_storage.activePage = 'test';
+			_storage.activePage = 'class';
 		}
 	});
 
 	var prepareTestList = function(isExam) {
-		var testData = testDataStore.getAll();
 		var n = testData.length;
 		var list = [];
 		for (var i = 0; i < n; ++i) {
 			var data = testData[i];
-			if (data.isExam != isExam) continue;
+			if (data[2] != isExam) continue;
 
 			list.push(data);
 		}
@@ -55,9 +37,9 @@ var testPage = function() {
 			list[i] = [
 				'<li>',
 				'<a href="#testContentPage" data-transition="slide" class="',
-				data.isRead ? 'list_read"' : 'list_unread',
+				data[1] ? 'list_read"' : 'list_unread',
 				'" onclick="_storage.testDataIndex=', i, '">',
-				'<div>', data.name, '</div>',
+				'<div>', data[0], '</div>',
 				'</a>',
 				'</li>'
 			].join('');
@@ -66,24 +48,24 @@ var testPage = function() {
 	};
 
 	page.on('listchanged', function() {
-		prepareTestList(activeTab == linkExam);
+		prepareClassList();
 	}).trigger('listchanged');
 };
 
-var testContentPage = function() {
-	var page = $('#testContentPage');
+var classContentPage = function() {
+	var page = $('#classContentPage');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
 
 	toolbox.setBack(header);
 
-	var txtTitle = header.children('h1');
-
 	var displayContent = function() {
-		var data = _storage.testData[_storage.testDataIndex];
+		var data = _storage.classData[_storage.classDataIndex];
 
-		txtTitle.html(data.name);
-		data.setRead();
+		content.html([
+			'<h2>', data.question, '</h2>',
+			data.answer
+		].join(''));
 	};
 
 	page.on('pagebeforeshow', function() {

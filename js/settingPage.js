@@ -1,12 +1,13 @@
 var settingPage = function() {
-	var settingPage = $('#page_setting');
-	var settingHeader = settingPage.children('div[data-role=header]');
-	var settingContent = settingPage.children('div[data-role=content]');
+	var page = $('#settingPage');
+	var header = page.children('div[data-role=header]');
+	//var content = page.children('div[data-role=content]');
+	//var footer = page.children('div[data-role=footer]');
+
+	toolbox.setBack(header);
 
 	$('#setLang input').click(function() {
-		var lang = $(this).val();
-
-		setLocaleLanguage(lang);
+		setLocaleLanguage($(this).val());
 	}).val([getLocaleLanguage()]);
 
 	$('#setClass a').click(function() {
