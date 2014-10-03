@@ -98,8 +98,3 @@ toolbox.initPage = function(pagename) {
 	return page;
 };
 
-toolbox.setBack = function(header) {
-	header.find('a[data-icon=back]').on('click', function() {
-		history.back(-1);
-	});
-};

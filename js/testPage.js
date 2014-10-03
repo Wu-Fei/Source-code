@@ -57,22 +57,20 @@ var testPage = function() {
 		mainList.html(list.join('')).listview('refresh');
 	};
 
-	page.on('listchanged', function(evt, data) {
-		if (data.isExam == (activeTab == linkExam)) {
-			prepareTestList(data.isExam
+	page.on('listchanged', function(evt, isExam) {
+		if (isExam == (activeTab == linkExam)) {
+			prepareTestList(isExam
 				? testDataStore.getExamDataList()
 				: testDataStore.getAssignmentDataList()
 			);
 		}
-	}).trigger('listchanged', [{isExam: false}]);
+	}).trigger('listchanged', [false]);
 };
 
 var testContentPage = function() {
 	var page = $('#testContentPage');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
-
-	toolbox.setBack(header);
 
 	var txtTitle = header.children('h1');
 

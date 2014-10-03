@@ -72,22 +72,20 @@ var inboxPage = function() {
 		mainList.html(list.join('')).listview('refresh');
 	};
 
-	page.on('listchanged', function(evt, data) {
-		if (data.isPrivate == (activeTab == linkPrivate)) {
-			prepareInboxList(data.isPrivate
+	page.on('listchanged', function(evt, isPrivate) {
+		if (isPrivate == (activeTab == linkPrivate)) {
+			prepareInboxList(isPrivate
 				? inboxDataStore.getPrivateDataList()
 				: inboxDataStore.getPublicDataList()
 			);
 		}
-	}).trigger('listchanged', [{isPrivate: false}]);
+	}).trigger('listchanged', [false]);
 };
 
 var inboxContentPage = function() {
 	var page = $('#inboxContentPage');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
-
-	toolbox.setBack(header);
 
 	var btnFlag = $('#inboxContentBtnFlag');
 	var txtTitle = header.children('h1');

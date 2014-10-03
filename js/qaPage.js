@@ -58,8 +58,6 @@ var qaContentPage = function() {
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
 
-	toolbox.setBack(header);
-
 	var displayContent = function() {
 		var data = _storage.qaData[_storage.qaDataIndex];
 
@@ -104,8 +102,6 @@ var qaAskqPage = function() {
 	var page = $('#qaAskqPage');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
-
-	toolbox.setBack(header);
 
 	var form = content.children('form');
 	var txtQuestion = form.children('textarea');

@@ -36,10 +36,13 @@
   <script src="js/inboxData.js"></script>
   <script src="js/testData.js"></script>
   <script src="js/qaData.js"></script>
+  <script src="js/classData.js"></script>
 
   <script src="js/inboxPage.js"></script>
   <script src="js/testPage.js"></script>
   <script src="js/qaPage.js"></script>
+  <script src="js/classPage.js"></script>
+
   <script src="js/settingPage.js"></script>
 </head>
 <body>
@@ -56,6 +59,8 @@
   <div data-role="footer" data-position="fixed">
   </div>
 </div>
+
+<!-- inboxPage start -->
 
 <div data-role="page" id="inboxPage">
   <div data-role="header" data-position="fixed">
@@ -78,6 +83,19 @@
   </div>
 </div>
 
+<div data-role="page" id="inboxContentPage">
+  <div data-role="header" data-position="fixed">
+    <a id="inboxContentBtnFlag" data-icon="star" data-iconpos="notext"></a>
+    <h1 style="margin-left:2.5em;text-align:left"></h1>
+    <a data-icon="back" data-rel="back" class="lang">Back</a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  </div>
+</div>
+
+<!-- testPage start -->
+
 <div data-role="page" id="testPage">
   <div data-role="header" data-position="fixed">
     <h1 class="lang">Test</h1>
@@ -98,6 +116,27 @@
     </div>
   </div>
 </div>
+
+<div data-role="page" id="testContentPage">
+  <div data-role="header" data-position="fixed">
+    <a data-icon="bars" data-iconpos="notext" href="#testContentCatelog"></a>
+    <h1 style="margin-left:2.5em;text-align:left"></h1>
+    <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+    	<a id="testContentBtnSubmit" data-role="button" data-icon="action" data-transition="slide" data-direction="reverse" class="lang">Submit</a>
+    	<a data-role="button" data-icon="back" data-rel="back" class="lang">Back</a>
+    </div>
+  </div>
+
+  <div data-role="content">
+  	this is the test content
+  </div>
+
+  <div data-role="panel" id="testContentCatelog" data-display="overlay">
+    test catelog goes here
+  </div>
+</div>
+
+<!-- qaPage start -->
 
 <div data-role="page" id="qaPage">
   <div data-role="header" data-position="fixed">
@@ -123,6 +162,32 @@
   </div>
 </div>
 
+<div data-role="page" id="qaContentPage">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Q &amp; A</h1>
+    <a data-icon="back" data-rel="back" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  </div>
+</div>
+
+<div data-role="page" id="qaAskqPage">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Raise Question</h1>
+    <a data-icon="back" data-rel="back" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content">
+  <form>
+  	<textarea></textarea>
+  	<a data-role="button" data-icon="action" style="position:absolute;right:2em" class="lang">Submit</a>
+  </form>
+  </div>
+</div>
+
+<!-- classPage start -->
+
 <div data-role="page" id="classPage">
   <div data-role="header" data-position="fixed">
     <h1 class="lang">Class</h1>
@@ -136,71 +201,32 @@
   <div data-role="footer" data-position="fixed">
     <div data-role="navbar">
       <ul>
-        <li><a id="classLink" class="lang">Class</a></li>
+        <li><a id="classLinkActive" class="lang">Active</a></li>
+        <li><a id="classLinkPending" class="lang">Pending</a></li>
         <li><a id="classLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
       </ul>
     </div>
   </div>
 </div>
 
-<div data-role="page" id="inboxContentPage">
+<div data-role="page" id="classContentPage">
   <div data-role="header" data-position="fixed">
-    <a id="inboxContentBtnFlag" data-icon="star" data-iconpos="notext"></a>
-    <h1 style="margin-left:2.5em;text-align:left"></h1>
-    <a data-icon="back" data-transition="slide" data-direction="reverse" class="lang">Back</a>
+    <h1 style="margin-left:1em;text-align:left"></h1>
+    <a data-icon="back" data-rel="back" class="ui-btn-right lang">Back</a>
   </div>
 
   <div data-role="content" style="position:relative">
+  	<div></div>
+  	<a id="classContentBtnQuit" data-role="button" data-icon="delete" style="position:absolute;right:2em" class="lang">Quit</a>
   </div>
 </div>
 
-<div data-role="page" id="testContentPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="bars" data-iconpos="notext" href="#testContentCatelog"></a>
-    <h1 style="margin-left:2.5em;text-align:left"></h1>
-    <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
-    	<a id="testContentBtnSubmit" data-role="button" data-icon="action" data-transition="slide" data-direction="reverse" class="lang">Submit</a>
-    	<a data-role="button" data-icon="back" data-transition="slide" data-direction="reverse" class="lang">Back</a>
-    </div>
-  </div>
-
-  <div data-role="content">
-  	this is the test content
-  </div>
-
-  <div data-role="panel" id="testContentCatelog" data-display="overlay">
-    test catelog goes here
-  </div>
-</div>
-
-<div data-role="page" id="qaContentPage">
-  <div data-role="header" data-position="fixed">
-    <h1 style="margin-left:1em;text-align:left" class="lang">Q &amp; A</h1>
-    <a data-icon="back" data-transition="slide" data-direction="reverse" class="ui-btn-right lang">Back</a>
-  </div>
-
-  <div data-role="content" style="position:relative">
-  </div>
-</div>
-
-<div data-role="page" id="qaAskqPage">
-  <div data-role="header" data-position="fixed">
-    <h1 style="margin-left:1em;text-align:left" class="lang">Raise Question</h1>
-    <a data-icon="back" data-transition="pop" data-direction="reverse" class="ui-btn-right lang">Back</a>
-  </div>
-
-  <div data-role="content">
-  <form>
-  	<textarea></textarea>
-  	<a data-role="button" data-icon="action" class="lang" style="position:absolute;right:2em">Submit</a>
-  </form>
-  </div>
-</div>
+<!-- settingPage start -->
 
 <div data-role="page" id="settingPage">
   <div data-role="header" data-position="fixed">
     <h1 style="margin-left:1em;text-align:left" class="lang">Settings</h1>
-    <a data-icon="back" data-transition="pop" data-direction="reverse" class="ui-btn-right lang">Back</a>
+    <a data-icon="back" data-rel="back" class="ui-btn-right lang">Back</a>
   </div>
 
   <div data-role="content">
@@ -218,31 +244,42 @@
   </div>
 </div>
 
+<!-- done with all pages -->
+
 <script type="text/javascript">
 var _storage = {
 };
 
 $(function() {
+	$(document).on('backbutton', function() {
+		navigator.app.exitApp();
+		return false;
+	});
+
 	if (window.devicePixelRatio >= 2) {
 		$.event.special.swipe.horizontalDistanceThreshold = 15;
 	}
 
 	inboxPage();
-	testPage();
-	qaPage();
-
 	inboxContentPage();
+
+	testPage();
 	testContentPage();
+
+	qaPage();
 	qaContentPage();
 	qaAskqPage();
+
+	classPage();
+	classContentPage();
+
+	settingPage();
 
 	$('.lang').each(function() {
 		var self = $(this);
 		self.data('lang', self.html());
 	});
 	setLocaleLanguage('cn_zh');
-
-	settingPage();
 });
 
 </script>

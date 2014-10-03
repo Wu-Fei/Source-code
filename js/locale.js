@@ -16,10 +16,17 @@ _localeStrList['cn_zh'] = {
 	'Assignment': '作业',
 	'Exam': '测试',
 	'Raise Question': '提问',
+	'Apply': '申请',
+	'Quit': '退出',
+	'Created By:': '创建者:',
+	'Created At:': '创建于:',
+	'Members:': '成员数:',
 	'Language': '语言',
 	'Sorry, no similar questions were found.': '对不起，没有找到类似问题。',
 	'Please enter your question.': '请填写问题内容。',
-	'Failed to send your question. Please check your Internet connection and try again.': '问题发送失败，请检查网络连接，稍后再试。'
+	'Failed to send your question. Please check your Internet connection and try again.': '问题发送失败，请检查网络连接，稍后再试。',
+	'Sorry the class ID you gave was invalid.': '对不起，您提供的课程代码无效。',
+	'Are you sure you want to quit from this class?': '您确定要退出这个课程吗?'
 
 };
 
@@ -45,6 +52,14 @@ var getLocale = function(s) {
 
 var localize = function(e, s) {
 	e.addClass('lang').data('lang', s).html(_localeLang[s] || s);
+}
+
+var localizeAll = function(e) {
+	$(e, '.lang').each(function() {
+		var self = $(this);
+		var s = self.html();
+		self.data('lang', s).html(_localeLang[s] || s);
+	});
 }
 
 var getLocaleLanguage = function() {

@@ -9,7 +9,7 @@ var TestData = function(data){
 
 	this.setRead = function() {
 		this.isRead = true;
-		testDataStore.uipage.trigger('listchanged', [this]);
+		testDataStore.uipage.trigger('listchanged', [this.isExam]);
 	};
 };
 

@@ -12,11 +12,11 @@ var InboxData = function(data){
 
 	this.setRead = function() {
 		this.isRead = true;
-		inboxDataStore.uipage.trigger('listchanged', [this]);
+		inboxDataStore.uipage.trigger('listchanged', [this.isPrivate]);
 	};
 	this.setMarked = function(isMarked) {
 		this.isMarked = isMarked;
-		inboxDataStore.uipage.trigger('listchanged', [this]);
+		inboxDataStore.uipage.trigger('listchanged', [this.isPrivate]);
 	};
 };
 
