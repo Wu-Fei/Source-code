@@ -16,6 +16,8 @@ _localeStrList['cn_zh'] = {
 	'Assignment': '作业',
 	'Exam': '测试',
 	'Raise Question': '提问',
+	'Active': '已注册',
+	'Pending': '申请中',
 	'Apply': '申请',
 	'Quit': '退出',
 	'Created By:': '创建者:',
@@ -55,9 +57,10 @@ var localize = function(e, s) {
 }
 
 var localizeAll = function(e) {
-	$(e, '.lang').each(function() {
+	e.find('.lang').each(function() {
 		var self = $(this);
 		var s = self.html();
+		console.log('localize', s, _localeLang[s]);
 		self.data('lang', s).html(_localeLang[s] || s);
 	});
 }

@@ -19,7 +19,7 @@ var classActiveDataList = [
 	new ClassData([1, '111111', 'Level 1, Class 1', 'Teach A', 1410985475, 'This is a one month program for $100', 20]),
 	new ClassData([2, '222222', 'Level 1, Class 2', 'Teach B', 1410085475, 'This is a one week program for $999', 20]),
 	new ClassData([3, '333333', 'Level 2, Class 1', 'Teach C', 1410585475, 'This is a one year program for free', 30]),
-	new ClassData([4, '444444', 'Level 3, Class 1', 'Teach D', 1411585475, 'Welcome to hell', 10])
+	new ClassData([4, '444444', 'Level 3, Class 1', 'Teach D', 1411585475, 'Welcome to hell<br/><br/><br/><br/><br/><br/>ww', 10])
 ];
 
 var classPendingDataList = [
