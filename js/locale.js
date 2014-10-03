@@ -23,7 +23,7 @@ _localeStrList['cn_zh'] = {
 	'Created By:': '创建者:',
 	'Created At:': '创建于:',
 	'Members:': '成员数:',
-	'QR Code': '',
+	'QR Code': '二维码',
 	'Language': '语言',
 	'Sorry, no similar questions were found.': '对不起，没有找到类似问题。',
 	'Please enter your question.': '请填写问题内容。',
