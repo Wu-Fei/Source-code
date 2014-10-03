@@ -38,6 +38,7 @@
   <script src="js/qaData.js"></script>
   <script src="js/classData.js"></script>
 
+  <script src="js/loginPage.js"></script>
   <script src="js/inboxPage.js"></script>
   <script src="js/testPage.js"></script>
   <script src="js/qaPage.js"></script>
@@ -53,7 +54,7 @@
   </div>
 
   <div data-role="content" style="position:relative">
-  	<a data-role="button" href="#inboxPage" class="lang">Login</a>
+  	<div align="center"><a id="loginBtnLogin" data-role="button" data-inline="true" class="lang">Login</a></div>
   </div>
 
   <div data-role="footer" data-position="fixed">
@@ -247,18 +248,14 @@
 <!-- done with all pages -->
 
 <script type="text/javascript">
-var _storage = {
-};
+var _storage = {};
 
 $(function() {
-	$(document).on('backbutton', function() {
-		navigator.app.exitApp();
-		return false;
-	});
-
 	if (window.devicePixelRatio >= 2) {
 		$.event.special.swipe.horizontalDistanceThreshold = 15;
 	}
+
+	loginPage();
 
 	inboxPage();
 	inboxContentPage();

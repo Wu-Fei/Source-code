@@ -60,7 +60,6 @@ var localizeAll = function(e) {
 	e.find('.lang').each(function() {
 		var self = $(this);
 		var s = self.html();
-		console.log('localize', s, _localeLang[s]);
 		self.data('lang', s).html(_localeLang[s] || s);
 	});
 }

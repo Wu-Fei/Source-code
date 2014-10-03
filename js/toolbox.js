@@ -55,7 +55,7 @@ toolbox.initPage = function(pagename) {
 		} else {
 			menuItems.push([
 				'<li data-icon="', p[2], '">',
-				'<a href="#', p[0], 'Page" data-transition="none" class="lang">', p[1], '</a>',
+				'<a href="#', p[0], 'Page" class="lang">', p[1], '</a>',
 				'</li>'
 			].join(''));
 		}
@@ -64,7 +64,14 @@ toolbox.initPage = function(pagename) {
 	var menu = page.append(menuItems.join('')).children(':last')
 		.addClass("ui-popup-container ui-overlay-shadow ui-corner-all")
 		.css({width: '9em', right: '0.5em', bottom:'2.5em'});
-	menu.children().listview({icon: false});
+	menu.children().listview({icon: false})
+		.find('a[href]').each(function() {
+			var a = $(this);
+			a.on('click', function() {
+				location.replace(a.attr('href'));
+				return false;
+			});
+		});
 	var overlay = page.append('<div class="ui-popup-screen"/>').children(':last')
 		.hide().on('click', function() {
 			menu.hide();
