@@ -8,6 +8,7 @@ var settingPage = function() {
 		setLocaleLanguage($(this).val());
 	});
 
+	/*
 	$('#setClass a').on('click', function() {
 		captureQRCode(function(res) {
 			alert("We got a barcode\n" +
@@ -18,6 +19,7 @@ var settingPage = function() {
 			alert("Scanning failed: " + err);
 		});
 	});
+	*/
 
 	page.on('pageshow', function() {
 		setLang.val([getLocaleLanguage()])

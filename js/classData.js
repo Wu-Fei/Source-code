@@ -1,6 +1,8 @@
 var classDataStore = {
 };
 
+classDataStore.UUID_LENGTH = 6;
+
 var ClassData = function(data){
 	this.pk = data[0];
 	this.uuid = data[1];
@@ -16,10 +18,10 @@ classDataStore.setUIPage = function(page) {
 };
 
 var classActiveDataList = [
-	new ClassData([1, '111111', 'Level 1, Class 1', 'Teach A', 1410985475, 'This is a one month program for $100', 20]),
-	new ClassData([2, '222222', 'Level 1, Class 2', 'Teach B', 1410085475, 'This is a one week program for $999', 20]),
-	new ClassData([3, '333333', 'Level 2, Class 1', 'Teach C', 1410585475, 'This is a one year program for free', 30]),
-	new ClassData([4, '444444', 'Level 3, Class 1', 'Teach D', 1411585475, 'Welcome to hell<br/><br/><br/><br/><br/><br/>ww', 10])
+	new ClassData([1, '111111', 'Level 1, Class 1', 'Teacher A', 1410985475, 'This is a one month program for $100', 20]),
+	new ClassData([2, '222222', 'Level 1, Class 2', 'Teacher B', 1410085475, 'This is a one week program for $999', 20]),
+	new ClassData([3, '333333', 'Level 2, Class 1', 'Teacher C', 1410585475, 'This is a one year program for free', 30]),
+	new ClassData([4, '444444', 'Level 3, Class 1', 'Teacher D', 1411585475, 'Welcome to hell<br/><br/><br/><br/><br/><br/>ww', 10])
 ];
 
 var classPendingDataList = [
@@ -33,14 +35,23 @@ classDataStore.getPendingDataList = function() {
 	return classPendingDataList;
 };
 
-classDataStore.getClassContent = function(uuid) {
-	return new ClassData([99, uuid, 'Level new, Class new', 'Teach new', (new Date()).valueOf(), 'This is a new class', 99]);
+classDataStore.validateClassUuid = function(uuid) {
+	return true;
 };
 
-classDataStore.applyClass = function(uuid) {
-	var data = classDataStore.getClassContent(uuid);
-	classPendingDataList.push(data);
-	classDataStore.uipage.trigger('listchanged', [false]);
+classDataStore.getClassContent = function(uuid, okFunc, errFunc) {
+	var data = new ClassData([99, uuid, 'Level new, Class new', 'Teacher new', (new Date()).valueOf(), 'This is a new class', 99]);
+	okFunc(data);
+};
+
+classDataStore.applyClass = function(uuid, okFunc, errFunc) {
+	var data = classDataStore.getClassContent(uuid, function(data) {
+		classPendingDataList.push(data);
+		classDataStore.uipage.trigger('listchanged', [false]);
+		okFunc();
+	}, function (err) {
+		errFunc(err);
+	});
 };
 
 classDataStore.activeClass = function(uuid) {

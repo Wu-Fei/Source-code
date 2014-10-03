@@ -27,7 +27,7 @@
   </style>
   <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.mobile-1.4.4.min.js"></script>
-  <!--<script src="cordova.js"></script>-->
+  <script src="cordova.js"></script>
 
   <script src="js/toolbox.js"></script>
   <script src="js/locale.js"></script>
@@ -191,8 +191,9 @@
 
 <div data-role="page" id="classPage">
   <div data-role="header" data-position="fixed">
+	<a data-transition="pop" href="#classApplyPage" class="lang">Apply Class</a>
     <h1 class="lang">Class</h1>
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage"></a>
   </div>
 
   <div data-role="content" style="position:relative">
@@ -222,6 +223,24 @@
   </div>
 </div>
 
+<div data-role="page" id="classApplyPage">
+  <div data-role="header" data-position="fixed">
+    <h1 style="margin-left:1em;text-align:left" class="lang">Apply Class</h1>
+    <a data-icon="back" data-rel="back" class="ui-btn-right lang">Back</a>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  <form>
+  	<table width="100%"><tr valign="middle">
+  		<td><a id="classApplyBtnQrcode" data-role="button" data-icon="camera" data-inline="true" class="lang">QR Code</a></td>
+  		<td width="100%"><input id="classApplyTxtUuid"/></td>
+  	</tr></table>
+  	<div id="classApplyTxtDetail"></div>
+  	<div align="right"><a id="classApplyBtnSubmit" data-role="button" data-icon="check" data-inline="true" style="display:none" class="lang">Submit</a></div>
+  <form>
+  </div>
+</div>
+
 <!-- settingPage start -->
 
 <div data-role="page" id="settingPage">
@@ -238,9 +257,6 @@
 			<input type="radio" name="language" id="lang_us_en" value="us_en"/><label for="lang_us_en">English</label>
 			<input type="radio" name="language" id="lang_fr_fr" value="fr_fr"/><label for="lang_fr_fr">French</label>
 		</fieldset></form>
-	  </div>
-	  <div id="setClass">
-	  	<a data-role="button">barcode</a>
 	  </div>
   </div>
 </div>
@@ -269,6 +285,7 @@ $(function() {
 
 	classPage();
 	classContentPage();
+	classApplyPage();
 
 	settingPage();
 

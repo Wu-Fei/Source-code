@@ -91,7 +91,7 @@ var classContentPage = function() {
 			'<table>',
 			'<tr><td class="lang">Created By:</td><td>', data.owner, '</td></tr>',
 			'<tr><td class="lang">Created At:</td><td>', toolbox.dtStr(data.timestamp), '</td></tr>',
-			'<tr><td class="lang">Members:</td><td>', data.owner, '</td></tr>',
+			'<tr><td class="lang">Members:</td><td>', data.members, '</td></tr>',
 			'</table>',
 			data.description
 		].join(''));
@@ -127,5 +127,80 @@ var classContentPage = function() {
 				});
 		}
 		evt.preventDefault();
+	});
+};
+
+var classApplyPage = function() {
+	var page = $('#classApplyPage');
+	//var header = page.children('div[data-role=header]');
+	//var content = page.children('div[data-role=content]');
+
+	var txtDetail = $('#classApplyTxtDetail');
+
+	var txtUuid = $('#classApplyTxtUuid').on('input', function() {
+		btnSubmit.hide();
+
+		var uuid = txtUuid.val();
+		if (uuid.length < classDataStore.UUID_LENGTH) {
+			txtDetail.html('');
+			return;
+		}
+
+		if (!classDataStore.validateClassUuid(uuid)) {
+			localize(txtDetail, 'Sorry, you entered an invalid class registration code.');
+			return;
+		}
+
+		displayClassDetail(uuid);
+	}).attr('maxlength', classDataStore.UUID_LENGTH);
+
+	$('#classApplyBtnQrcode').on('click', function() {
+		btnSubmit.hide();
+		txtUuid.val('');
+
+		captureQRCode(function(res) {
+			if (res.text) {
+				if (!classDataStore.validateClassUuid(res.text)) {
+					localize(txtDetail, 'Sorry, you captured an invalid class registration QR code.');
+				} else {
+					txtUuid.val(res.text);
+					displayClassDetail(res.text);
+				}
+			}
+		}, function(err) {
+			localize(txtDetail, 'Failed to capture QR code, please try again.');
+		});
+	});
+
+	var displayClassDetail = function(uuid) {
+		classDataStore.getClassContent(uuid, function(data) {
+			txtDetail.html([
+				'<h2>', data.name, '</h2>',
+				'<table>',
+				'<tr><td class="lang">Created By:</td><td>', data.owner, '</td></tr>',
+				'<tr><td class="lang">Created At:</td><td>', toolbox.dtStr(data.timestamp), '</td></tr>',
+				'<tr><td class="lang">Members:</td><td>', data.members, '</td></tr>',
+				'</table>',
+				data.description
+			].join(''));
+			localizeAll(txtDetail);
+
+			btnSubmit.show();
+		}, function(err) {
+			localize(txtDetail, 'The class registration code is invalid.');
+		});
+	};
+
+	var btnSubmit = $('#classApplyBtnSubmit').on('click', function() {
+		btnSubmit.hide();
+
+		classDataStore.applyClass(txtUuid.val(), function() {
+			alert(getLocale('You have successfully applied a new class.'));
+			txtUuid.val('');
+			txtDetail.html('');
+		}, function(err) {
+			alert(getLocale('Sorry, applying class failed.'))
+			btnSubmit.show()
+		});
 	});
 };
