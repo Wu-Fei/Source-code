@@ -4,16 +4,11 @@ var toolbox = {
 toolbox.dtStr = function(dt, today) {
 	if (!today) {
 		return [
-			dt.getFullYear(),
-			'/',
-			dt.getMonth() + 1,
-			'/',
-			dt.getDate(),
-			' ',
-			dt.getHours(),
-			':',
-			dt.getMinutes(),
-			':',
+			dt.getFullYear(), '/',
+			dt.getMonth() + 1, '/',
+			dt.getDate(), ' ',
+			dt.getHours(), ':',
+			dt.getMinutes(), ':',
 			dt.getSeconds()
 		].join('');
 	}
@@ -21,21 +16,10 @@ toolbox.dtStr = function(dt, today) {
 	var thisday = new Date(dt.valueOf());
 	thisday.setHours(0, 0, 0, 0);
 	if (thisday.valueOf() == today) {
-		return dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+		return [dt.getHours(), ':', dt.getMinutes(), ':', dt.getSeconds()].join('');
 	} else {
-		return dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
+		return [dt.getFullYear(), '/', dt.getMonth() + 1, '/', dt.getDate()].join('');
 	}
-};
-
-toolbox.dtFullStr = function(dt) {
-	return [
-		dt.getFullYear(), '/',
-		dt.getMonth() + 1, '/',
-		dt.getDate(), ' ',
-		dt.getHours(), ':',
-		dt.getMinutes(), ':',
-		dt.getSeconds()
-	].join('');
 };
 
 toolbox.pages = [
@@ -97,4 +81,3 @@ toolbox.initPage = function(pagename) {
 
 	return page;
 };
-
