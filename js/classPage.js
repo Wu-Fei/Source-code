@@ -98,46 +98,26 @@ var classContentPage = function() {
 		localizeAll(txtDetail);
 	};
 
+	toolbox.setPrevNext(page, content, null, displayContent,
+		function() { return _storage.classDataIndex > 0; },
+		function() { return _storage.classDataIndex + 1 < _storage.classData.length; },
+		function() { --_storage.classDataIndex; },
+		function() { return ++_storage.classDataIndex; }
+	);
+
 	page.on('pagebeforeshow', function() {
 		localize(txtTitle, _storage.activeTab.data('lang'));
-		displayContent();
-	});
-
-	page.on('swipeleft', function(evt) {
-		if (_storage.classDataIndex + 1 < _storage.classData.length) {
-			++_storage.classDataIndex;
-			content.stop().css('left', 0)
-				.animate({left: '-100%'}, function() {
-					displayContent();
-					content.css('left', '100%')
-						.animate({left: 0});
-				});
-		}
-		evt.preventDefault();
-	});
-
-	page.on('swiperight', function(evt) {
-		if (_storage.classDataIndex  > 0) {
-			--_storage.classDataIndex;
-			content.stop().css('left', 0)
-				.animate({left: '100%'}, function() {
-					displayContent();
-					content.css('left', '-100%')
-						.animate({left: 0});
-				});
-		}
-		evt.preventDefault();
 	});
 };
 
-var classApplyPage = function() {
-	var page = $('#classApplyPage');
+var classJoinPage = function() {
+	var page = $('#classJoinPage');
 	//var header = page.children('div[data-role=header]');
 	//var content = page.children('div[data-role=content]');
 
-	var txtDetail = $('#classApplyTxtDetail');
+	var txtDetail = $('#classJoinTxtDetail');
 
-	var txtUuid = $('#classApplyTxtUuid').on('input', function() {
+	var txtUuid = $('#classJoinTxtUuid').on('input', function() {
 		btnSubmit.hide();
 
 		var uuid = txtUuid.val();
@@ -154,7 +134,7 @@ var classApplyPage = function() {
 		displayClassDetail(uuid);
 	}).attr('maxlength', classDataStore.UUID_LENGTH);
 
-	$('#classApplyBtnQrcode').on('click', function() {
+	$('#classJoinBtnQrcode').on('click', function() {
 		btnSubmit.hide();
 		txtUuid.val('');
 
@@ -191,15 +171,15 @@ var classApplyPage = function() {
 		});
 	};
 
-	var btnSubmit = $('#classApplyBtnSubmit').on('click', function() {
+	var btnSubmit = $('#classJoinBtnSubmit').on('click', function() {
 		btnSubmit.hide();
 
-		classDataStore.applyClass(txtUuid.val(), function() {
-			alert(getLocale('You have successfully applied a new class.'));
+		classDataStore.joinClass(txtUuid.val(), function() {
+			alert(getLocale('You have successfully joined a new class.'));
 			txtUuid.val('');
 			txtDetail.html('');
 		}, function(err) {
-			alert(getLocale('Sorry, applying class failed.'))
+			alert(getLocale('Sorry, failed to join the class.'))
 			btnSubmit.show()
 		});
 	});

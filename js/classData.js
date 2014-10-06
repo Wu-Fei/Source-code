@@ -44,10 +44,10 @@ classDataStore.getClassContent = function(uuid, okFunc, errFunc) {
 	okFunc(data);
 };
 
-classDataStore.applyClass = function(uuid, okFunc, errFunc) {
+classDataStore.joinClass = function(uuid, okFunc, errFunc) {
 	var data = classDataStore.getClassContent(uuid, function(data) {
 		classPendingDataList.push(data);
-		classDataStore.uipage.trigger('listchanged', [false]);
+		classDataStore.uipage.trigger('listchanged', [true]);
 		okFunc();
 	}, function (err) {
 		errFunc(err);

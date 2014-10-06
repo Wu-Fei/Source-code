@@ -71,6 +71,7 @@ var testContentPage = function() {
 	var page = $('#testContentPage');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
+	var footer = page.children('div[data-role=footer]');
 
 	var txtTitle = header.children('h1');
 
@@ -81,8 +82,10 @@ var testContentPage = function() {
 		data.setRead();
 	};
 
-	page.on('pagebeforeshow', function() {
-		displayContent();
-	});
-
+	toolbox.setPrevNext(page, content, footer, displayContent,
+		function() { return false; },
+		function() { return false; },
+		function() {},
+		function() {}
+	);
 };

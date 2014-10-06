@@ -88,3 +88,87 @@ toolbox.initPage = function(pagename) {
 
 	return page;
 };
+
+toolbox.setPrevNext = function(page, content, footer, displayContent, canGoPrev, canGoNext, goPrev, goNext) {
+	if (!footer) {
+		footer = page.append('<div data-role="footer" data-position="fixed" class="footer-transparent"></div>').children(':last');
+	}
+	var btnPrev = footer.prepend('<a data-icon="arrow-l" class="lang">Prev</a>').children(':first');
+	var btnNext = footer.append('<a data-icon="arrow-r" data-iconpos="right" class="ui-btn-right lang">Next</a>').children(':last');
+
+	var myGoPrev = function() {
+		var b = canGoNext();
+		goPrev();
+		if (!canGoPrev()) {
+			btnPrev.addClass('ui-state-disabled');
+		}
+		if (!b) {
+			btnNext.removeClass('ui-state-disabled');
+		}
+
+		content.stop().css('left', 0)
+			.animate({left: '100%'}, function() {
+				displayContent();
+				content.css('left', '-100%')
+					.animate({left: 0});
+			});
+	};
+	var myGoNext = function() {
+		var b = canGoPrev();
+		goNext();
+		if (!canGoNext()) {
+			btnNext.addClass('ui-state-disabled');
+		}
+		if (!b) {
+			btnPrev.removeClass('ui-state-disabled');
+		}
+
+		content.stop().css('left', 0)
+			.animate({left: '-100%'}, function() {
+				displayContent();
+				content.css('left', '100%')
+					.animate({left: 0});
+		});
+	};
+
+	btnPrev.on('click', myGoPrev);
+	btnNext.on('click', myGoNext);
+
+	page.on('swiperight', function(evt) {
+		if (canGoPrev()) {
+			myGoPrev();
+		} else {
+			content.stop().css('left', 0)
+				.animate({left: '20%'}, function() {
+					content.animate({left: 0});
+				});
+		}
+		evt.preventDefault();
+	});
+	page.on('swipeleft', function(evt) {
+		if (canGoNext()) {
+			myGoNext();
+		} else {
+			content.stop().css('left', 0)
+				.animate({left: '-20%'}, function() {
+					content.animate({left: 0});
+				});
+		}
+		evt.preventDefault();
+	});
+
+	page.on('pagebeforeshow', function() {
+		if (canGoPrev()) {
+			btnPrev.removeClass('ui-state-disabled');
+		} else {
+			btnPrev.addClass('ui-state-disabled');
+		}
+		if (canGoNext()) {
+			btnNext.removeClass('ui-state-disabled');
+		} else {
+			btnNext.addClass('ui-state-disabled');
+		}
+
+		displayContent();
+	});
+};

@@ -107,34 +107,15 @@ var inboxContentPage = function() {
 			});
 	};
 
+	toolbox.setPrevNext(page, content, null, displayContent,
+		function() { return _storage.inboxDataIndex > 0; },
+		function() { return _storage.inboxDataIndex + 1 < _storage.inboxData.length; },
+		function() { --_storage.inboxDataIndex; },
+		function() { return ++_storage.inboxDataIndex; }
+	);
+
 	page.on('pagebeforeshow', function() {
 		localize(txtTitle, _storage.activeTab.data('lang'));
-		displayContent();
 	});
 
-	page.on('swipeleft', function(evt) {
-		if (_storage.inboxDataIndex + 1 < _storage.inboxData.length) {
-			++_storage.inboxDataIndex;
-			content.stop().css('left', 0)
-				.animate({left: '-100%'}, function() {
-					displayContent();
-					content.css('left', '100%')
-						.animate({left: 0});
-				});
-		}
-		evt.preventDefault();
-	});
-
-	page.on('swiperight', function(evt) {
-		if (_storage.inboxDataIndex  > 0) {
-			--_storage.inboxDataIndex;
-			content.stop().css('left', 0)
-				.animate({left: '100%'}, function() {
-					displayContent();
-					content.css('left', '-100%')
-						.animate({left: 0});
-				});
-		}
-		evt.preventDefault();
-	});
 };
