@@ -39,8 +39,9 @@ var qaPage = function() {
 					var data = answerList[i];
 					list[i] = [
 						'<li>',
-						'<a href="#qaContentPage" data-transition="slide" onclick="_storage.qaDataIndex=', i, '">',
-						data.question,
+						'<a href="#qaContentPage" data-transition="slide" class="list_read"',
+						' onclick="_storage.qaDataIndex=', i, '">',
+						'<div>', data.question, '</div>',
 						'</a>',
 						'</li>'
 					].join('');

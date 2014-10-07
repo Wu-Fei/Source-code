@@ -9,12 +9,10 @@ var classPage = function() {
 
 	var txtTitle = header.children('h1').append('<span></span>').children('span');
 
-	var menu = $('#classMenu').on('popupcreate', function() {
-		menu.parent().css('z-index', 9999);
-	});
+	var menu = $('#classMenu');
 	var menuDropdown = header.append('<span class="ui-btn-icon-notext ui-icon-carat-d title-dropdown-icon"></span>')
 		.children(':last').on('click', function() {
-			menu.popup('open', {positionTo: $(this)});
+			menu.popup('open', {x: '50%', y: header.outerHeight() + menu.outerHeight() / 2 + 5});
 		});
 
 	var mainList = $('#classList').listview({
@@ -79,8 +77,8 @@ var classPage = function() {
 
 			list[i] = [
 				'<li>',
-				'<a href="#classContentPage" data-transition="slide" class="',
-				'" onclick="_storage.classDataIndex=', i, '">',
+				'<a href="#classContentPage" data-transition="slide" class="list_read"',
+				' onclick="_storage.classDataIndex=', i, '">',
 				'<div>', data.name, ' - ', data.owner, '</div>',
 				'</a>',
 				'</li>'
