@@ -33,7 +33,26 @@ toolbox.initPage = function(pagename) {
 	var page = $('#' + pagename + 'Page');
 	var header = page.children('div[data-role=header]');
 	var content = page.children('div[data-role=content]');
-	var footer = page.children('div[data-role=footer]');
+
+	var tabItems = ['<div data-role="footer" data-position="fixed">', '<div data-role="navbar">', '<ul>'];
+	for (var i = 0; i < toolbox.pages.length; ++i) {
+		var p = toolbox.pages[i];
+		if (p[0] == pagename) {
+			tabItems.push(
+				'<li>',
+				'<a class="ui-icon', p[2], ' ui-state-persist lang">', p[1], '</a>',
+				'</li>'
+			);
+		} else {
+			tabItems.push(
+				'<li>',
+				'<a data-transition="none" goto="#', p[0], 'Page" class="ui-icon', p[2], ' lang">', p[1], '</a>',
+				'</li>'
+			);
+		}
+	}
+	tabItems.push('</ul>', '</div>', '</div>');
+	var footer = page.append(tabItems.join('')).children('div[data-role=footer]');
 
 	page.on('pageshow', function() {
 		var height = $.mobile.getScreenHeight()
@@ -43,6 +62,15 @@ toolbox.initPage = function(pagename) {
 		content.height(height);
 	});
 
+	footer.find('a[goto]').each(function() {
+		var a = $(this);
+		a.on('click', function() {
+			location.replace(a.attr('goto'));
+			//$.mobile.changePage(a.attr('goto'), {transition: 'none', changeHash: false});
+		});
+	});
+
+	/*
 	var menuItems = ['<div style="display:none"><ul>'];
 	for (var i = 0; i < toolbox.pages.length; ++i) {
 		var p = toolbox.pages[i];
@@ -85,6 +113,7 @@ toolbox.initPage = function(pagename) {
 		menu.hide();
 		overlay.hide();
 	});
+	*/
 
 	return page;
 };

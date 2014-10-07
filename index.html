@@ -20,7 +20,13 @@
   	display: none
   }
 
-  .ui-header .title-align-left {
+  .title-dropdown-icon {
+	  position: absolute;
+	  top: 0.5em;
+	  margin-left: 0.5em;
+  }
+
+  .ui-header .ui-title-align-left {
 	margin-left: 5.5em;
 	text-align: left
   }
@@ -43,7 +49,7 @@
   </style>
   <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.mobile-1.4.4.min.js"></script>
-  <script src="cordova.js"></script>
+  <!--<script src="cordova.js"></script>-->
 
   <script src="js/toolbox.js"></script>
   <script src="js/locale.js"></script>
@@ -64,6 +70,8 @@
 </head>
 <body>
 
+<!-- loginPage start -->
+
 <div data-role="page" id="loginPage">
   <div data-role="header" data-position="fixed">
     <h1>Parrot (Student)</h1>
@@ -81,7 +89,7 @@
 
 <div data-role="page" id="inboxPage">
   <div data-role="header" data-position="fixed">
-    <h1 class="lang">Inbox</h1>
+  	<h1></h1>
     <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
   </div>
 
@@ -89,14 +97,11 @@
   	<div class="tab_content"><ul id="inboxList"></ul></div>
   </div>
 
-  <div data-role="footer" data-position="fixed">
-    <div data-role="navbar">
-      <ul>
-        <li><a id="inboxLinkPublic" class="lang">Notification</a></li>
-        <li><a id="inboxLinkPrivate" class="lang">Message</a></li>
-        <li><a id="inboxLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
-      </ul>
-    </div>
+  <div id="inboxMenu" data-role="popup" data-history="false">
+	  <ul data-role="listview" data-icon="false" style="min-width:8em">
+		<li><a id="inboxMenuNotification" class="lang">Notification</a></li>
+		<li><a id="inboxMenuMessage" class="lang">Message</a></li>
+	  </ul>
   </div>
 </div>
 
@@ -109,16 +114,13 @@
 
   <div data-role="content" style="position:relative">
   </div>
-
-  <div data-role="footer" data-position="fixed" class="footer-transparent">
-  </div>
 </div>
 
 <!-- testPage start -->
 
 <div data-role="page" id="testPage">
   <div data-role="header" data-position="fixed">
-    <h1 class="lang">Test</h1>
+    <h1></h1>
     <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
   </div>
 
@@ -126,14 +128,11 @@
   	<div class="tab_content"><ul id="testList"></ul></div>
   </div>
 
-  <div data-role="footer" data-position="fixed">
-    <div data-role="navbar">
-      <ul>
-        <li><a id="testLinkAssignment" class="lang">Assignment</a></li>
-        <li><a id="testLinkExam" class="lang">Exam</a></li>
-        <li><a id="testLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
-      </ul>
-    </div>
+  <div id="testMenu" data-role="popup" data-history="false">
+	  <ul data-role="listview" data-icon="false" style="min-width:8em">
+		<li><a id="testMenuAssignment" class="lang">Assignment</a></li>
+		<li><a id="testMenuExam" class="lang">Exam</a></li>
+	  </ul>
   </div>
 </div>
 
@@ -179,15 +178,6 @@
   		<div style="margin-top:1em;padding:1em;overflow-y:auto;overflow-x:hidden"><ul id="qaList"></ul></div>
   	</div>
   </div>
-
-  <div data-role="footer" data-position="fixed">
-    <div data-role="navbar">
-      <ul>
-        <li><a id="qaLink" class="lang">Q &amp; A</a></li>
-        <li><a id="qaLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
-      </ul>
-    </div>
-  </div>
 </div>
 
 <div data-role="page" id="qaContentPage">
@@ -197,9 +187,6 @@
   </div>
 
   <div data-role="content" style="position:relative">
-  </div>
-
-  <div data-role="footer" data-position="fixed" class="footer-transparent">
   </div>
 </div>
 
@@ -222,7 +209,7 @@
 <div data-role="page" id="classPage">
   <div data-role="header" data-position="fixed">
 	<a data-transition="pop" href="#classJoinPage" class="lang">Join Class</a>
-    <h1 class="lang">Class</h1>
+    <h1></h1>
     <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
   </div>
 
@@ -230,14 +217,11 @@
   	<div class="tab_content"><ul id="classList"></ul></div>
   </div>
 
-  <div data-role="footer" data-position="fixed">
-    <div data-role="navbar">
-      <ul>
-        <li><a id="classLinkActive" class="lang">Active</a></li>
-        <li><a id="classLinkPending" class="lang">Pending</a></li>
-        <li><a id="classLinkMore" data-icon="grid" class="ui-btn-icon-top" style="padding-top:2em"></a></li>
-      </ul>
-    </div>
+  <div id="classMenu" data-role="popup" data-history="false">
+	<ul data-role="listview" data-icon="false" style="min-width:8em">
+		<li><a id="classMenuActive" class="lang">Active</a></li>
+		<li><a id="classMenuPending" class="lang">Pending</a></li>
+	</ul>
   </div>
 </div>
 
@@ -297,6 +281,8 @@
 var _storage = {};
 
 $(function() {
+	$.mobile.defaultPageTransition = 'none';
+
 	if (window.devicePixelRatio >= 2) {
 		$.event.special.swipe.horizontalDistanceThreshold = 15;
 	}

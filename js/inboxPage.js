@@ -1,6 +1,19 @@
 var inboxPage = function() {
 	var page = toolbox.initPage('inbox');
+	var header = page.children('div[data-role=header]');
 	inboxDataStore.setUIPage(page);
+
+	if (!localStorage.inboxActiveTab) {
+		localStorage.inboxActiveTab = 'Notification';
+	}
+
+	var txtTitle = header.children('h1').append('<span></span>').children('span');
+
+	var menu = $('#inboxMenu');
+	var menuDropdown = header.append('<span class="ui-btn-icon-notext ui-icon-carat-d title-dropdown-icon"></span>')
+		.children(':last').on('click', function() {
+			menu.popup('open', {positionTo: $(this)});
+		});
 
 	var mainList = $('#inboxList').listview({
 		filter: true,
@@ -8,31 +21,49 @@ var inboxPage = function() {
 	});
 	var mainTab = mainList.parent();
 
-	var linkPublic = $('#inboxLinkPublic').on('click', function() {
-		if (activeTab != linkPublic) {
+	var menuNotification = $('#inboxMenuNotification').on('click', function() {
+		if (localStorage.inboxActiveTab != 'Notification') {
+			menu.popup('close');
 			mainTab.hide();
-			prepareInboxList(inboxDataStore.getPublicDataList());
+			prepareInboxList(inboxDataStore.getNotificationDataList());
 			mainTab.slideDown();
-			_storage.activeTab = activeTab = linkPublic;
+			localStorage.inboxActiveTab = 'Notification';
+			setTitle();
+			menuNotification.addClass('ui-btn-active');
+			menuMessage.removeClass('ui-btn-active');
 		}
 	});
 
-	var linkPrivate = $('#inboxLinkPrivate').on('click', function() {
-		if (activeTab != linkPrivate) {
+	var menuMessage = $('#inboxMenuMessage').on('click', function() {
+		if (localStorage.inboxActiveTab != 'Message') {
+			menu.popup('close');
 			mainTab.hide();
-			prepareInboxList(inboxDataStore.getPrivateDataList());
+			prepareInboxList(inboxDataStore.getMessageDataList());
 			mainTab.slideDown();
-			_storage.activeTab = activeTab = linkPrivate;
+			localStorage.inboxActiveTab = 'Message';
+			setTitle();
+			menuMessage.addClass('ui-btn-active');
+			menuNotification.removeClass('ui-btn-active');
 		}
 	});
 
-	var activeTab = linkPublic;
+	if (localStorage.inboxActiveTab == 'Notification') {
+		menuNotification.addClass('ui-btn ui-btn-active');
+	} else {
+		menuMessage.addClass('ui-btn ui-btn-active');
+	}
+
+	var setTitle = function() {
+		localize(txtTitle, localStorage.inboxActiveTab);
+		menuDropdown.css('left', txtTitle.position().left + txtTitle.outerWidth(true));
+	};
+
 	page.on('pageshow', function() {
-		_storage.activeTab = activeTab.addClass('ui-btn-active');
-		if (_storage.activePage != 'inbox') {
+		setTitle();
+		if (localStorage.activePage != 'inbox') {
 			mainTab.hide();
 			mainTab.slideDown();
-			_storage.activePage = 'inbox';
+			localStorage.activePage = 'inbox';
 		}
 	});
 
@@ -72,14 +103,14 @@ var inboxPage = function() {
 		mainList.html(list.join('')).listview('refresh');
 	};
 
-	page.on('listchanged', function(evt, isPrivate) {
-		if (isPrivate == (activeTab == linkPrivate)) {
-			prepareInboxList(isPrivate
-				? inboxDataStore.getPrivateDataList()
-				: inboxDataStore.getPublicDataList()
+	page.on('listchanged', function(evt, isNotification) {
+		if (isNotification == (localStorage.inboxActiveTab == 'Notification')) {
+			prepareInboxList(isNotification
+				? inboxDataStore.getNotificationDataList()
+				: inboxDataStore.getMessageDataList()
 			);
 		}
-	}).trigger('listchanged', [false]);
+	}).trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
 };
 
 var inboxContentPage = function() {
@@ -115,7 +146,7 @@ var inboxContentPage = function() {
 	);
 
 	page.on('pagebeforeshow', function() {
-		localize(txtTitle, _storage.activeTab.data('lang'));
+		localize(txtTitle, localStorage.inboxActiveTab);
 	});
 
 };

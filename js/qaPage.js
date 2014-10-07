@@ -9,15 +9,13 @@ var qaPage = function() {
 
 	var link = $('#qaLink');
 
-	var activeTab = link;
 	page.on('pageshow', function() {
-		activeTab.addClass('ui-btn-active');
-		if (_storage.activePage != 'qa') {
+		if (localStorage.activePage != 'qa') {
 			mainTab.hide();
 			mainTab.slideDown(function() {
 				mainListDiv.height(mainTab.height() - mainListDiv.position().top - (mainListDiv.outerHeight(true) - mainListDiv.height()));
 			});
-			_storage.activePage = 'qa';
+			localStorage.activePage = 'qa';
 		}
 	});
 

@@ -1,6 +1,19 @@
 var classPage = function() {
 	var page = toolbox.initPage('class');
+	var header = page.children('div[data-role=header]');
 	classDataStore.setUIPage(page);
+
+	if (!localStorage.classActiveTab) {
+		localStorage.classActiveTab = 'Active';
+	}
+
+	var txtTitle = header.children('h1').append('<span></span>').children('span');
+
+	var menu = $('#classMenu');
+	var menuDropdown = header.append('<span class="ui-btn-icon-notext ui-icon-carat-d title-dropdown-icon"></span>')
+		.children(':last').on('click', function() {
+			menu.popup('open', {positionTo: $(this)});
+		});
 
 	var mainList = $('#classList').listview({
 		filter: true,
@@ -8,31 +21,49 @@ var classPage = function() {
 	});
 	var mainTab = mainList.parent();
 
-	var linkActive = $('#classLinkActive').on('click', function() {
-		if (activeTab != linkActive) {
+	var menuActive = $('#classMenuActive').on('click', function() {
+		if (localStorage.classActiveTab != 'Active') {
+			menu.popup('close');
 			mainTab.hide();
 			prepareClassList(classDataStore.getActiveDataList());
 			mainTab.slideDown();
-			_storage.activeTab = activeTab = linkActive;
+			localStorage.classActiveTab = 'Active';
+			setTitle();
+			menuActive.addClass('ui-btn-active');
+			menuPending.removeClass('ui-btn-active');
 		}
 	});
 
-	var linkPending = $('#classLinkPending').on('click', function() {
-		if (activeTab != linkPending) {
+	var menuPending = $('#classMenuPending').on('click', function() {
+		if (localStorage.classActiveTab != 'Pending') {
+			menu.popup('close');
 			mainTab.hide();
 			prepareClassList(classDataStore.getPendingDataList());
 			mainTab.slideDown();
-			_storage.activeTab = activeTab = linkPending;
+			localStorage.classActiveTab = 'Pending';
+			setTitle();
+			menuPending.addClass('ui-btn-active');
+			menuActive.removeClass('ui-btn-active');
 		}
 	});
 
-	var activeTab = linkActive;
+	if (localStorage.classActiveTab == 'Active') {
+		menuActive.addClass('ui-btn ui-btn-active');
+	} else {
+		menuPending.addClass('ui-btn ui-btn-active');
+	}
+
+	var setTitle = function() {
+		localize(txtTitle, localStorage.classActiveTab);
+		menuDropdown.css('left', txtTitle.position().left + txtTitle.outerWidth(true));
+	};
+
 	page.on('pageshow', function() {
-		_storage.activeTab = activeTab.addClass('ui-btn-active');
-		if (_storage.activePage != 'class') {
+		setTitle();
+		if (localStorage.activePage != 'class') {
 			mainTab.hide();
 			mainTab.slideDown();
-			_storage.activePage = 'class';
+			localStorage.activePage = 'class';
 		}
 	});
 
@@ -57,13 +88,13 @@ var classPage = function() {
 	};
 
 	page.on('listchanged', function(evt, isPending) {
-		if (isPending == (activeTab == linkPending)) {
+		if (isPending == (localStorage.classActiveTab == 'Pending')) {
 			prepareClassList(isPending
 				? classDataStore.getPendingDataList()
 				: classDataStore.getActiveDataList()
 			);
 		}
-	}).trigger('listchanged', [false]);
+	}).trigger('listchanged', [localStorage.classActiveTab == 'Pending']);
 };
 
 var classContentPage = function() {
@@ -106,7 +137,7 @@ var classContentPage = function() {
 	);
 
 	page.on('pagebeforeshow', function() {
-		localize(txtTitle, _storage.activeTab.data('lang'));
+		localize(txtTitle, localStorage.classActiveTab);
 	});
 };
 

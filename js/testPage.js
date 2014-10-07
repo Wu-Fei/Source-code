@@ -1,6 +1,19 @@
 var testPage = function() {
 	var page = toolbox.initPage('test');
+	var header = page.children('div[data-role=header]');
 	testDataStore.setUIPage(page);
+
+	if (!localStorage.testActiveTab) {
+		localStorage.testActiveTab = 'Assignment';
+	}
+
+	var txtTitle = header.children('h1').append('<span></span>').children('span');
+
+	var menu = $('#testMenu');
+	var menuDropdown = header.append('<span class="ui-btn-icon-notext ui-icon-carat-d title-dropdown-icon"></span>')
+		.children(':last').on('click', function() {
+			menu.popup('open', {positionTo: $(this)});
+		});
 
 	var mainList = $('#testList').listview({
 		filter: true,
@@ -8,31 +21,49 @@ var testPage = function() {
 	});
 	var mainTab = mainList.parent();
 
-	var linkAssignment = $('#testLinkAssignment').on('click', function() {
-		if (activeTab != linkAssignment) {
+	var menuAssignment = $('#testMenuAssignment').on('click', function() {
+		if (localStorage.testActiveTab != 'Assignment') {
+			menu.popup('close');
 			mainTab.hide();
 			prepareTestList(testDataStore.getAssignmentDataList());
 			mainTab.slideDown();
-			activeTab = linkAssignment;
+			localStorage.testActiveTab = 'Assignment';
+			setTitle();
+			menuAssignment.addClass('ui-btn-active');
+			menuExam.removeClass('ui-btn-active');
 		}
 	});
 
-	var linkExam = $('#testLinkExam').on('click', function() {
-		if (activeTab != linkExam) {
+	var menuExam = $('#testMenuExam').on('click', function() {
+		if (localStorage.testActiveTab != 'Exam') {
+			menu.popup('close');
 			mainTab.hide();
 			prepareTestList(testDataStore.getExamDataList());
 			mainTab.slideDown();
-			activeTab = linkExam;
+			localStorage.testActiveTab = 'Exam';
+			setTitle();
+			menuExam.addClass('ui-btn-active');
+			menuAssignment.removeClass('ui-btn-active');
 		}
 	});
 
-	var activeTab = linkAssignment;
+	if (localStorage.testActiveTab == 'Assignment') {
+		menuAssignment.addClass('ui-btn ui-btn-active');
+	} else {
+		menuExam.addClass('ui-btn ui-btn-active');
+	}
+
+	var setTitle = function() {
+		localize(txtTitle, localStorage.testActiveTab);
+		menuDropdown.css('left', txtTitle.position().left + txtTitle.outerWidth(true));
+	};
+
 	page.on('pageshow', function() {
-		activeTab.addClass('ui-btn-active');
-		if (_storage.activePage != 'test') {
+		setTitle();
+		if (localStorage.activePage != 'test') {
 			mainTab.hide();
 			mainTab.slideDown();
-			_storage.activePage = 'test';
+			localStorage.activePage = 'test';
 		}
 	});
 
@@ -58,13 +89,13 @@ var testPage = function() {
 	};
 
 	page.on('listchanged', function(evt, isExam) {
-		if (isExam == (activeTab == linkExam)) {
+		if (isExam == (localStorage.testActiveTab == 'Exam')) {
 			prepareTestList(isExam
 				? testDataStore.getExamDataList()
 				: testDataStore.getAssignmentDataList()
 			);
 		}
-	}).trigger('listchanged', [false]);
+	}).trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
 };
 
 var testContentPage = function() {

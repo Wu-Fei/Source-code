@@ -8,15 +8,15 @@ var InboxData = function(data){
 	this.content = data[3];
 	this.isMarked = data[4];
 	this.isRead = data[5];
-	this.isPrivate = data[6];
+	this.isNotification = data[6];
 
 	this.setRead = function() {
 		this.isRead = true;
-		inboxDataStore.uipage.trigger('listchanged', [this.isPrivate]);
+		inboxDataStore.uipage.trigger('listchanged', [this.isNotification]);
 	};
 	this.setMarked = function(isMarked) {
 		this.isMarked = isMarked;
-		inboxDataStore.uipage.trigger('listchanged', [this.isPrivate]);
+		inboxDataStore.uipage.trigger('listchanged', [this.isNotification]);
 	};
 };
 
@@ -24,19 +24,19 @@ inboxDataStore.setUIPage = function(page) {
 	inboxDataStore.uipage = page;
 };
 
-var inboxPublicDataList = [
-	new InboxData([1, 1410985475, 'You got an assignment from class B1', 'Here is the assignment', false, false, false])
+var inboxNotificationDataList = [
+	new InboxData([1, 1410985475, 'You got an assignment from class B1', 'Here is the assignment', false, false, true])
 ];
 
-var inboxPrivateDataList = [
-	new InboxData([2, 1410905475, 'Welcome to class B1', 'Welcome', false, true, true]),
-	new InboxData([3, 1410805475, 'You requested to join class B1, pending approval', 'Waiting...', true, true, true])
+var inboxMessageDataList = [
+	new InboxData([2, 1410905475, 'Welcome to class B1', 'Welcome', false, true, false]),
+	new InboxData([3, 1410805475, 'You requested to join class B1, pending approval', 'Waiting...', true, true, false])
 ];
 
-inboxDataStore.getPublicDataList = function() {
-	return inboxPublicDataList;
+inboxDataStore.getNotificationDataList = function() {
+	return inboxNotificationDataList;
 };
 
-inboxDataStore.getPrivateDataList = function() {
-	return inboxPrivateDataList;
+inboxDataStore.getMessageDataList = function() {
+	return inboxMessageDataList;
 };
