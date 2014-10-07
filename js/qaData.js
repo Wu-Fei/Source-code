@@ -31,6 +31,6 @@ var searchAnswers = function(q) {
 	return result;
 }
 
-var askQuestion = function(question, okFunc, errFunc) {
+var askQuestion = function(clazz, question, okFunc, errFunc) {
 	okFunc();
 }

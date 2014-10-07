@@ -79,9 +79,19 @@ var qaAskqPage = function() {
 	var content = page.children('div[data-role=content]');
 
 	var form = content.children('form');
+	var selClass = form.children('select');
 	var txtQuestion = form.children('textarea');
 
 	var displayAskq = function() {
+		var classData = classDataStore.getActiveDataList();
+		var n = classData.length;
+		var sel = [];
+		for (var i = 0; i < n; ++i) {
+			var data = classData[i];
+			sel.push('<option class="lang" value="', data.pk, '">', data.name, '<class>');
+		}
+		selClass.html(sel.join('')).val([]);
+		localize(selClass.prev(), 'Class ...');
 		txtQuestion.val('');
 	};
 
@@ -90,13 +100,18 @@ var qaAskqPage = function() {
 	});
 
 	$('#qaAskqBtnSubmit').on('click', function() {
+		var clazz = selClass.val();
+		if (!clazz) {
+			alert(getLocale('Please choose a class.'));
+			return false;
+		}
 		var question = $.trim(txtQuestion.val());
 		if (question == '') {
 			alert(getLocale('Please enter your question.'));
 			return false;
 		}
 
-		askQuestion(question, function() {
+		askQuestion(clazz, question, function() {
 			$.mobile.changePage('#qaPage', {transition: 'pop', reverse: true});
 		}, function() {
 			alert(getLocale('Failed to send your question. Please check your Internet connection and try again.'));

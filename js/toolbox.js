@@ -70,51 +70,6 @@ toolbox.initPage = function(pagename) {
 		});
 	});
 
-	/*
-	var menuItems = ['<div style="display:none"><ul>'];
-	for (var i = 0; i < toolbox.pages.length; ++i) {
-		var p = toolbox.pages[i];
-		if (p[0] == pagename) {
-			menuItems.push([
-				'<li data-icon="', p[2], '">',
-				'<a class="lang" style="background:#c0c0c0">', p[1], '</a>',
-				'</li>'
-			].join(''));
-		} else {
-			menuItems.push([
-				'<li data-icon="', p[2], '">',
-				'<a href="#', p[0], 'Page" class="lang">', p[1], '</a>',
-				'</li>'
-			].join(''));
-		}
-	}
-	menuItems.push('</ul></div>');
-	var menu = page.append(menuItems.join('')).children(':last')
-		.addClass("ui-popup-container ui-overlay-shadow ui-corner-all")
-		.css({width: '9em', right: '0.5em', bottom:'2.5em'});
-	menu.children().listview({icon: false})
-		.find('a[href]').each(function() {
-			var a = $(this);
-			a.on('click', function() {
-				location.replace(a.attr('href'));
-				return false;
-			});
-		});
-	var overlay = page.append('<div class="ui-popup-screen"/>').children(':last')
-		.hide().on('click', function() {
-			menu.hide();
-			overlay.hide();
-	});
-	$('#' + pagename + 'LinkMore').on('click', function() {
-		overlay.show();
-		menu.show();
-	});
-	page.on('pagehide', function() {
-		menu.hide();
-		overlay.hide();
-	});
-	*/
-
 	return page;
 };
 
