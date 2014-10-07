@@ -40,13 +40,13 @@ toolbox.initPage = function(pagename) {
 		if (p[0] == pagename) {
 			tabItems.push(
 				'<li>',
-				'<a class="ui-icon', p[2], ' ui-state-persist lang">', p[1], '</a>',
+				'<a data-icon="', p[2], '" class="ui-state-persist lang">', p[1], '</a>',
 				'</li>'
 			);
 		} else {
 			tabItems.push(
 				'<li>',
-				'<a data-transition="none" goto="#', p[0], 'Page" class="ui-icon', p[2], ' lang">', p[1], '</a>',
+				'<a data-icon="', p[2], '" data-transition="none" goto="#', p[0], 'Page" class="lang">', p[1], '</a>',
 				'</li>'
 			);
 		}

@@ -9,7 +9,9 @@ var testPage = function() {
 
 	var txtTitle = header.children('h1').append('<span></span>').children('span');
 
-	var menu = $('#testMenu');
+	var menu = $('#testMenu').on('popupcreate', function() {
+		menu.parent().css('z-index', 9999);
+	});;
 	var menuDropdown = header.append('<span class="ui-btn-icon-notext ui-icon-carat-d title-dropdown-icon"></span>')
 		.children(':last').on('click', function() {
 			menu.popup('open', {positionTo: $(this)});
