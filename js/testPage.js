@@ -107,37 +107,52 @@ var testContentPage = function() {
 	var txtTitle = header.children('h1');
 
 	var prepareChallenge = {};
-	prepareChallenge[testDataStore.TRUE_FALSE] = function(challenge) {
+	prepareChallenge[testDataStore.TRUE_FALSE] = function(quiz) {
 		var list = [];
 		list.push(
-			'<input type="radio" name="_challenge_" id="_challenge_0" value="0"/>',
+			'<input type="radio" name="_challenge_" id="_challenge_0" dummy="" value="0"/>',
 			'<label for="_challenge_0" class="lang">False</label>'
 		);
 		list.push(
-			'<input type="radio" name="_challenge_" id="_challenge_1" value="1"/>',
+			'<input type="radio" name="_challenge_" id="_challenge_1" dummy="" value="1"/>',
 			'<label for="_challenge_1" class="lang">True</label>'
 		);
-		return list;
-	};
-	prepareChallenge[testDataStore.SINGLE_CHOICE] = function(challenge) {
-		var n = challenge.length;
-		var list = [];
+		var n = quiz.answer.length;
 		for (var i = 0; i < n; ++i) {
-			list.push(
-				'<input type="radio" name="_challenge_" id="_challenge_', i, '" value="', i, '"/>',
-				'<label for="_challenge_', i, '">', challenge[i], '</label>'
-			);
+			var answer = quiz.answer[i] * 2;
+			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
 		}
 		return list;
 	};
-	prepareChallenge[testDataStore.MULTIPLE_CHOICE] = function(challenge) {
-		var n = challenge.length;
+	prepareChallenge[testDataStore.SINGLE_CHOICE] = function(quiz) {
+		var n = quiz.challenge.length;
 		var list = [];
 		for (var i = 0; i < n; ++i) {
 			list.push(
-				'<input type="checkbox" name="_challenge_" id="_challenge_', i, '" value="', i, '"/>',
-				'<label for="_challenge_', i, '">', challenge[i], '</label>'
+				'<input type="radio" name="_challenge_" id="_challenge_', i, '" dummy="" value="', i, '"/>',
+				'<label for="_challenge_', i, '">', quiz.challenge[i], '</label>'
 			);
+		}
+		var n = quiz.answer.length;
+		for (var i = 0; i < n; ++i) {
+			var answer = quiz.answer[i] * 10 + 2;
+			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
+		}
+		return list;
+	};
+	prepareChallenge[testDataStore.MULTIPLE_CHOICE] = function(quiz) {
+		var n = quiz.challenge.length;
+		var list = [];
+		for (var i = 0; i < n; ++i) {
+			list.push(
+				'<input type="checkbox" name="_challenge_" id="_challenge_', i, '" dummy="" value="', i, '"/>',
+				'<label for="_challenge_', i, '">', quiz.challenge[i], '</label>'
+			);
+		}
+		var n = quiz.answer.length;
+		for (var i = 0; i < n; ++i) {
+			var answer = quiz.answer[i] * 10 + 2;
+			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
 		}
 		return list;
 	};
@@ -166,7 +181,7 @@ var testContentPage = function() {
 			list.push(
 				'<h4>',
 				sec.seq, ') ', '<span class="lang">', sec.name, '</span>',
-				' &gt; ', data.seq, data.title ? ') <span class="lang">' + data.title + '</span>' : '',
+				' &gt; ', data.seq, data.name ? ') <span class="lang">' + data.name + '</span>' : '',
 				'</h4>',
 				data.content
 			);
@@ -174,19 +189,25 @@ var testContentPage = function() {
 			var prob = data.problem;
 			var sec = prob.section;
 			list.push(
-				prob.content ? '<div data-role="collapsible"><h4>' : '<h4>',
+				prob.content ? '<div data-role="collapsible"><h4>' : '<h4 style="margin:0">',
 				sec.seq, ') <span class="lang">', sec.name, '</span>',
-				prob.seq ? ' &gt; ' + prob.seq + (prob.title ? ') <span class="lang">' + prob.title + '</span>' : '') : '',
-				prob.content ? '</h4>' + prob.content + '</div><br/>' : '</h4>'
+				prob.seq ? ' &gt; ' + prob.seq + (prob.name ? ') <span class="lang">' + prob.name + '</span>' : '') : '',
+				prob.content ? '</h4>' + prob.content + '</div>' : '</h4>'
 			);
+			list.push(!data.score ? '<br/>' : '<div style="text-align:right"><span class="lang">Score:</span> ', data.score, '</div>');
 			list.push('<span>', data.seq, ') </span>', data.content);
 			list.push('<form>', '<fieldset data-role="controlgroup">');
-			$.merge(list, prepareChallenge[data.type](data.challenge));
+			$.merge(list, prepareChallenge[data.type](data));
 			list.push('</fieldset>', '</form>');
 		}
 
-		content.html(list.join(''));
-		localizeAll(content);
+		localizeAll(content.html(list.join('')));
+		var answer = content.find('input').on('change', function() {
+			var val = answer.filter(':checked').map(function() {
+				return $(this).val() * 1;
+			}).get();
+			data.setAnswer(val);
+		});
 		content.trigger('create');
 	};
 
@@ -196,4 +217,75 @@ var testContentPage = function() {
 		function() { return --seq; },
 		function() { return ++seq; }
 	);
+
+	var catelog = $('#testContentCatelogList').listview({
+		icon: false
+	});
+	var catelogPanel = $('#testContentCatelog').on('panelbeforeopen', function() {
+		if (!_storage.testExercise || _storage.testExercise.pk != _storage.testData[_storage.testDataIndex].pk) {
+			catelog.html('');
+			return;
+		}
+
+		var items = _storage.testExercise.asList();
+		var n = items.length;
+		var list = [], sec = null, prob = null;
+		for (var i = 0; i < n; ++i) {
+			var item = items[i];
+			if (item instanceof testDataStore.Problem) {
+				var thisSec = item.section;
+				if (thisSec != sec) {
+					sec = thisSec;
+					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
+				}
+				prob = item;
+				list.push('<li><a seq="', i, '" class="list_read"><span>', prob.seq, '</span>', prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</a></li>');
+			} else {
+				var thisProb = item.problem;
+				var thisSec = thisProb.section;
+				if (thisSec != sec) {
+					sec = thisSec;
+					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
+				}
+				if (thisProb != prob) {
+					prob = thisProb;
+					if (prob.seq) {
+						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
+					}
+				}
+				list.push(
+					'<li><a seq="', i, '"',
+							seq != i ? '' : ' style="font-style:italic"',
+							item.answer.length ? ' class="list_read"' : '',
+						'><div style="float:left">', item.seq, '</div>',
+						!item.score ? '' : '<div style="float:right">(' + item.score + ')</div>',
+					'</a></li>'
+				);
+			}
+		};
+
+		localizeAll(catelog.html(list.join('')));
+		catelog.listview('refresh').find('a').on('click', function() {
+			var newSeq = $(this).attr('seq') * 1;
+			if (newSeq < seq) {
+				content.stop().css('left', 0)
+					.animate({left: '100%'}, function() {
+						seq = newSeq;
+						page.trigger('pagebeforeshow');
+						catelogPanel.trigger('panelbeforeopen');
+						content.css('left', '-100%')
+							.animate({left: 0});
+					});
+			} else if (newSeq > seq) {
+				content.stop().css('left', 0)
+					.animate({left: '-100%'}, function() {
+						seq = newSeq;
+						page.trigger('pagebeforeshow');
+						catelogPanel.trigger('panelbeforeopen');
+						content.css('left', '100%')
+							.animate({left: 0});
+				});
+			}
+		});
+	});
 };

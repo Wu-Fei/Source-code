@@ -49,10 +49,15 @@ testDataStore.Quiz = function(type, content, score, challenge) {
 	this.content = content;
 	this.score = score;
 	this.challenge = challenge;
+	this.answer = [];
+
+	this.setAnswer = function(answer) {
+		this.answer = answer;
+	};
 };
 
-testDataStore.Problem = function(title, content, quizs) {
-	this.title = title;
+testDataStore.Problem = function(name, content, quizs) {
+	this.name = name;
 	this.content = content;
 	this.quizs = quizs;
 };
@@ -76,7 +81,7 @@ testDataStore.Exercise = function(pk, name, sections) {
 		var m = sec.problems.length;
 		if (m == 1) {
 			var prob = sec.problems[0];
-			if (!prob.title && !prob.content) {
+			if (!prob.name && !prob.content) {
 				prob.seq = '';
 				prob.section = sec;
 				var p = prob.quizs.length;
