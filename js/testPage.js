@@ -145,11 +145,11 @@ var testContentPage = function() {
 	var seq;
 	var displayContent = function() {
 		var data = _storage.testData[_storage.testDataIndex];
-		if (!_storage.testExersize || _storage.testExersize.pk != data.pk) {
-			_storage.testExersize = null;
-			testDataStore.getTestDetail(data.pk, function(exersize) {
+		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
+			_storage.testExercise = null;
+			testDataStore.getTestDetail(data.pk, function(exercise) {
 				data.setRead();
-				txtTitle.html((_storage.testExersize = exersize).name);
+				txtTitle.html((_storage.testExercise = exercise).name);
 				seq = 0;
 				displayContent();
 			}, function() {
@@ -159,7 +159,7 @@ var testContentPage = function() {
 			return;
 		}
 
-		var data = _storage.testExersize.asList()[seq];
+		var data = _storage.testExercise.asList()[seq];
 		var list = [];
 		if (data instanceof testDataStore.Problem) {
 			var sec = data.section;
@@ -191,8 +191,8 @@ var testContentPage = function() {
 	};
 
 	toolbox.setPrevNext(page, content, footer, displayContent,
-		function() { return _storage.testExersize && seq > 0; },
-		function() { return _storage.testExersize && seq < _storage.testExersize.asList().length - 1; },
+		function() { return _storage.testExercise && seq > 0; },
+		function() { return _storage.testExercise && seq < _storage.testExercise.asList().length - 1; },
 		function() { return --seq; },
 		function() { return ++seq; }
 	);

@@ -62,7 +62,7 @@ testDataStore.Section = function(name, problems) {
 	this.problems = problems;
 };
 
-testDataStore.Exersize = function(pk, name, sections) {
+testDataStore.Exercise = function(pk, name, sections) {
 	this.pk = pk;
 	this.name = name;
 	this.sections = sections;
@@ -112,7 +112,7 @@ testDataStore.Exersize = function(pk, name, sections) {
 	}
 };
 
-var testExersizeDataList = (function() {
+var testExerciseDataList = (function() {
 	var _TF = testDataStore.TRUE_FALSE;
 	var _SC = testDataStore.SINGLE_CHOICE;
 	var _MC = testDataStore.MULTIPLE_CHOICE;
@@ -150,21 +150,21 @@ var testExersizeDataList = (function() {
 	var list = [];
 	for (var i = 0; i < testExamDataList.length; ++i) {
 		var data = testExamDataList[i];
-		list.push(new testDataStore.Exersize(data.pk, data.name, sections));
+		list.push(new testDataStore.Exercise(data.pk, data.name, sections));
 	}
 	for (var i = 0; i < testAssignmentDataList.length; ++i) {
 		var data = testAssignmentDataList[i];
-		list.push(new testDataStore.Exersize(data.pk, data.name, sections));
+		list.push(new testDataStore.Exercise(data.pk, data.name, sections));
 	}
 	return list;
 })();
 
 testDataStore.getTestDetail = function(pk, okFunc, errFunc) {
-	var n = testExersizeDataList.length;
+	var n = testExerciseDataList.length;
 	for (var i = 0; i < n; ++i) {
-		var exersize = testExersizeDataList[i];
-		if (pk == exersize.pk) {
-			okFunc(exersize);
+		var exercise = testExerciseDataList[i];
+		if (pk == exercise.pk) {
+			okFunc(exercise);
 			return;
 		}
 	}
