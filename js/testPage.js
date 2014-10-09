@@ -106,17 +106,94 @@ var testContentPage = function() {
 
 	var txtTitle = header.children('h1');
 
+	var prepareChallenge = {};
+	prepareChallenge[testDataStore.TRUE_FALSE] = function(challenge) {
+		var list = [];
+		list.push(
+			'<input type="radio" name="_challenge_" id="_challenge_0" value="0"/>',
+			'<label for="_challenge_0" class="lang">False</label>'
+		);
+		list.push(
+			'<input type="radio" name="_challenge_" id="_challenge_1" value="1"/>',
+			'<label for="_challenge_1" class="lang">True</label>'
+		);
+		return list;
+	};
+	prepareChallenge[testDataStore.SINGLE_CHOICE] = function(challenge) {
+		var n = challenge.length;
+		var list = [];
+		for (var i = 0; i < n; ++i) {
+			list.push(
+				'<input type="radio" name="_challenge_" id="_challenge_', i, '" value="', i, '"/>',
+				'<label for="_challenge_', i, '">', challenge[i], '</label>'
+			);
+		}
+		return list;
+	};
+	prepareChallenge[testDataStore.MULTIPLE_CHOICE] = function(challenge) {
+		var n = challenge.length;
+		var list = [];
+		for (var i = 0; i < n; ++i) {
+			list.push(
+				'<input type="checkbox" name="_challenge_" id="_challenge_', i, '" value="', i, '"/>',
+				'<label for="_challenge_', i, '">', challenge[i], '</label>'
+			);
+		}
+		return list;
+	};
+
+	var seq;
 	var displayContent = function() {
 		var data = _storage.testData[_storage.testDataIndex];
+		if (!_storage.testExersize || _storage.testExersize.pk != data.pk) {
+			_storage.testExersize = null;
+			testDataStore.getTestDetail(data.pk, function(exersize) {
+				data.setRead();
+				txtTitle.html((_storage.testExersize = exersize).name);
+				seq = 0;
+				displayContent();
+			}, function() {
+				alert(getLocale('Failed to load test content.'));
+			});
+			// show loading
+			return;
+		}
 
-		txtTitle.html(data.name);
-		data.setRead();
+		var data = _storage.testExersize.asList()[seq];
+		var list = [];
+		if (data instanceof testDataStore.Problem) {
+			var sec = data.section;
+			list.push(
+				'<h4>',
+				sec.seq, ') ', '<span class="lang">', sec.name, '</span>',
+				' &gt; ', data.seq, data.title ? ') <span class="lang">' + data.title + '</span>' : '',
+				'</h4>',
+				data.content
+			);
+		} else {
+			var prob = data.problem;
+			var sec = prob.section;
+			list.push(
+				prob.content ? '<div data-role="collapsible"><h4>' : '<h4>',
+				sec.seq, ') <span class="lang">', sec.name, '</span>',
+				prob.seq ? ' &gt; ' + prob.seq + (prob.title ? ') <span class="lang">' + prob.title + '</span>' : '') : '',
+				prob.content ? '</h4>' + prob.content + '</div><br/>' : '</h4>'
+			);
+			list.push('<span>', data.seq, ') </span>', data.content);
+			list.push('<form>', '<fieldset data-role="controlgroup">');
+			$.merge(list, prepareChallenge[data.type](data.challenge));
+			list.push('</fieldset>', '</form>');
+		}
+
+		content.html(list.join(''));
+		localizeAll(content);
+		content.trigger('create');
 	};
 
 	toolbox.setPrevNext(page, content, footer, displayContent,
-		function() { return false; },
-		function() { return false; },
-		function() {},
-		function() {}
+		function() { return _storage.testExersize && seq > 0; },
+		function() { return _storage.testExersize && seq < _storage.testExersize.asList().length - 1; },
+		function() { return --seq; },
+		function() { return ++seq; }
 	);
 };

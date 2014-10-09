@@ -142,6 +142,8 @@ toolbox.setPrevNext = function(page, content, footer, displayContent, canGoPrev,
 	});
 
 	page.on('pagebeforeshow', function() {
+		displayContent();
+
 		if (canGoPrev()) {
 			btnPrev.removeClass('ui-state-disabled');
 		} else {
@@ -152,7 +154,5 @@ toolbox.setPrevNext = function(page, content, footer, displayContent, canGoPrev,
 		} else {
 			btnNext.addClass('ui-state-disabled');
 		}
-
-		displayContent();
 	});
 };
