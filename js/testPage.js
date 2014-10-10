@@ -166,7 +166,7 @@ var testContentPage = function() {
 			&& !confirm(getLocale('The test is not completed yet. Do you still want to submit?'))) {
 			return false;
 		}
-		toolbox.loading(true);
+		toolbox.loading(true, true);
 		_storage.testExercise.submit(function() {
 			toolbox.loading(false);
 			alert(getLocale('Your answer was successfully submitted.'));
@@ -176,11 +176,11 @@ var testContentPage = function() {
 		});
 	});
 
-	var catelog = $('#testContentCatelogList').listview({
+	var catalog = $('#testContentCatalogList').listview({
 		icon: false
 	});
 
-	var setupCatelogPanel = function() {
+	var setupCatalogPanel = function() {
 		var items = _storage.testExercise.asList();
 		var n = items.length;
 		var list = [], sec = null, prob = null;
@@ -218,12 +218,12 @@ var testContentPage = function() {
 			}
 		};
 
-		localizeAll(catelog.html(list.join('')));
-		catelog.listview('refresh').find('a').on('click', function() {
+		localizeAll(catalog.html(list.join('')));
+		catalog.listview('refresh').find('a').on('click', function() {
 			var self = $(this);
 			var newSeq = self.attr('seq') * 1;
 			if (newSeq < seq) {
-				catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+				catalog.find('a[seq=' + seq + ']').css('font-style', 'normal');
 				content.stop().css('left', 0)
 					.animate({left: '100%'}, function() {
 						seq = newSeq;
@@ -233,7 +233,7 @@ var testContentPage = function() {
 							.animate({left: 0});
 					});
 			} else if (newSeq > seq) {
-				catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+				catalog.find('a[seq=' + seq + ']').css('font-style', 'normal');
 				content.stop().css('left', 0)
 					.animate({left: '-100%'}, function() {
 						seq = newSeq;
@@ -251,7 +251,7 @@ var testContentPage = function() {
 		var data = _storage.testData[_storage.testDataIndex];
 		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
 			_storage.testExercise = null;
-			catelog.html('');
+			catalog.html('');
 			txtTitle.html(data.name);
 			content.html('');
 			toolbox.loading(true, true);
@@ -259,7 +259,7 @@ var testContentPage = function() {
 				data.setRead();
 				_storage.testExercise = exercise;
 				seq = 0;
-				setupCatelogPanel();
+				setupCatalogPanel();
 				displayContent();
 				toolbox.loading(false);
 			}, function() {
@@ -303,9 +303,9 @@ var testContentPage = function() {
 			}).get();
 			data.setAnswer(val);
 			if (val.length) {
-				catelog.find('a[seq=' + seq + ']').addClass('list_read');
+				catalog.find('a[seq=' + seq + ']').addClass('list_read');
 			} else {
-				catelog.find('a[seq=' + seq + ']').removeClass('list_read');
+				catalog.find('a[seq=' + seq + ']').removeClass('list_read');
 			}
 		});
 
@@ -316,13 +316,13 @@ var testContentPage = function() {
 		function() { return _storage.testExercise && seq > 0; },
 		function() { return _storage.testExercise && seq < _storage.testExercise.asList().length - 1; },
 		function() {
-			catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
-			catelog.find('a[seq=' + (--seq) + ']').css('font-style', 'italic');
+			catalog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+			catalog.find('a[seq=' + (--seq) + ']').css('font-style', 'italic');
 			return seq;
 		},
 		function() {
-			catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
-			catelog.find('a[seq=' + (++seq) + ']').css('font-style', 'italic');
+			catalog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+			catalog.find('a[seq=' + (++seq) + ']').css('font-style', 'italic');
 			return seq;
 		}
 	);
