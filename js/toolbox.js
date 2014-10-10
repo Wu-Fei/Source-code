@@ -22,6 +22,25 @@ toolbox.dtStr = function(dt, today) {
 	}
 };
 
+toolbox.loading = function(show, model) {
+	setTimeout(function() {
+		if (show) {
+			if (model) {
+				var blocker = $('#_loading_blocker_');
+				if (blocker.length) {
+					blocker.show();
+				} else {
+					$('body').append('<div id="_loading_blocker_" class="ui-popup-screen in ui-overlay-b"></div>');
+				}
+			}
+			$.mobile.loading('show');
+		} else {
+			$('#_loading_blocker_').hide();
+			$.mobile.loading('hide');
+		}
+	}, 50);
+};
+
 toolbox.pages = [
 	['inbox', 'Inbox', 'mail'],
 	['test', 'Test', 'bullets'],
@@ -122,6 +141,7 @@ toolbox.setPrevNext = function(page, content, footer, displayContent, canGoPrev,
 		if (canGoPrev()) {
 			myGoPrev();
 		} else {
+			displayContent();
 			content.stop().css('left', 0)
 				.animate({left: '20%'}, function() {
 					content.animate({left: 0});
@@ -133,6 +153,7 @@ toolbox.setPrevNext = function(page, content, footer, displayContent, canGoPrev,
 		if (canGoNext()) {
 			myGoNext();
 		} else {
+			displayContent();
 			content.stop().css('left', 0)
 				.animate({left: '-20%'}, function() {
 					content.animate({left: 0});

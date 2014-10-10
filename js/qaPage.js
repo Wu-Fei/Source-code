@@ -20,34 +20,53 @@ var qaPage = function() {
 	});
 
 	var btnAskq = $('#qaBtnAskq').hide();
+	var timer = null;
 	var search = $('#qaSearch').on('input', function(e) {
 		var txt = $.trim(search.val());
 		if (txt == '') {
+			toolbox.loading(false);
+			if (timer) {
+				clearTimeout(timer);
+				timer = null;
+			}
 			btnAskq.hide();
 			mainList.html('');
 		} else {
 			btnAskq.show();
-			var answerList = searchAnswers(txt);
-			var n = answerList.length;
-			if (n == 0) {
-				localize(mainList.html('<li><a></a></li>').find('a'), 'Sorry, no similar questions were found.');
-				mainList.listview('refresh');
-			} else {
-				_storage.qaData = answerList;
-				var list = new Array(n);
-				for (var i = 0; i < n; ++i) {
-					var data = answerList[i];
-					list[i] = [
-						'<li>',
-						'<a href="#qaContentPage" data-transition="slide" class="list_read"',
-						' onclick="_storage.qaDataIndex=', i, '">',
-						'<div>', data.question, '</div>',
-						'</a>',
-						'</li>'
-					].join('');
-				}
-				mainList.html(list.join('')).listview('refresh');
+
+			if (timer) {
+				clearTimeout(timer);
 			}
+			timer = setTimeout(function() {
+				timer = null;
+				toolbox.loading(true);
+				searchAnswers(txt, function(answerList) {
+					if (txt != $.trim(search.val()))
+						return;
+
+					toolbox.loading(false);
+					var n = answerList.length;
+					if (n == 0) {
+						localize(mainList.html('<li><a></a></li>').find('a'), 'Sorry, no similar questions were found.');
+						mainList.listview('refresh');
+					} else {
+						_storage.qaData = answerList;
+						var list = new Array(n);
+						for (var i = 0; i < n; ++i) {
+							var data = answerList[i];
+							list[i] = [
+								'<li>',
+								'<a href="#qaContentPage" data-transition="slide" class="list_read"',
+								' onclick="_storage.qaDataIndex=', i, '">',
+								'<div>', data.question, '</div>',
+								'</a>',
+								'</li>'
+							].join('');
+						}
+						mainList.html(list.join('')).listview('refresh');
+					}
+				});
+			}, 300);
 		}
 	});
 };

@@ -44,7 +44,8 @@ testDataStore.TRUE_FALSE = 'T';
 testDataStore.SINGLE_CHOICE = 'S';
 testDataStore.MULTIPLE_CHOICE = 'M';
 
-testDataStore.Quiz = function(type, content, score, challenge) {
+testDataStore.Quiz = function(pk, type, content, score, challenge) {
+	this.pk = pk;
 	this.type = type;
 	this.content = content;
 	this.score = score;
@@ -114,7 +115,35 @@ testDataStore.Exercise = function(pk, name, sections) {
 
 	this.asList = function() {
 		return list;
-	}
+	};
+
+	this.isCompleted = function() {
+		var n = list.length;
+		for (var i = 0; i < n; ++i) {
+			var quiz = list[i];
+			if (quiz instanceof testDataStore.Problem)
+				continue;
+
+			if (!quiz.answer.length)
+				return false;
+		}
+		return true;
+	};
+
+	this.submit = function(okFunc, errFunc) {
+		var result = {};
+		var n = list.length;
+		for (var i = 0; i < n; ++i) {
+			var quiz = list[i];
+			if (quiz instanceof testDataStore.Problem)
+				continue;
+
+			result['' + quiz.pk] = quiz.answer;
+		}
+
+		console.log(result);
+		setTimeout(okFunc, 3000);
+	};
 };
 
 var testExerciseDataList = (function() {
@@ -125,29 +154,29 @@ var testExerciseDataList = (function() {
 	var sections = [
 		new testDataStore.Section('Listening', [
 			new testDataStore.Problem('', '', [
-				new testDataStore.Quiz(_TF, 'Do you hear sound?', 5),
-				new testDataStore.Quiz(_SC, 'What is this animal?', 5, ['Cat', 'Dog', 'Mice', 'None of above'])
+				new testDataStore.Quiz(1, _TF, 'Do you hear sound?', 5),
+				new testDataStore.Quiz(2, _SC, 'What is this animal?', 5, ['Cat', 'Dog', 'Mice', 'None of above'])
 			])
 		]),
 		new testDataStore.Section('Grammar', [
 			new testDataStore.Problem('Single Choice', '', [
-				new testDataStore.Quiz(_SC, 'Which is correct?', 5, ['He is best', 'He is worse', 'He is worst', 'None of above']),
-				new testDataStore.Quiz(_SC, 'Which is incorrect?', 5, ['He love her', 'You love him', 'We love you', 'They love me'])
+				new testDataStore.Quiz(3, _SC, 'Which is correct?', 5, ['He is best', 'He is worse', 'He is worst', 'None of above']),
+				new testDataStore.Quiz(4, _SC, 'Which is incorrect?', 5, ['He love her', 'You love him', 'We love you', 'They love me'])
 			]),
 			new testDataStore.Problem('Multiple Choices', '', [
-				new testDataStore.Quiz(_MC, 'Which is correct?', 10, ['He is the best', 'He is the worst', 'He is better', 'He is worse']),
-				new testDataStore.Quiz(_MC, 'Which is incorrect?', 10, ['Find the other one', 'Find another one', 'Find other one', 'Find the another one'])
+				new testDataStore.Quiz(5, _MC, 'Which is correct?', 10, ['He is the best', 'He is the worst', 'He is better', 'He is worse']),
+				new testDataStore.Quiz(6, _MC, 'Which is incorrect?', 10, ['Find the other one', 'Find another one', 'Find other one', 'Find the another one'])
 			])
 		]),
 		new testDataStore.Section('Reading', [
 			new testDataStore.Problem('', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
-				new testDataStore.Quiz(_TF, 'At the end, the wolf ate the pigs.', 5),
-				new testDataStore.Quiz(_SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron']),
-				new testDataStore.Quiz(_SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'])
+				new testDataStore.Quiz(7, _TF, 'At the end, the wolf ate the pigs.', 5),
+				new testDataStore.Quiz(8, _SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron']),
+				new testDataStore.Quiz(9, _SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'])
 			]),
 			new testDataStore.Problem('', 'Far far away, there lived a dragon...', [
-				new testDataStore.Quiz(_MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep']),
-				new testDataStore.Quiz(_MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'])
+				new testDataStore.Quiz(10, _MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep']),
+				new testDataStore.Quiz(11, _MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'])
 			])
 		])
 	];
@@ -169,7 +198,10 @@ testDataStore.getTestDetail = function(pk, okFunc, errFunc) {
 	for (var i = 0; i < n; ++i) {
 		var exercise = testExerciseDataList[i];
 		if (pk == exercise.pk) {
-			okFunc(exercise);
+			setTimeout(function() {
+				console.log('loaded exercise', exercise.name);
+				okFunc(exercise);
+			}, 3000);
 			return;
 		}
 	}

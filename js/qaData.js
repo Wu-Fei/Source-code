@@ -11,7 +11,7 @@ var qaList = [
 	new QaData([4, 'How dog catches mice?', 'The dog does not like to catch mice.'])
 ];
 
-var searchAnswers = function(q) {
+var searchAnswers = function(q, okFunc) {
 	var words = q.toLowerCase().split(/\s+/);
 	var wordnum = words.length, i, j;
 
@@ -28,9 +28,11 @@ var searchAnswers = function(q) {
 		}
 	}
 
-	return result;
-}
+	setTimeout(function() {
+		okFunc(result);
+	}, 3000);
+};
 
 var askQuestion = function(clazz, question, okFunc, errFunc) {
-	okFunc();
-}
+	setTimeout(okFunc, 3000);
+};

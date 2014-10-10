@@ -157,20 +157,115 @@ var testContentPage = function() {
 		return list;
 	};
 
+	$('#testContentBtnSubmit').on('click', function() {
+		var data = _storage.testData[_storage.testDataIndex];
+		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
+			return false;
+		}
+		if (!_storage.testExercise.isCompleted()
+			&& !confirm(getLocale('The test is not completed yet. Do you still want to submit?'))) {
+			return false;
+		}
+		toolbox.loading(true);
+		_storage.testExercise.submit(function() {
+			toolbox.loading(false);
+			alert(getLocale('Your answer was successfully submitted.'));
+		}, function() {
+			toolbox.loading(false);
+			alert(getLocale('Failed to submit. Please check your Internet connection and try again.'));
+		});
+	});
+
+	var catelog = $('#testContentCatelogList').listview({
+		icon: false
+	});
+
+	var setupCatelogPanel = function() {
+		var items = _storage.testExercise.asList();
+		var n = items.length;
+		var list = [], sec = null, prob = null;
+		for (var i = 0; i < n; ++i) {
+			var item = items[i];
+			if (item instanceof testDataStore.Problem) {
+				var thisSec = item.section;
+				if (thisSec != sec) {
+					sec = thisSec;
+					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
+				}
+				prob = item;
+				list.push('<li><a seq="', i, '" class="list_read"><span>', prob.seq, '</span>', prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</a></li>');
+			} else {
+				var thisProb = item.problem;
+				var thisSec = thisProb.section;
+				if (thisSec != sec) {
+					sec = thisSec;
+					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
+				}
+				if (thisProb != prob) {
+					prob = thisProb;
+					if (prob.seq) {
+						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
+					}
+				}
+				list.push(
+					'<li><a seq="', i, '"',
+							//seq != i ? '' : ' style="font-style:italic"',
+							item.answer.length ? ' class="list_read"' : '',
+						'><div style="float:left">', item.seq, '</div>',
+						!item.score ? '' : '<div style="float:right">(' + item.score + ')</div>',
+					'</a></li>'
+				);
+			}
+		};
+
+		localizeAll(catelog.html(list.join('')));
+		catelog.listview('refresh').find('a').on('click', function() {
+			var self = $(this);
+			var newSeq = self.attr('seq') * 1;
+			if (newSeq < seq) {
+				catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+				content.stop().css('left', 0)
+					.animate({left: '100%'}, function() {
+						seq = newSeq;
+						page.trigger('pagebeforeshow');
+						self.css('font-style', 'italic');
+						content.css('left', '-100%')
+							.animate({left: 0});
+					});
+			} else if (newSeq > seq) {
+				catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+				content.stop().css('left', 0)
+					.animate({left: '-100%'}, function() {
+						seq = newSeq;
+						page.trigger('pagebeforeshow');
+						self.css('font-style', 'italic');
+						content.css('left', '100%')
+							.animate({left: 0});
+				});
+			}
+		}).filter('[seq=' + seq + ']').css('font-style', 'italic');
+	};
+
 	var seq;
 	var displayContent = function() {
 		var data = _storage.testData[_storage.testDataIndex];
 		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
 			_storage.testExercise = null;
+			catelog.html('');
+			txtTitle.html(data.name);
+			content.html('');
+			toolbox.loading(true, true);
 			testDataStore.getTestDetail(data.pk, function(exercise) {
 				data.setRead();
-				txtTitle.html((_storage.testExercise = exercise).name);
+				_storage.testExercise = exercise;
 				seq = 0;
+				setupCatelogPanel();
 				displayContent();
+				toolbox.loading(false);
 			}, function() {
+				toolbox.loading(false);
 				alert(getLocale('Failed to load test content.'));
 			});
-			// show loading
 			return;
 		}
 
@@ -200,92 +295,35 @@ var testContentPage = function() {
 			$.merge(list, prepareChallenge[data.type](data));
 			list.push('</fieldset>', '</form>');
 		}
-
 		localizeAll(content.html(list.join('')));
+
 		var answer = content.find('input').on('change', function() {
 			var val = answer.filter(':checked').map(function() {
 				return $(this).val() * 1;
 			}).get();
 			data.setAnswer(val);
+			if (val.length) {
+				catelog.find('a[seq=' + seq + ']').addClass('list_read');
+			} else {
+				catelog.find('a[seq=' + seq + ']').removeClass('list_read');
+			}
 		});
+
 		content.trigger('create');
 	};
 
 	toolbox.setPrevNext(page, content, footer, displayContent,
 		function() { return _storage.testExercise && seq > 0; },
 		function() { return _storage.testExercise && seq < _storage.testExercise.asList().length - 1; },
-		function() { return --seq; },
-		function() { return ++seq; }
-	);
-
-	var catelog = $('#testContentCatelogList').listview({
-		icon: false
-	});
-	var catelogPanel = $('#testContentCatelog').on('panelbeforeopen', function() {
-		if (!_storage.testExercise || _storage.testExercise.pk != _storage.testData[_storage.testDataIndex].pk) {
-			catelog.html('');
-			return;
+		function() {
+			catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+			catelog.find('a[seq=' + (--seq) + ']').css('font-style', 'italic');
+			return seq;
+		},
+		function() {
+			catelog.find('a[seq=' + seq + ']').css('font-style', 'normal');
+			catelog.find('a[seq=' + (++seq) + ']').css('font-style', 'italic');
+			return seq;
 		}
-
-		var items = _storage.testExercise.asList();
-		var n = items.length;
-		var list = [], sec = null, prob = null;
-		for (var i = 0; i < n; ++i) {
-			var item = items[i];
-			if (item instanceof testDataStore.Problem) {
-				var thisSec = item.section;
-				if (thisSec != sec) {
-					sec = thisSec;
-					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
-				}
-				prob = item;
-				list.push('<li><a seq="', i, '" class="list_read"><span>', prob.seq, '</span>', prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</a></li>');
-			} else {
-				var thisProb = item.problem;
-				var thisSec = thisProb.section;
-				if (thisSec != sec) {
-					sec = thisSec;
-					list.push('<li>', sec.seq, ' <span class="lang">', sec.name, '</span>', '</li>');
-				}
-				if (thisProb != prob) {
-					prob = thisProb;
-					if (prob.seq) {
-						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
-					}
-				}
-				list.push(
-					'<li><a seq="', i, '"',
-							seq != i ? '' : ' style="font-style:italic"',
-							item.answer.length ? ' class="list_read"' : '',
-						'><div style="float:left">', item.seq, '</div>',
-						!item.score ? '' : '<div style="float:right">(' + item.score + ')</div>',
-					'</a></li>'
-				);
-			}
-		};
-
-		localizeAll(catelog.html(list.join('')));
-		catelog.listview('refresh').find('a').on('click', function() {
-			var newSeq = $(this).attr('seq') * 1;
-			if (newSeq < seq) {
-				content.stop().css('left', 0)
-					.animate({left: '100%'}, function() {
-						seq = newSeq;
-						page.trigger('pagebeforeshow');
-						catelogPanel.trigger('panelbeforeopen');
-						content.css('left', '-100%')
-							.animate({left: 0});
-					});
-			} else if (newSeq > seq) {
-				content.stop().css('left', 0)
-					.animate({left: '-100%'}, function() {
-						seq = newSeq;
-						page.trigger('pagebeforeshow');
-						catelogPanel.trigger('panelbeforeopen');
-						content.css('left', '100%')
-							.animate({left: 0});
-				});
-			}
-		});
-	});
+	);
 };
