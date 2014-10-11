@@ -1,3 +1,12 @@
+QUIZ_TYPE = {};
+QUIZ_TYPE.TRUE_FALSE = 'T';
+QUIZ_TYPE.SINGLE_CHOICE = 'S';
+QUIZ_TYPE.MULTIPLE_CHOICE = 'M';
+
+EXERCISE_STATUS = {};
+EXERCISE_STATUS.NEW = 'n';
+EXERCISE_STATUS.SUBMITTED = 's';
+
 var toolbox = {
 };
 
@@ -20,6 +29,10 @@ toolbox.dtStr = function(dt, today) {
 	} else {
 		return [dt.getFullYear(), '/', dt.getMonth() + 1, '/', dt.getDate()].join('');
 	}
+};
+
+toolbox.arrayCompare = function(a, b) {
+	return $(a).not(b).length === 0 && $(b).not(a).length === 0;
 };
 
 toolbox.loading = function(show, model) {

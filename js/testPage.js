@@ -106,69 +106,21 @@ var testContentPage = function() {
 
 	var txtTitle = header.children('h1');
 
-	var prepareChallenge = {};
-	prepareChallenge[testDataStore.TRUE_FALSE] = function(quiz) {
-		var list = [];
-		list.push(
-			'<input type="radio" name="_challenge_" id="_challenge_0" dummy="" value="0"/>',
-			'<label for="_challenge_0" class="lang">False</label>'
-		);
-		list.push(
-			'<input type="radio" name="_challenge_" id="_challenge_1" dummy="" value="1"/>',
-			'<label for="_challenge_1" class="lang">True</label>'
-		);
-		var n = quiz.answer.length;
-		for (var i = 0; i < n; ++i) {
-			var answer = quiz.answer[i] * 2;
-			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
-		}
-		return list;
-	};
-	prepareChallenge[testDataStore.SINGLE_CHOICE] = function(quiz) {
-		var n = quiz.challenge.length;
-		var list = [];
-		for (var i = 0; i < n; ++i) {
-			list.push(
-				'<input type="radio" name="_challenge_" id="_challenge_', i, '" dummy="" value="', i, '"/>',
-				'<label for="_challenge_', i, '">', quiz.challenge[i], '</label>'
-			);
-		}
-		var n = quiz.answer.length;
-		for (var i = 0; i < n; ++i) {
-			var answer = quiz.answer[i] * 10 + 2;
-			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
-		}
-		return list;
-	};
-	prepareChallenge[testDataStore.MULTIPLE_CHOICE] = function(quiz) {
-		var n = quiz.challenge.length;
-		var list = [];
-		for (var i = 0; i < n; ++i) {
-			list.push(
-				'<input type="checkbox" name="_challenge_" id="_challenge_', i, '" dummy="" value="', i, '"/>',
-				'<label for="_challenge_', i, '">', quiz.challenge[i], '</label>'
-			);
-		}
-		var n = quiz.answer.length;
-		for (var i = 0; i < n; ++i) {
-			var answer = quiz.answer[i] * 10 + 2;
-			list[answer] = list[answer].replace('dummy=""', 'checked="checked"');
-		}
-		return list;
-	};
-
-	$('#testContentBtnSubmit').on('click', function() {
-		var data = _storage.testData[_storage.testDataIndex];
-		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
+	var btnSubmit = $('#testContentBtnSubmit').on('click', function() {
+		var exercise = _storage.testExercise;
+		if (exercise.status == EXERCISE_STATUS.SUBMITTED) {
 			return false;
 		}
-		if (!_storage.testExercise.isCompleted()
+		if (!exercise.isCompleted()
 			&& !confirm(getLocale('The test is not completed yet. Do you still want to submit?'))) {
 			return false;
 		}
 		toolbox.loading(true, true);
-		_storage.testExercise.submit(function() {
+		exercise.submit(function() {
 			toolbox.loading(false);
+			setupCatalogPanel(exercise);
+			setupSubmitBtn(exercise);
+			displayContent();
 			alert(getLocale('Your answer was successfully submitted.'));
 		}, function() {
 			toolbox.loading(false);
@@ -176,12 +128,31 @@ var testContentPage = function() {
 		});
 	});
 
+	var setupSubmitBtn = function(exercise) {
+		if (!exercise) {
+			btnSubmit.hide();
+			return;
+		}
+		if (exercise.status == EXERCISE_STATUS.SUBMITTED) {
+			localizeAll(btnSubmit.html('<span class="lang">Score:</span> ' + exercise.score));
+			btnSubmit.css({
+				'background': 'transparent',
+				'border': 'none',
+				'font-size': '16px'
+			}).removeClass('ui-shadow').show();
+		} else {
+			localizeAll(btnSubmit.html('<span class="lang">Submit</span>'));
+			btnSubmit.removeAttr('style').addClass('ui-shadow').show();
+		}
+	};
+
 	var catalog = $('#testContentCatalogList').listview({
 		icon: false
 	});
 
-	var setupCatalogPanel = function() {
-		var items = _storage.testExercise.asList();
+	var setupCatalogPanel = function(exercise) {
+		var submitted = exercise.status == EXERCISE_STATUS.SUBMITTED;
+		var items = exercise.asList();
 		var n = items.length;
 		var list = [], sec = null, prob = null;
 		for (var i = 0; i < n; ++i) {
@@ -207,10 +178,10 @@ var testContentPage = function() {
 						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
 					}
 				}
+				var read = item.answer.length;
+				var wrong = submitted && !toolbox.arrayCompare(item.answer, item.key);
 				list.push(
-					'<li><a seq="', i, '"',
-							//seq != i ? '' : ' style="font-style:italic"',
-							item.answer.length ? ' class="list_read"' : '',
+					'<li><a seq="', i, '" class="', read ? 'list_read' : '', wrong ? ' wrong_answer': '', '"',
 						'><div style="float:left">', item.seq, '</div>',
 						!item.score ? '' : '<div style="float:right">(' + item.score + ')</div>',
 					'</a></li>'
@@ -251,16 +222,18 @@ var testContentPage = function() {
 		var data = _storage.testData[_storage.testDataIndex];
 		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
 			_storage.testExercise = null;
-			catalog.html('');
 			txtTitle.html(data.name);
+			catalog.html('');
+			setupSubmitBtn();
 			content.html('');
 			toolbox.loading(true, true);
 			testDataStore.getTestDetail(data.pk, function(exercise) {
 				data.setRead();
 				_storage.testExercise = exercise;
 				seq = 0;
-				setupCatalogPanel();
-				displayContent();
+				setupCatalogPanel(exercise);
+				setupSubmitBtn(exercise);
+				page.trigger('pagebeforeshow');
 				toolbox.loading(false);
 			}, function() {
 				toolbox.loading(false);
@@ -290,10 +263,8 @@ var testContentPage = function() {
 				prob.content ? '</h4>' + prob.content + '</div>' : '</h4>'
 			);
 			list.push(!data.score ? '<br/>' : '<div style="text-align:right"><span class="lang">Score:</span> ', data.score, '</div>');
-			list.push('<span>', data.seq, ') </span>', data.content);
-			list.push('<form>', '<fieldset data-role="controlgroup">');
-			$.merge(list, prepareChallenge[data.type](data));
-			list.push('</fieldset>', '</form>');
+			list.push('<span>', data.seq, ') </span>');
+			renderQuiz(list, data, _storage.testExercise.status == EXERCISE_STATUS.SUBMITTED);
 		}
 		localizeAll(content.html(list.join('')));
 
@@ -308,6 +279,11 @@ var testContentPage = function() {
 				catalog.find('a[seq=' + seq + ']').removeClass('list_read');
 			}
 		});
+		if (_storage.testExercise.status == EXERCISE_STATUS.SUBMITTED) {
+			answer.parent().on('click', function() {
+				return false;
+			});
+		}
 
 		content.trigger('create');
 	};

@@ -50,6 +50,13 @@
   	background-color: #ff8080
   }
 
+  .wrong_answer {
+	color: #ff0000 !important;
+	font-weight: 700 !important
+  }
+  .wrong_answer.extra {
+  	text-decoration: line-through !important
+  }
   </style>
   <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.mobile-1.4.4.min.js"></script>
@@ -58,6 +65,7 @@
   <script src="js/toolbox.js"></script>
   <script src="js/locale.js"></script>
   <script src="js/qrCode.js"></script>
+  <script src="js/testQuizRender.js"></script>
 
   <script src="js/inboxData.js"></script>
   <script src="js/testData.js"></script>
@@ -152,7 +160,7 @@
 
   <div data-role="footer" data-position="fixed" class="footer-transparent">
 	<div class="ui-title" style="position:absolute;left:0;right:0;top:-0.7em">
-		<a id="testContentBtnSubmit" data-role="button" data-transition="slide" data-direction="reverse" class="lang">Submit</a>
+		<a id="testContentBtnSubmit" data-role="button" data-transition="slide" data-direction="reverse"></a>
 	</div>
   </div>
 
