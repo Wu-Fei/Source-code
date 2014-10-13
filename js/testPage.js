@@ -322,7 +322,7 @@ var testContentPage = function() {
 		}
 	});
 
-	page.on('stopOnQuiz', function(isStop) {
+	page.on('stopOnQuiz', function(evt, isStop) {
 		var data = _storage.testData[_storage.testDataIndex];
 		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
 			data = _storage.testExercise.asList()[seq];
