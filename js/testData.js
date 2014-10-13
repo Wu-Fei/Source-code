@@ -52,25 +52,34 @@ testDataStore.Quiz = function(pk, type, content, score, challenge, key) {
 	this.challenge = challenge;
 	this.key = key;
 	this.answer = [];
+	this.t0 = null;
+	this.usedTime = 0;
 
 	this.setAnswer = function(answer) {
 		this.answer = answer;
 	};
+	this.addUsedTime = function(dt) {
+		this.usedTime += dt;
+	};
 };
 
-testDataStore.Problem = function(name, content, quizs) {
+testDataStore.Problem = function(pk, name, content, quizs) {
+	this.pk = pk;
 	this.name = name;
 	this.content = content;
 	this.quizs = quizs;
+	this.t0 = null;
+	this.usedTime = 0;
+
+	this.addUsedTime = function(dt) {
+		this.usedTime += dt;
+	};
 };
 
 testDataStore.Section = function(name, problems) {
 	this.name = name;
 	this.problems = problems;
 };
-
-testDataStore.NEW = 100
-testDataStore.SUBMIT = 101
 
 testDataStore.Exercise = function(pk, name, sections) {
 	this.pk = pk;
@@ -138,15 +147,16 @@ testDataStore.Exercise = function(pk, name, sections) {
 		var result = {};
 		var n = list.length;
 		for (var i = 0; i < n; ++i) {
-			var quiz = list[i];
-			if (quiz instanceof testDataStore.Problem)
-				continue;
-
-			result['' + quiz.pk] = quiz.answer;
+			var data = list[i];
+			if (data instanceof testDataStore.Problem) {
+				result['p' + data.pk] = data.usedTime;
+			} else {
+				result['q' + data.pk] = [data.usedTime, data.answer];
+			}
 		}
 
 		var self = this;
-		console.log(self.name, result);
+		console.log(self.pk, self.name, result);
 		setTimeout(function() {
 			self.test.status = TEST_STATUS.SUBMITTED;
 
@@ -175,28 +185,28 @@ var testExerciseDataList = (function() {
 
 	var sections = [
 		new testDataStore.Section('Listening', [
-			new testDataStore.Problem('', '', [
+			new testDataStore.Problem(1, '', '', [
 				new testDataStore.Quiz(1, _TF, 'Do you hear sound? <myaudio src="/android_asset/www/N1S08-01.mp3" />', 5, [], [0]),
 				new testDataStore.Quiz(2, _SC, 'What is this animal?', 5, ['Cat', 'Dog', 'Mice', 'None of above'], [3])
 			])
 		]),
 		new testDataStore.Section('Grammar', [
-			new testDataStore.Problem('Single Choice', '', [
+			new testDataStore.Problem(2, 'Single Choice', '', [
 				new testDataStore.Quiz(3, _SC, 'Which is correct?', 5, ['He is best', 'He is worse', 'He is worst', 'None of above'], [1]),
 				new testDataStore.Quiz(4, _SC, 'Which is incorrect?', 5, ['He love her', 'You love him', 'We love you', 'They love me'], [0])
 			]),
-			new testDataStore.Problem('Multiple Choices', '', [
+			new testDataStore.Problem(3, 'Multiple Choices', '', [
 				new testDataStore.Quiz(5, _MC, 'Which is correct?', 10, ['He is the best', 'He is the worst', 'He is better', 'He is worse'], [0, 1, 2, 3]),
 				new testDataStore.Quiz(6, _MC, 'Which is incorrect?', 10, ['Find the other one', 'Find another one', 'Find other one', 'Find the another one'], [2, 3])
 			])
 		]),
 		new testDataStore.Section('Reading', [
-			new testDataStore.Problem('Three little pigs', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
+			new testDataStore.Problem(4, 'Three little pigs', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
 				new testDataStore.Quiz(7, _TF, 'At the end, the wolf ate the pigs.', 5, [], [0]),
 				new testDataStore.Quiz(8, _SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron'], [1]),
 				new testDataStore.Quiz(9, _SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'], [3])
 			]),
-			new testDataStore.Problem('Dragon and Alice', 'Far far away, there lived a dragon...', [
+			new testDataStore.Problem(5, 'Dragon and Alice', 'Far far away, there lived a dragon...', [
 				new testDataStore.Quiz(10, _MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep'], [1]),
 				new testDataStore.Quiz(11, _MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'], [0, 2])
 			])

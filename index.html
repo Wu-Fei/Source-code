@@ -321,10 +321,10 @@ $(function() {
 	setLocaleLanguage('cn_zh');
 
 	$(window).on('hashchange', function() {
-		mediaManager.release();
+		testContentPage.stopOnQuiz(true);
 	});
 	$(document).on('pause', function() {
-		mediaManager.pause();
+		testContentPage.stopOnQuiz(false);
 	});
 });
 

@@ -114,7 +114,7 @@ var testContentPage = function() {
 			return false;
 		}
 
-		mediaManager.pause();
+		testContentPage.stopOnQuiz(false);
 
 		if (!exercise.isCompleted()
 			&& !confirm(getLocale('The test is not completed yet. Do you still want to submit?'))) {
@@ -250,7 +250,7 @@ var testContentPage = function() {
 			return;
 		}
 
-		mediaManager.stop();
+		testContentPage.stopOnQuiz(true);
 
 		var data = _storage.testExercise.asList()[seq];
 		var list = [];
@@ -276,6 +276,7 @@ var testContentPage = function() {
 			list.push('<span>', data.seq, ') </span>');
 			renderQuiz(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
+
 		localizeAll(content.html(list.join('')));
 		renderAudio(content);
 
@@ -297,6 +298,7 @@ var testContentPage = function() {
 		}
 
 		content.trigger('create');
+		data.t0 = new Date();
 	};
 
 	toolbox.setPrevNext(page, content, footer, displayContent,
@@ -319,4 +321,37 @@ var testContentPage = function() {
 			toolbox.loading(true, true);
 		}
 	});
+
+	page.on('stopOnQuiz', function(isStop) {
+		var data = _storage.testData[_storage.testDataIndex];
+		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
+			data = _storage.testExercise.asList()[seq];
+			if (data.t0) {
+				data.addUsedTime(new Date() - data.t0);
+				data.t0 = null;
+			}
+		}
+
+		if (isStop) {
+			mediaManager.release();
+		} else {
+			mediaManager.pause();
+		}
+	});
+
+	testContentPage.stopOnQuiz = function(isStop) {
+		page.trigger('stopOnQuiz', [isStop]);
+	};
+
+	setInterval(function() {
+		var data = _storage.testData[_storage.testDataIndex];
+		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
+			data = _storage.testExercise.asList()[seq];
+			if (data.t0) {
+				var now = new Date()
+				data.addUsedTime(now - data.t0);
+				data.t0 = now;
+			}
+		}
+	}, 1000);
 };
