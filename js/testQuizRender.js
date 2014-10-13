@@ -1,10 +1,10 @@
 var prepareChallenge = {};
 
-prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, submitted) {
+prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, working) {
 	var checked, wrong;
 	checked = $.inArray(0, quiz.answer) >= 0 ? ' checked="checked"' : '';
 	wrong = '';
-	if (submitted) {
+	if (!working) {
 		if ($.inArray(0, quiz.key) >= 0) {
 			if (!checked) {
 				wrong = ' wrong_answer miss';
@@ -21,7 +21,7 @@ prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, submitted) {
 	);
 	checked = $.inArray(1, quiz.answer) >= 0 ? ' checked="checked"' : '';
 	wrong = '';
-	if (submitted) {
+	if (!working) {
 		if ($.inArray(1, quiz.key) >= 0) {
 			if (!checked) {
 				wrong = ' wrong_answer miss';
@@ -38,12 +38,12 @@ prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, submitted) {
 	);
 };
 
-prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, submitted) {
+prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
 	for (var i = 0; i < n; ++i) {
 		checked = $.inArray(i, quiz.answer) >= 0 ? ' checked="checked"' : '';
 		wrong = '';
-		if (submitted) {
+		if (!working) {
 			if ($.inArray(i, quiz.key) >= 0) {
 				if (!checked) {
 					wrong = ' class="wrong_answer miss"';
@@ -61,12 +61,12 @@ prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, submitted) {
 	}
 };
 
-prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, submitted) {
+prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
 	for (var i = 0; i < n; ++i) {
 		checked = $.inArray(i, quiz.answer) >= 0 ? ' checked="checked"' : '';
 		wrong = '';
-		if (submitted) {
+		if (!working) {
 			if ($.inArray(i, quiz.key) >= 0) {
 				if (!checked) {
 					wrong = ' class="wrong_answer miss"';

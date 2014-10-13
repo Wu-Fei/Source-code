@@ -74,18 +74,20 @@ var testPage = function() {
 		var list = new Array(n = _storage.testData.length);
 		for (var i = 0; i < n; ++i) {
 			var data = _storage.testData[i];
-
+			var score = (data.status != TEST_STATUS.SCORED)
+				? '' : '<div style="float:right"><span class="lang">Score:</span> ' + data.score + '</div>';
 			list[i] = [
 				'<li>',
 				'<a href="#testContentPage" data-transition="slide" class="',
-				data.isRead ? 'list_read"' : 'list_unread',
+				data.status == TEST_STATUS.NEW ? 'list_unread"' : 'list_read',
 				'" onclick="_storage.testDataIndex=', i, '">',
-				'<div>', data.name, '</div>',
+				'<div><div style="float:left">', data.name, '</div>', score, '</div>',
 				'</a>',
 				'</li>'
 			].join('');
 		}
-		mainList.html(list.join('')).listview('refresh');
+		localizeAll(mainList.html(list.join('')));
+		mainList.listview('refresh');
 	};
 
 	page.on('listchanged', function(evt, isExam) {
@@ -108,7 +110,7 @@ var testContentPage = function() {
 
 	var btnSubmit = $('#testContentBtnSubmit').on('click', function() {
 		var exercise = _storage.testExercise;
-		if (exercise.status == EXERCISE_STATUS.SUBMITTED) {
+		if (exercise.test.status != TEST_STATUS.WORKING) {
 			return false;
 		}
 
@@ -136,16 +138,16 @@ var testContentPage = function() {
 			btnSubmit.hide();
 			return;
 		}
-		if (exercise.status == EXERCISE_STATUS.SUBMITTED) {
-			localizeAll(btnSubmit.html('<span class="lang">Score:</span> ' + exercise.score));
+		if (exercise.test.status == TEST_STATUS.WORKING) {
+			localizeAll(btnSubmit.html('<span class="lang">Submit</span>'));
+			btnSubmit.removeAttr('style').addClass('ui-shadow').show();
+		} else {
+			localizeAll(btnSubmit.html('<span class="lang">Score:</span> ' + exercise.test.score));
 			btnSubmit.css({
 				'background': 'transparent',
 				'border': 'none',
 				'font-size': '16px'
 			}).removeClass('ui-shadow').show();
-		} else {
-			localizeAll(btnSubmit.html('<span class="lang">Submit</span>'));
-			btnSubmit.removeAttr('style').addClass('ui-shadow').show();
 		}
 	};
 
@@ -154,7 +156,7 @@ var testContentPage = function() {
 	});
 
 	var setupCatalogPanel = function(exercise) {
-		var submitted = exercise.status == EXERCISE_STATUS.SUBMITTED;
+		var working = exercise.test.status == TEST_STATUS.WORKING;
 		var items = exercise.asList();
 		var n = items.length;
 		var list = [], sec = null, prob = null;
@@ -182,7 +184,7 @@ var testContentPage = function() {
 					}
 				}
 				var read = item.answer.length;
-				var wrong = submitted && !toolbox.arrayCompare(item.answer, item.key);
+				var wrong = !working && !toolbox.arrayCompare(item.answer, item.key);
 				list.push(
 					'<li><a seq="', i, '" class="', read ? 'list_read' : '', wrong ? ' wrong_answer': '', '"',
 						'><div style="float:left">', item.seq, '</div>',
@@ -229,8 +231,10 @@ var testContentPage = function() {
 			catalog.html('');
 			setupSubmitBtn();
 			content.html('');
-			testDataStore.getTestDetail(data.pk, function(exercise) {
-				data.setRead();
+			testDataStore.getTestDetail(data, function(exercise) {
+				if (data.status == TEST_STATUS.NEW) {
+					data.setStatus(TEST_STATUS.WORKING);
+				}
 				_storage.testExercise = exercise;
 				seq = 0;
 				setupCatalogPanel(exercise);
@@ -270,7 +274,7 @@ var testContentPage = function() {
 			);
 			list.push(!data.score ? '<br/>' : '<div style="text-align:right"><span class="lang">Score:</span> ', data.score, '</div>');
 			list.push('<span>', data.seq, ') </span>');
-			renderQuiz(list, data, _storage.testExercise.status == EXERCISE_STATUS.SUBMITTED);
+			renderQuiz(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
 		localizeAll(content.html(list.join('')));
 		renderAudio(content);
@@ -286,7 +290,7 @@ var testContentPage = function() {
 				catalog.find('a[seq=' + seq + ']').removeClass('list_read');
 			}
 		});
-		if (_storage.testExercise.status == EXERCISE_STATUS.SUBMITTED) {
+		if (_storage.testExercise.test.status != TEST_STATUS.WORKING) {
 			answer.parent().on('click', function() {
 				return false;
 			});

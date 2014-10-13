@@ -1,15 +1,15 @@
 var testDataStore = {
 };
 
-var TestData = function(data){
-	this.pk = data[0];
-	this.clazz = data[1];
-	this.name = data[2];
-	this.isRead = data[3];
-	this.isExam = data[4];
+var TestData = function(pk, clazz, name, status, isExam){
+	this.pk = pk;
+	this.clazz = clazz;
+	this.name = name;
+	this.status = status;
+	this.isExam = isExam;
 
-	this.setRead = function() {
-		this.isRead = true;
+	this.setStatus = function(status) {
+		this.status = status;
 		testDataStore.uipage.trigger('listchanged', [this.isExam]);
 	};
 };
@@ -19,17 +19,17 @@ testDataStore.setUIPage = function(page) {
 };
 
 var testAssignmentDataList = [
-	new TestData([3, 1, '1.1 Assignment', true, false]),
-	new TestData([4, 1, '1.2 Assignment', true, false]),
-	new TestData([5, 2, '2.1 Assignment', true, false]),
-	new TestData([6, 3, '2.2 Assignment', true, false]),
-	new TestData([7, 2, '2.3 Assignment', true, false]),
-	new TestData([8, 1, '3.1 Assignment', true, false])
+	new TestData(3, 1, '1.1 Assignment', 'n', false),
+	new TestData(4, 1, '1.2 Assignment', 'n', false),
+	new TestData(5, 2, '2.1 Assignment', 'n', false),
+	new TestData(6, 3, '2.2 Assignment', 'n', false),
+	new TestData(7, 2, '2.3 Assignment', 'n', false),
+	new TestData(8, 1, '3.1 Assignment', 'n', false)
 ];
 
 var testExamDataList = [
-	new TestData([1, 3, '2014 Final Test', false, true]),
-	new TestData([2, 1, '2014 Middle Test', true, true])
+	new TestData(1, 3, '2014 Final Test', 'n', true),
+	new TestData(2, 1, '2014 Middle Test', 'n', true)
 ];
 
 testDataStore.getAssignmentDataList = function() {
@@ -76,8 +76,6 @@ testDataStore.Exercise = function(pk, name, sections) {
 	this.pk = pk;
 	this.name = name;
 	this.sections = sections;
-	this.status = EXERCISE_STATUS.NEW;
-	this.score = 0;
 
 	var list = [];
 	var n = sections.length;
@@ -150,18 +148,20 @@ testDataStore.Exercise = function(pk, name, sections) {
 		var self = this;
 		console.log(self.name, result);
 		setTimeout(function() {
-			self.status = EXERCISE_STATUS.SUBMITTED;
+			self.test.status = TEST_STATUS.SUBMITTED;
 
-			var n = list.length, score = 0;
+			var n = list.length, score = 0, total = 0;
 			for (var i = 0; i < n; ++i) {
 				var quiz = list[i];
 				if (quiz instanceof testDataStore.Problem)
 					continue;
 
+				total += quiz.score;
 				if (toolbox.arrayCompare(quiz.answer, quiz.key))
 					score += quiz.score;
 			}
-			self.score = score;
+			self.test.score = score + '/' + total;
+			self.test.setStatus(TEST_STATUS.SCORED);
 
 			okFunc();
 		}, 3000);
@@ -191,12 +191,12 @@ var testExerciseDataList = (function() {
 			])
 		]),
 		new testDataStore.Section('Reading', [
-			new testDataStore.Problem('', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
+			new testDataStore.Problem('Three little pigs', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
 				new testDataStore.Quiz(7, _TF, 'At the end, the wolf ate the pigs.', 5, [], [0]),
 				new testDataStore.Quiz(8, _SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron'], [1]),
 				new testDataStore.Quiz(9, _SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'], [3])
 			]),
-			new testDataStore.Problem('', 'Far far away, there lived a dragon...', [
+			new testDataStore.Problem('Dragon and Alice', 'Far far away, there lived a dragon...', [
 				new testDataStore.Quiz(10, _MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep'], [1]),
 				new testDataStore.Quiz(11, _MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'], [0, 2])
 			])
@@ -215,12 +215,13 @@ var testExerciseDataList = (function() {
 	return list;
 })();
 
-testDataStore.getTestDetail = function(pk, okFunc, errFunc) {
-	var n = testExerciseDataList.length;
+testDataStore.getTestDetail = function(data, okFunc, errFunc) {
+	var n = testExerciseDataList.length, pk = data.pk;
 	for (var i = 0; i < n; ++i) {
 		var exercise = testExerciseDataList[i];
 		if (pk == exercise.pk) {
 			setTimeout(function() {
+				exercise.test = data;
 				okFunc(exercise);
 			}, 3000);
 			return;
