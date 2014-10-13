@@ -111,6 +111,9 @@ var testContentPage = function() {
 		if (exercise.status == EXERCISE_STATUS.SUBMITTED) {
 			return false;
 		}
+
+		mediaManager.pause();
+
 		if (!exercise.isCompleted()
 			&& !confirm(getLocale('The test is not completed yet. Do you still want to submit?'))) {
 			return false;
@@ -222,11 +225,10 @@ var testContentPage = function() {
 		var data = _storage.testData[_storage.testDataIndex];
 		if (!_storage.testExercise || _storage.testExercise.pk != data.pk) {
 			_storage.testExercise = null;
-			txtTitle.html(data.name);
+			txtTitle.html('');
 			catalog.html('');
 			setupSubmitBtn();
 			content.html('');
-			toolbox.loading(true, true);
 			testDataStore.getTestDetail(data.pk, function(exercise) {
 				data.setRead();
 				_storage.testExercise = exercise;
@@ -234,13 +236,17 @@ var testContentPage = function() {
 				setupCatalogPanel(exercise);
 				setupSubmitBtn(exercise);
 				page.trigger('pagebeforeshow');
+				txtTitle.html(data.name);
 				toolbox.loading(false);
 			}, function() {
+				txtTitle.html(data.name);
 				toolbox.loading(false);
 				alert(getLocale('Failed to load test content.'));
 			});
 			return;
 		}
+
+		mediaManager.stop();
 
 		var data = _storage.testExercise.asList()[seq];
 		var list = [];
@@ -267,6 +273,7 @@ var testContentPage = function() {
 			renderQuiz(list, data, _storage.testExercise.status == EXERCISE_STATUS.SUBMITTED);
 		}
 		localizeAll(content.html(list.join('')));
+		renderAudio(content);
 
 		var answer = content.find('input').on('change', function() {
 			var val = answer.filter(':checked').map(function() {
@@ -302,4 +309,10 @@ var testContentPage = function() {
 			return seq;
 		}
 	);
+
+	page.on('pageshow', function() {
+		if (!txtTitle.html()) {
+			toolbox.loading(true, true);
+		}
+	});
 };

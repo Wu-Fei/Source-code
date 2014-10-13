@@ -176,7 +176,7 @@ var testExerciseDataList = (function() {
 	var sections = [
 		new testDataStore.Section('Listening', [
 			new testDataStore.Problem('', '', [
-				new testDataStore.Quiz(1, _TF, 'Do you hear sound?', 5, [], [0]),
+				new testDataStore.Quiz(1, _TF, 'Do you hear sound? <myaudio src="/android_asset/www/N1S08-01.mp3" />', 5, [], [0]),
 				new testDataStore.Quiz(2, _SC, 'What is this animal?', 5, ['Cat', 'Dog', 'Mice', 'None of above'], [3])
 			])
 		]),

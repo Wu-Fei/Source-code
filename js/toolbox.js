@@ -7,6 +7,58 @@ EXERCISE_STATUS = {};
 EXERCISE_STATUS.NEW = 'n';
 EXERCISE_STATUS.SUBMITTED = 's';
 
+var mediaManager = {};
+
+mediaManager.media = null;
+mediaManager.src = null;
+mediaManager.playing = false;
+
+mediaManager.play = function(src, okFunc, errFunc) {
+	if (mediaManager.media) {
+		if (src == mediaManager.src) {
+			if (!mediaManager.playing) {
+				mediaManager.media.play();
+				mediaManager.playing = true;
+			}
+			return;
+		} else {
+			mediaManager.media.stop();
+			mediaManager.media.release();
+		}
+	}
+
+	mediaManager.media = new Media(mediaManager.src = src, okFunc, errFunc);
+	mediaManager.media.play();
+	mediaManager.playing = true;
+};
+
+mediaManager.pause = function() {
+	if (mediaManager.media) {
+		mediaManager.media.pause();
+		mediaManager.playing = false;
+	}
+};
+
+mediaManager.stop = function() {
+	if (mediaManager.media) {
+		if (mediaManager.playing) {
+			mediaManager.media.stop();
+			mediaManager.playing = false;
+		}
+	}
+};
+
+mediaManager.release = function() {
+	if (mediaManager.media) {
+		if (mediaManager.playing) {
+			mediaManager.media.stop();
+			mediaManager.playing = false;
+		}
+		mediaManager.media.release();
+		mediaManager.media = mediaManager.src = null;
+	}
+};
+
 var toolbox = {
 };
 
@@ -36,22 +88,20 @@ toolbox.arrayCompare = function(a, b) {
 };
 
 toolbox.loading = function(show, model) {
-	setTimeout(function() {
-		if (show) {
-			if (model) {
-				var blocker = $('#_loading_blocker_');
-				if (blocker.length) {
-					blocker.show();
-				} else {
-					$('body').append('<div id="_loading_blocker_" class="ui-popup-screen in ui-overlay-b"></div>');
-				}
+	if (show) {
+		if (model) {
+			var blocker = $('#_loading_blocker_');
+			if (blocker.length) {
+				blocker.show();
+			} else {
+				$('body').append('<div id="_loading_blocker_" class="ui-popup-screen in ui-overlay-b"></div>');
 			}
-			$.mobile.loading('show');
-		} else {
-			$('#_loading_blocker_').hide();
-			$.mobile.loading('hide');
 		}
-	}, 50);
+		$.mobile.loading('show');
+	} else {
+		$('#_loading_blocker_').hide();
+		$.mobile.loading('hide');
+	}
 };
 
 toolbox.pages = [

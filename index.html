@@ -6,6 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
+
   <style>
   .ui-radio .ui-btn, .ui-checkbox .ui-btn {
     font-weight: normal
@@ -317,6 +319,13 @@ $(function() {
 		self.data('lang', self.html());
 	});
 	setLocaleLanguage('cn_zh');
+
+	$(window).on('hashchange', function() {
+		mediaManager.release();
+	});
+	$(document).on('pause', function() {
+		mediaManager.pause();
+	});
 });
 
 </script>

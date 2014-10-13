@@ -1,0 +1,5 @@
+.ui-icon-play:after { background-image: url("images/play.png"); }
+
+.ui-icon-pause:after { background-image: url("images/pause.png"); }
+
+.ui-icon-stop:after { background-image: url("images/stop.png"); }

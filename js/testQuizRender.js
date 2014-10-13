@@ -90,3 +90,26 @@ var renderQuiz = function(list, quiz, status) {
 	prepareChallenge[quiz.type](list, quiz, status);
 	list.push('</fieldset>', '</form>');
 };
+
+var renderAudio = function(content) {
+	content.find('myaudio').each(function() {
+		var self = $(this);
+		var src = self.attr('src');
+		var btns = self.html([
+			'<fieldset data-role="controlgroup" data-type="horizontal" style="display:inline-block">',
+				'<a class="ui-btn ui-corner-all ui-icon-play ui-btn-icon-notext">&nbsp;</a>',
+				'<a class="ui-btn ui-corner-all ui-icon-pause ui-btn-icon-notext">&nbsp;</a>',
+				'<a class="ui-btn ui-corner-all ui-icon-stop ui-btn-icon-notext">&nbsp;</a>',
+			'</fieldset>'
+		].join('')).find('a');
+		btns.eq(0).on('click', function() {
+			mediaManager.play(src, function() {});
+		});
+		btns.eq(1).on('click', function() {
+			mediaManager.pause();
+		});
+		btns.eq(2).on('click', function() {
+			mediaManager.stop();
+		});
+	});
+};
