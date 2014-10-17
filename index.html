@@ -62,13 +62,14 @@
   </style>
   <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.mobile-1.4.4.min.js"></script>
-  <script src="cordova.js"></script>
+  <!--<script src="cordova.js"></script>-->
 
   <script src="js/toolbox.js"></script>
   <script src="js/locale.js"></script>
   <script src="js/qrCode.js"></script>
   <script src="js/testQuizRender.js"></script>
 
+  <script src="js/restfulApi.js"></script>
   <script src="js/inboxData.js"></script>
   <script src="js/testData.js"></script>
   <script src="js/qaData.js"></script>
@@ -89,10 +90,15 @@
 <div data-role="page" id="loginPage">
   <div data-role="header" data-position="fixed">
     <h1>Parrot (Student)</h1>
+    <a data-transition="pop" href="#registerPage" class="ui-btn-right lang">Register</a>
   </div>
 
   <div data-role="content" style="position:relative">
-  	<div align="center"><a id="loginBtnLogin" data-role="button" data-inline="true" class="lang">Login</a></div>
+  	<div align="center"><form><table>
+  		<tr><td class="lang">User ID:</td><td><input name="username"/></td></tr>
+  		<tr><td class="lang">Password:</td><td><input name="password"/></td></tr>
+  		<tr><td>&nbsp;</td><td><a data-role="button" class="lang">Login</a></td></tr>
+  	</table></form></div>
   </div>
 
   <div data-role="footer" data-position="fixed">
@@ -284,6 +290,27 @@
   </div>
 </div>
 
+<!-- registerPage start -->
+
+<div data-role="page" id="registerPage">
+  <div data-role="header" data-position="fixed">
+    <a data-icon="back" data-rel="back" class="lang">Back</a>
+    <h1 class="title-align-left lang">Register</h1>
+  </div>
+
+  <div data-role="content">
+    <div align="center"><form><table>
+      <tr><td class="lang">User ID:</td><td><input name="username" /></td></tr>
+      <tr><td class="lang">Password:</td><td><input name="password" /></td></tr>
+      <tr><td class="lang">Password Confirm:</td><td><input name="password2" /></td></tr>
+      <tr><td class="lang">Name:</td><td><input name="name" /></td></tr>
+      <tr><td class="lang">Email:</td><td><input name="email" /></td></tr>
+      <tr><td class="lang">Phone:</td><td><input name="phone" /></td></tr>
+      <tr><td>&nbsp;</td><td><a data-role="button" class="lang">Register</a></td></tr>
+    </table></form></div>
+  </div>
+</div>
+
 <!-- done with all pages -->
 
 <script type="text/javascript">
@@ -313,6 +340,7 @@ $(function() {
 	classJoinPage();
 
 	settingPage();
+	registerPage();
 
 	$('.lang').each(function() {
 		var self = $(this);
