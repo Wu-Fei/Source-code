@@ -28,6 +28,11 @@ var classPendingDataList = [
 ];
 
 classDataStore.getActiveDataList = function() {
+	restfulApi.getClass(function(result) {
+		console.log(result);
+	}, function(err) {
+		console.log(err);
+	});
 	return classActiveDataList;
 };
 

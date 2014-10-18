@@ -5,25 +5,26 @@ var loginPage = function() {
 	var txtUserName = form.find('input[name=username]');
 	var txtPassword = form.find('input[name=password]');
 
-	console.log(txtUserName, txtPassword);
-
 	form.find('a').on('click', function() {
 		var username = $.trim(txtUserName.val());
 		var password = $.trim(txtPassword.val());
 
-		// validate
+		if (username.length < 4) {
+			alert(getLocale('Invalid user ID.'));
+			return;
+		}
+		if (password.length < 6) {
+			alert(getLocale('Invalid password.'));
+			return;
+		}
 
-		restfulApi.login(username, password)
-			.done(function(data) {
-				console.log(data);
-
-				var p = localStorage.activePage || 'inbox';
-				localStorage.activePage = '';
-				location.replace('#' + p + 'Page');
-
-			}).fail(function(err) {
-				console.log(err);
-			});
+		restfulApi.login(username, password, function() {
+			var p = localStorage.activePage || 'inbox';
+			localStorage.activePage = '';
+			location.replace('#' + p + 'Page');
+		}, function(err){
+			alert(getLocale(err));
+		});
 	});
 };
 
@@ -47,11 +48,26 @@ var registerPage = function() {
 		var email = $.trim(txtEmail.val());
 		var phone = $.trim(txtPhone.val());
 
-		// validate
-		restfulApi.registerUser(username, password, name, email, phone)
-			.done(function(data) {
-				console.log(data);
-			}).fail(function(err) {
+		if (username.length < 4) {
+			alert(getLocale('Invalid user ID.'));
+			return;
+		}
+		if (password.length < 6) {
+			alert(getLocale('Invalid password.'));
+			return;
+		}
+		if (password2 != password) {
+			alert(getLocale('Password is not confirmed.'));
+			return;
+		}
+		if (!name) {
+			alert(getLocale('Please enter your name.'));
+			return;
+		}
+
+		restfulApi.registerUser(username, password, name, email, phone, function(result) {
+				console.log(result);
+			}, function(err) {
 				console.log(err);
 			});
 	});
