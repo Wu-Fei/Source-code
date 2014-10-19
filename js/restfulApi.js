@@ -1,10 +1,11 @@
 var restfulApi = {
 };
 
-breeze.NamingConvention.camelCase.setAsDefault();
+
 
 restfulApi.host = 'http://eclasso2o.azurewebsites.net';
 restfulApi.caller = new breeze.EntityManager(restfulApi.host + '/breeze/eClassO2OApi');
+breeze.NamingConvention.camelCase.setAsDefault();
 
 restfulApi.registerUser = function(username, password, name, email, phone, okFunc, errFunc) {
 	$.ajax({
