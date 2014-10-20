@@ -65,9 +65,9 @@ var registerPage = function() {
 			return;
 		}
 
-		restfulApi.registerUser(username, password, name, email, phone, function(result) {
+		data.register(username, password, name, email, phone).done(function(result) {
 				console.log(result);
-			}, function(err) {
+			}).fail(function(err) {
 				console.log(err);
 			});
 	});

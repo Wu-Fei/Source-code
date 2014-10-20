@@ -3,7 +3,8 @@ var restfulApi = {
 
 
 
-restfulApi.host = 'http://eclasso2o.azurewebsites.net';
+//restfulApi.host = 'http://eclasso2o.azurewebsites.net';
+restfulApi.host = 'http://localhost:56360/';
 restfulApi.caller = new breeze.EntityManager(restfulApi.host + '/breeze/eClassO2OApi');
 breeze.NamingConvention.camelCase.setAsDefault();
 
@@ -41,7 +42,11 @@ restfulApi.login = function(username, password, okFunc, errFunc) {
 		if (result.access_token) {
 			var auth = 'Bearer ' + result.access_token;
 			breeze.config.getAdapterInstance('ajax').defaultSettings = {
-				headers: {'Authorization': auth}
+				beforeSend: function (xhr, settings) {
+                if (xhr) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + getAccessToken());
+                }
+            }
 			};
 			okFunc();
 		} else {
