@@ -55,9 +55,7 @@ prepareAnswer[QUIZ_TYPE.TRUE_FALSE] = function(content, catalog, quiz, working) 
 			}
 		});
 	} else {
-		answer.parent().on('click', function() {
-			return false;
-		});
+		answer.prop('disabled', true);
 	}
 };
 

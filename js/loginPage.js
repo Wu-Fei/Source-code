@@ -31,9 +31,12 @@ var loginPage = function() {
 			return;
 		}
 
+		toolbox.loading(true, true);
 		restfulApi.login(username, password, function() {
+			toolbox.loading(false);
 			realStart();
 		}, function(err){
+			toolbox.loading(false);
 			alert(getLocale(err));
 		});
 	});
