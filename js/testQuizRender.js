@@ -1,5 +1,7 @@
 var prepareChallenge = {};
 
+var prepareAnswer = {};
+
 prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, working) {
 	var checked, wrong;
 	checked = $.inArray(0, quiz.answer) >= 0 ? ' checked="checked"' : '';
@@ -38,6 +40,27 @@ prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, working) {
 	);
 };
 
+prepareAnswer[QUIZ_TYPE.TRUE_FALSE] = function(content, catalog, quiz, working) {
+	var answer = content.find('input');
+	if (working) {
+		answer.on('change', function() {
+			answer.each(function() {
+				var self = $(this);
+				quiz.setAnswer(self.val() * 1, self.is(':checked'));
+			});
+			if (quiz.isAnswerReady()) {
+				catalog.addClass('list_read');
+			} else {
+				catalog.removeClass('list_read');
+			}
+		});
+	} else {
+		answer.parent().on('click', function() {
+			return false;
+		});
+	}
+};
+
 prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
 	for (var i = 0; i < n; ++i) {
@@ -60,6 +83,8 @@ prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, working) {
 		);
 	}
 };
+
+prepareAnswer[QUIZ_TYPE.SINGLE_CHOICE] = prepareAnswer[QUIZ_TYPE.TRUE_FALSE];
 
 prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
@@ -84,11 +109,69 @@ prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, working) {
 	}
 };
 
-var renderQuiz = function(list, quiz, status) {
-	list.push(quiz.content);
-	list.push('<form>', '<fieldset data-role="controlgroup">');
-	prepareChallenge[quiz.type](list, quiz, status);
-	list.push('</fieldset>', '</form>');
+prepareAnswer[QUIZ_TYPE.MULTIPLE_CHOICE] = prepareAnswer[QUIZ_TYPE.TRUE_FALSE];
+
+prepareAnswer[QUIZ_TYPE.FILL_BLANK] = function(content, catalog, quiz, working) {
+	var blanks = content.find('span.fill_blank');
+	var n = quiz.key.length;
+	var b, answer;
+	for (var i = 0; i < n; ++i) {
+		b = blanks.eq(i);
+		if (!working) {
+			answer = quiz.answer[i];
+			if (answer == quiz.key[i]) {
+				b.text(answer);
+			} else {
+				if (answer) {
+					b.html([
+						'<span class="wrong_answer extra">', toolbox.htmlEncode(answer), '</span>',
+						'&nbsp;',
+						'<span class="wrong">', toolbox.htmlEncode(quiz.key[i]), '<span>'
+					].join(''));
+				} else {
+					b.html([
+						'<span class="wrong">', toolbox.htmlEncode(quiz.key[i]), '<span>'
+					].join(''));
+				}
+			}
+		} else {
+			var j = i;
+			answer = quiz.answer[j] ? toolbox.htmlEncode(quiz.answer[j]) : '&nbsp;&nbsp;&nbsp;&nbsp;';
+			b.html(answer).on('click', function() {
+				console.log(j);
+				var answer = prompt('', quiz.answer[j]);
+				if (answer !== null) {
+					answer = $.trim();
+					if (answer === '') {
+						b.html('&nbsp;&nbsp;&nbsp;&nbsp;');
+						quiz.setAnswer(j, null);
+						catalog.removeClass('list_read');
+					} else {
+						b.text(answer);
+						quiz.setAnswer(j, answer);
+						if (quiz.isAnswerReady()) {
+							catalog.addClass('list_read');
+						}
+					}
+				}
+			});
+		}
+	};
+};
+
+var renderQuizChallenge = function(list, quiz, working) {
+	if (quiz.type == QUIZ_TYPE.FILL_BLANK) {
+		list.push(quiz.content.replace(/____/g, '<span class="fill_blank"></span>'));
+	} else {
+		list.push(quiz.content);
+		list.push('<form>', '<fieldset data-role="controlgroup">');
+		prepareChallenge[quiz.type](list, quiz, working);
+		list.push('</fieldset>', '</form>');
+	}
+};
+
+var renderQuizAnswer = function(content, catalog, quiz, working) {
+	prepareAnswer[quiz.type](content, catalog, quiz, working);
 };
 
 var renderAudio = function(content) {

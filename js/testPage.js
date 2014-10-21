@@ -183,7 +183,7 @@ var testContentPage = function() {
 						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
 					}
 				}
-				var read = item.answer.length;
+				var read = item.isAnswerReady();
 				var wrong = !working && !toolbox.arrayCompare(item.answer, item.key);
 				list.push(
 					'<li><a seq="', i, '" class="', read ? 'list_read' : '', wrong ? ' wrong_answer': '', '"',
@@ -274,28 +274,16 @@ var testContentPage = function() {
 			);
 			list.push(!data.score ? '<br/>' : '<div style="text-align:right"><span class="lang">Score:</span> ', data.score, '</div>');
 			list.push('<span>', data.seq, ') </span>');
-			renderQuiz(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
+			renderQuizChallenge(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
 
 		localizeAll(content.html(list.join('')));
-		renderAudio(content);
 
-		var answer = content.find('input').on('change', function() {
-			var val = answer.filter(':checked').map(function() {
-				return $(this).val() * 1;
-			}).get();
-			data.setAnswer(val);
-			if (val.length) {
-				catalog.find('a[seq=' + seq + ']').addClass('list_read');
-			} else {
-				catalog.find('a[seq=' + seq + ']').removeClass('list_read');
-			}
-		});
-		if (_storage.testExercise.test.status != TEST_STATUS.WORKING) {
-			answer.parent().on('click', function() {
-				return false;
-			});
+		if (data instanceof testDataStore.Quiz) {
+			renderQuizAnswer(content, catalog.find('a[seq=' + seq + ']'), data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
+
+		renderAudio(content);
 
 		content.trigger('create');
 		data.t0 = new Date();

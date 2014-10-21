@@ -51,13 +51,36 @@ testDataStore.Quiz = function(pk, type, content, score, challenge, key) {
 	this.score = score;
 	this.challenge = challenge;
 	this.key = key;
-	this.answer = [];
+	this.answer = new Array(key.length);
 	this.t0 = null;
 	this.usedTime = 0;
 
-	this.setAnswer = function(answer) {
-		this.answer = answer;
+	this.clearAnswer = function() {
+		for (var i = 0; i < this.answer.length; ++i) {
+			this.answer[i] = null;
+		}
 	};
+
+	this.clearAnswer();
+
+	this.isAnswerReady = function() {
+		var ready = false;
+		for (var i = 0; i < this.answer.length; ++i) {
+			var a = this.answer[i];
+			if (a === null) {
+				return false;
+			}
+			if (a) {
+				ready = true;
+			}
+		}
+		return ready;
+	};
+
+	this.setAnswer = function(idx, val) {
+		this.answer[idx] = val;
+	};
+
 	this.addUsedTime = function(dt) {
 		this.usedTime += dt;
 	};
@@ -182,6 +205,7 @@ var testExerciseDataList = (function() {
 	var _TF = QUIZ_TYPE.TRUE_FALSE;
 	var _SC = QUIZ_TYPE.SINGLE_CHOICE;
 	var _MC = QUIZ_TYPE.MULTIPLE_CHOICE;
+	var _FB = QUIZ_TYPE.FILL_BLANK;
 
 	var sections = [
 		new testDataStore.Section('Listening', [
@@ -198,17 +222,22 @@ var testExerciseDataList = (function() {
 			new testDataStore.Problem(3, 'Multiple Choices', '', [
 				new testDataStore.Quiz(5, _MC, 'Which is correct?', 10, ['He is the best', 'He is the worst', 'He is better', 'He is worse'], [0, 1, 2, 3]),
 				new testDataStore.Quiz(6, _MC, 'Which is incorrect?', 10, ['Find the other one', 'Find another one', 'Find other one', 'Find the another one'], [2, 3])
+			]),
+			new testDataStore.Problem(4, 'Fill Blanks', '', [
+				new testDataStore.Quiz(7, _FB, 'We ____ going to the park ____ the morning.', 5, [], ['are', 'in']),
+				new testDataStore.Quiz(8, _FB, 'The plane takes ____ in five minutes. Hurry ____.', 5, [], ['off', 'up'])
 			])
 		]),
 		new testDataStore.Section('Reading', [
-			new testDataStore.Problem(4, 'Three little pigs', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
-				new testDataStore.Quiz(7, _TF, 'At the end, the wolf ate the pigs.', 5, [], [0]),
-				new testDataStore.Quiz(8, _SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron'], [1]),
-				new testDataStore.Quiz(9, _SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'], [3])
+			new testDataStore.Problem(5, 'Three little pigs', 'Once upon time, there were three little pigs...<br/><img src="img/three-little-pigs.jpg"/>', [
+				new testDataStore.Quiz(9, _TF, 'At the end, the wolf ate the pigs.', 5, [], [0]),
+				new testDataStore.Quiz(10, _SC, 'How did the second pig build the house?', 5, ['Use bricks', 'Use sticks', 'Use straw', 'Use iron'], [1]),
+				new testDataStore.Quiz(11, _SC, 'What is the name of the BBW?', 5, ['Bob', 'Mike', 'Wolf', 'Did not say'], [3]),
+				new testDataStore.Quiz(12, _FB, 'The third ____ built the ____ with ____.', 5, [], ['pig', 'bricks']),
 			]),
-			new testDataStore.Problem(5, 'Dragon and Alice', 'Far far away, there lived a dragon...', [
-				new testDataStore.Quiz(10, _MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep'], [1]),
-				new testDataStore.Quiz(11, _MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'], [0, 2])
+			new testDataStore.Problem(6, 'Dragon and Alice', 'Far far away, there lived a dragon...', [
+				new testDataStore.Quiz(12, _MC, 'What does the dragon like?', 10, ['Eat apple', 'Gold', 'Play games', 'Sleep'], [1]),
+				new testDataStore.Quiz(13, _MC, 'What is the story about?', 10, ['About a dragon', 'About a boy', 'About a girl', 'All of above'], [0, 2])
 			])
 		])
 	];
