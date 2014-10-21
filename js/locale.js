@@ -19,7 +19,6 @@ _localeStrList['cn_zh'] = {
 	'Exam': '考题',
 	'Login': '登录',
 	'Register': '注册',
-
 	'User ID:': '用户名:',
 	'Password:': '密码:',
 	'Password Confirm:': '确认密码:',
@@ -35,6 +34,7 @@ _localeStrList['cn_zh'] = {
 	'True or False': '是非题',
 	'Single Choice': '单选题',
 	'Multiple Choices': '多选题',
+	'Fill Blanks': '填空题',
 	'True': '对',
 	'False': '错',
 	'Score:': '分数：',

@@ -5,11 +5,19 @@ var loginPage = function() {
 	var txtUserName = form.find('input[name=username]');
 	var txtPassword = form.find('input[name=password]');
 
-	form.find('a').on('click', function() {
+	var realStart = function() {
+		$('#inboxPage').trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
+		$('#testPage').trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
+		$('#classPage').trigger('listchanged', [localStorage.classActiveTab == 'Pending']);
+
 		var p = localStorage.activePage || 'inbox';
 		localStorage.activePage = '';
 		location.replace('#' + p + 'Page');
-		return;
+	};
+
+	form.find('a').on('click', function() {
+		//realStart();
+		//return;
 
 		var username = $.trim(txtUserName.val());
 		var password = $.trim(txtPassword.val());
@@ -24,15 +32,12 @@ var loginPage = function() {
 		}
 
 		restfulApi.login(username, password, function() {
-			var p = localStorage.activePage || 'inbox';
-			localStorage.activePage = '';
-			location.replace('#' + p + 'Page');
+			realStart();
 		}, function(err){
 			alert(getLocale(err));
 		});
 	});
 };
-
 
 var registerPage = function() {
 	var page = $('#registerPage');

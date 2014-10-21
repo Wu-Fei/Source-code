@@ -4,7 +4,7 @@ var prepareAnswer = {};
 
 prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, working) {
 	var checked, wrong;
-	checked = $.inArray(0, quiz.answer) >= 0 ? ' checked="checked"' : '';
+	checked = quiz.answer[0] ? ' checked="checked"' : '';
 	wrong = '';
 	if (!working) {
 		if ($.inArray(0, quiz.key) >= 0) {
@@ -21,7 +21,7 @@ prepareChallenge[QUIZ_TYPE.TRUE_FALSE] = function(list, quiz, working) {
 		'<input id="_challenge_0"', checked, ' type="radio" name="_challenge_" value="0"/>',
 		'<label for="_challenge_0" class="lang', wrong, '">False</label>'
 	);
-	checked = $.inArray(1, quiz.answer) >= 0 ? ' checked="checked"' : '';
+	checked = quiz.answer[1] ? ' checked="checked"' : '';
 	wrong = '';
 	if (!working) {
 		if ($.inArray(1, quiz.key) >= 0) {
@@ -64,7 +64,7 @@ prepareAnswer[QUIZ_TYPE.TRUE_FALSE] = function(content, catalog, quiz, working) 
 prepareChallenge[QUIZ_TYPE.SINGLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
 	for (var i = 0; i < n; ++i) {
-		checked = $.inArray(i, quiz.answer) >= 0 ? ' checked="checked"' : '';
+		checked = quiz.answer[i] ? ' checked="checked"' : '';
 		wrong = '';
 		if (!working) {
 			if ($.inArray(i, quiz.key) >= 0) {
@@ -89,7 +89,7 @@ prepareAnswer[QUIZ_TYPE.SINGLE_CHOICE] = prepareAnswer[QUIZ_TYPE.TRUE_FALSE];
 prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, working) {
 	var checked, wrong, n = quiz.challenge.length;
 	for (var i = 0; i < n; ++i) {
-		checked = $.inArray(i, quiz.answer) >= 0 ? ' checked="checked"' : '';
+		checked = quiz.answer[i] ? ' checked="checked"' : '';
 		wrong = '';
 		if (!working) {
 			if ($.inArray(i, quiz.key) >= 0) {
@@ -112,49 +112,51 @@ prepareChallenge[QUIZ_TYPE.MULTIPLE_CHOICE] = function(list, quiz, working) {
 prepareAnswer[QUIZ_TYPE.MULTIPLE_CHOICE] = prepareAnswer[QUIZ_TYPE.TRUE_FALSE];
 
 prepareAnswer[QUIZ_TYPE.FILL_BLANK] = function(content, catalog, quiz, working) {
+	var workingOnFillBlank = function(b, idx) {
+		var answer = quiz.answer[idx] ? toolbox.htmlEncode(quiz.answer[idx]) : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+		b.html('&nbsp;' + answer + '&nbsp;').on('click', function() {
+			var answer = prompt('', quiz.answer[idx] || '' );
+			if (answer !== null) {
+				answer = $.trim(answer);
+				if (answer === '') {
+					b.html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+					quiz.setAnswer(idx, null);
+					catalog.removeClass('list_read');
+				} else {
+					b.html('&nbsp;' + toolbox.htmlEncode(answer) + '&nbsp;');
+					quiz.setAnswer(idx, answer);
+					if (quiz.isAnswerReady()) {
+						catalog.addClass('list_read');
+					}
+				}
+			}
+		});
+	};
+
 	var blanks = content.find('span.fill_blank');
 	var n = quiz.key.length;
 	var b, answer;
 	for (var i = 0; i < n; ++i) {
 		b = blanks.eq(i);
-		if (!working) {
+		if (working) {
+			workingOnFillBlank(b, i);
+		} else {
 			answer = quiz.answer[i];
 			if (answer == quiz.key[i]) {
 				b.text(answer);
 			} else {
 				if (answer) {
 					b.html([
-						'<span class="wrong_answer extra">', toolbox.htmlEncode(answer), '</span>',
+						'<span class="wrong_answer extra">&nbsp;', toolbox.htmlEncode(answer), '&nbsp;</span>',
 						'&nbsp;',
-						'<span class="wrong">', toolbox.htmlEncode(quiz.key[i]), '<span>'
+						'<span class="wrong_answer">&nbsp;', toolbox.htmlEncode(quiz.key[i]), '&nbsp;<span>'
 					].join(''));
 				} else {
 					b.html([
-						'<span class="wrong">', toolbox.htmlEncode(quiz.key[i]), '<span>'
+						'<span class="wrong_answer">&nbsp;', toolbox.htmlEncode(quiz.key[i]), '&nbsp;<span>'
 					].join(''));
 				}
 			}
-		} else {
-			var j = i;
-			answer = quiz.answer[j] ? toolbox.htmlEncode(quiz.answer[j]) : '&nbsp;&nbsp;&nbsp;&nbsp;';
-			b.html(answer).on('click', function() {
-				console.log(j);
-				var answer = prompt('', quiz.answer[j]);
-				if (answer !== null) {
-					answer = $.trim();
-					if (answer === '') {
-						b.html('&nbsp;&nbsp;&nbsp;&nbsp;');
-						quiz.setAnswer(j, null);
-						catalog.removeClass('list_read');
-					} else {
-						b.text(answer);
-						quiz.setAnswer(j, answer);
-						if (quiz.isAnswerReady()) {
-							catalog.addClass('list_read');
-						}
-					}
-				}
-			});
 		}
 	};
 };
@@ -172,6 +174,24 @@ var renderQuizChallenge = function(list, quiz, working) {
 
 var renderQuizAnswer = function(content, catalog, quiz, working) {
 	prepareAnswer[quiz.type](content, catalog, quiz, working);
+};
+
+var isAnswerCorrect = function(quiz) {
+	if (quiz.type == QUIZ_TYPE.FILL_BLANK) {
+		for (var i = 0; i < quiz.answer.length; ++i) {
+			if (quiz.key[i] !== quiz.answer[i]) {
+				return false;
+			}
+		}
+		return true;
+	} else {
+		for (var i = 0; i < quiz.answer.length; ++i) {
+			if (quiz.answer[i] !== ($.inArray(i, quiz.key) >= 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
 };
 
 var renderAudio = function(content) {

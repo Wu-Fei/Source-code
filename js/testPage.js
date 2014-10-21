@@ -97,7 +97,7 @@ var testPage = function() {
 				: testDataStore.getAssignmentDataList()
 			);
 		}
-	}).trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
+	});
 };
 
 var testContentPage = function() {
@@ -184,7 +184,7 @@ var testContentPage = function() {
 					}
 				}
 				var read = item.isAnswerReady();
-				var wrong = !working && !toolbox.arrayCompare(item.answer, item.key);
+				var wrong = !working && !isAnswerCorrect(item);
 				list.push(
 					'<li><a seq="', i, '" class="', read ? 'list_read' : '', wrong ? ' wrong_answer': '', '"',
 						'><div style="float:left">', item.seq, '</div>',
@@ -332,14 +332,18 @@ var testContentPage = function() {
 	};
 
 	setInterval(function() {
+		if (!_storage.testData || !_storage.testDataIndex) {
+			return;
+		}
 		var data = _storage.testData[_storage.testDataIndex];
-		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
-			data = _storage.testExercise.asList()[seq];
-			if (data.t0) {
-				var now = new Date()
-				data.addUsedTime(now - data.t0);
-				data.t0 = now;
-			}
+		if (!data || !_storage.testExercise || _storage.testExercise.pk != data.pk) {
+			return;
+		}
+		data = _storage.testExercise.asList()[seq];
+		if (data.t0) {
+			var now = new Date()
+			data.addUsedTime(now - data.t0);
+			data.t0 = now;
 		}
 	}, 1000);
 };

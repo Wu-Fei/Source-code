@@ -51,7 +51,11 @@ testDataStore.Quiz = function(pk, type, content, score, challenge, key) {
 	this.score = score;
 	this.challenge = challenge;
 	this.key = key;
-	this.answer = new Array(key.length);
+	this.answer = new Array(
+		type == QUIZ_TYPE.TRUE_FALSE
+			? 2 : type == QUIZ_TYPE.FILL_BLANK
+				? key.length : challenge.length
+	);
 	this.t0 = null;
 	this.usedTime = 0;
 
@@ -190,7 +194,8 @@ testDataStore.Exercise = function(pk, name, sections) {
 					continue;
 
 				total += quiz.score;
-				if (toolbox.arrayCompare(quiz.answer, quiz.key))
+
+				if (isAnswerCorrect(quiz))
 					score += quiz.score;
 			}
 			self.test.score = score + '/' + total;
