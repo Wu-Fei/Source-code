@@ -7,7 +7,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
   <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
-
   <style>
   .ui-radio .ui-btn, .ui-checkbox .ui-btn {
     font-weight: normal
@@ -120,6 +119,7 @@
 <div data-role="page" id="testPage">
   <div data-role="header" data-position="fixed">
     <h1></h1>
+      
     <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
   </div>
 
@@ -162,6 +162,7 @@
   <div data-role="header" data-position="fixed">
   	<a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
     <h1 class="lang">Q &amp; A</h1>
+      <a data-transition="pop" href="#CreateQaPage" class="ui-btn-right lang">Create</a>
     <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
   </div>
 
@@ -198,6 +199,24 @@
   </div>
 </div>
 
+
+<!--<div data-role="page" id="CreateQaPage">
+  <div data-role="header" data-position="fixed">
+    <a data-icon="back" data-rel="back" class="lang">Back</a>
+    <h1>Create Question</h1>
+  </div>
+
+  <div data-role="content" style="position:relative">
+  	<div align="center"><form><table>
+  		<tr><td class="lang">Question:</td><td><input name="question"/></td></tr>
+  		<tr><td class="lang">Answer:</td><td><textarea name="answer"/></td></tr>
+  		<tr><td>&nbsp;</td><td><a data-role="button" class="lang">Save</a></td></tr>
+  	</table></form></div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+  </div>
+</div>-->
 <!-- classPage start -->
 
 <div data-role="page" id="classPage">
@@ -301,7 +320,7 @@
 <script src="js/toolbox.js"></script>
 <script src="js/locale.js"></script>
 <script src="js/qrCode.js"></script>
-<script src="js/testQuizRender.js"></script>
+<!--<script src="js/testQuizRender.js"></script>-->
 
 <!--<script src="js/restfulApi.js"></script>-->
 <script src="js/inboxData.js"></script>
@@ -313,6 +332,7 @@
 <script src="js/inboxPage.js"></script>
 <script src="js/testPage.js"></script>
 <script src="js/qaPage.js"></script>
+<script src="js/createQaPage.js"></script>
 <script src="js/classPage.js"></script>
 
 <script src="js/settingPage.js"></script>

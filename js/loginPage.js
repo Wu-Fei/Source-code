@@ -5,26 +5,30 @@ var loginPage = function() {
 	var txtUserName = form.find('input[name=username]');
 	var txtPassword = form.find('input[name=password]');
 
-	form.find('a').on('click', function() {
-		var username = $.trim(txtUserName.val());
-		var password = $.trim(txtPassword.val());
+	form.find('a').on('click', function () {
+	    var username = $.trim(txtUserName.val());
+	    var password = $.trim(txtPassword.val());
 
-		if (username.length < 4) {
-			alert(getLocale('Invalid user ID.'));
-			return;
-		}
-		if (password.length < 6) {
-			alert(getLocale('Invalid password.'));
-			return;
-		}
-
-		restfulApi.login(username, password, function() {
-			var p = localStorage.activePage || 'inbox';
-			localStorage.activePage = '';
-			location.replace('#' + p + 'Page');
-		}, function(err){
-			alert(getLocale(err));
-		});
+	    if (username.length < 4) {
+	        alert(getLocale('Invalid user ID.'));
+	        return;
+	    }
+	    if (password.length < 6) {
+	        alert(getLocale('Invalid password.'));
+	        return;
+	    }
+	    //Save the q and a
+	    //var question = data.create('Question');
+	    data.signin(username, password, function (result) {
+	        if (result) {
+	            alert('login failed!');
+	        }
+	        else {
+	            var p = localStorage.activePage || 'inbox';
+	            localStorage.activePage = '';
+	            location.replace('#' + p + 'Page');
+	        }
+		})
 	});
 };
 
