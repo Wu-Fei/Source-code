@@ -19,22 +19,21 @@
         create:create,
         save: save,
         getClass: getClass,
-        getQuestion: getQuestion,
+        searchQuestion: searchQuestion,
         rollback: rejectChanges
     }
     return datacontext;
 
-    function save(entity, area) {
-        var baseQ = getBaseQuery(area);
-        currentmanager.attachEntity(model(), model().entityAspect.entityState);
-        return currentmanager.saveChanges();
+    function save(entity) {
+        manager.attachEntity(entity, entity.entityAspect.entityState);
+        return manager.saveChanges();
     }
 
     function rejectChanges() {
         manager.rejectChanges();
     }
 
-    function signin(username, password,callback) {
+    function signin(username, password,callback,errcallback) {
         //var rst;
         if (!getAccessToken()) {
             return $.post(host + '/token',
@@ -44,15 +43,19 @@
                     password: password
                 }).done(function (result) {
                     if (result.access_token) {
-                        data.setAccessToken(result.access_token);
-                        data.configureBreeze();
+                        setAccessToken(result.access_token);
+                        configureBreeze();
                         getCurrentUser(callback);
                     }
                     else {
                         callback(result);
                     }
-                }).fail(function(result) {callback(result)});
+                }).fail(function (result) { errcallback(result) });
 
+        }
+        else {
+            configureBreeze();
+            getCurrentUser(callback);
         };
     }
 
@@ -102,7 +105,7 @@
         var query = breeze.EntityQuery.from("currentUser");
         manager.executeQuery(query).then
             (function (result) {
-                user = result.results[0];
+                data.user = result.results[0];
                 callback()
             });
     }
@@ -113,9 +116,11 @@
         return manager.executeQuery(query);
     }
 
-    function getQuestion() {
+    function searchQuestion(condition) {
         var query = breeze.EntityQuery
-                    .from("Questions");
+                    .from("Questions")
+                    .orderBy("Create")
+                    .where("QuestionDetail","contains",condition);
         return manager.executeQuery(query);
     }
 

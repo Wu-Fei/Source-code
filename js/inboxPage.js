@@ -54,7 +54,7 @@ var inboxPage = function() {
 	}
 
 	var setTitle = function() {
-		localize(txtTitle, localStorage.inboxActiveTab);
+		localize(txtTitle, localStorage.inboxActiveTab + ' - ' + data.user.Name);
 		menuDropdown.css('left', txtTitle.position().left + txtTitle.outerWidth(true));
 	};
 

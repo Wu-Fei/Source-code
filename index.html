@@ -1,411 +1,518 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Parrot (Student)</title>
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
-  <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
-  <style>
-  .ui-radio .ui-btn, .ui-checkbox .ui-btn {
-    font-weight: normal
-  }
+    <title>Parrot (Student)</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
+    <style>
+        .ui-radio .ui-btn, .ui-checkbox .ui-btn
+        {
+            font-weight: normal;
+        }
 
-  .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled  {
-    filter: Alpha(Opacity=100);
-    opacity: 1
-  }
+        .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled
+        {
+            filter: Alpha(Opacity=100);
+            opacity: 1;
+        }
 
-  .list_read * {
-    font-weight: normal
-  }
+        .list_read *
+        {
+            font-weight: normal;
+        }
 
-  .tab_content {
-  	left: 1em;
-  	right: 1em;
-  	bottom: 0;
-  	height: 100%;
-  	position: absolute;
-  	display: none
-  }
+        .tab_content
+        {
+            left: 1em;
+            right: 1em;
+            bottom: 0;
+            height: 100%;
+            position: absolute;
+            display: none;
+        }
 
-  .title-dropdown-icon {
-	  position: absolute;
-	  top: 0.5em;
-	  margin-left: 0.5em;
-  }
+        .title-dropdown-icon
+        {
+            position: absolute;
+            top: 0.5em;
+            margin-left: 0.5em;
+        }
 
-  .ui-header .ui-title-align-left {
-	margin-left: 5.5em;
-	text-align: left
-  }
+        .ui-header .ui-title-align-left
+        {
+            margin-left: 5.5em;
+            text-align: left;
+        }
 
-  .ui-page-theme-a .footer-transparent {
-	background-color: transparent;
-	border-color: transparent
-  }
+        .ui-page-theme-a .footer-transparent
+        {
+            background-color: transparent;
+            border-color: transparent;
+        }
 
-  .ui-page-theme-a .footer-transparent a.ui-btn {
-	margin: 0.5em;
-	top: 0;
-	right: 0
-  }
+            .ui-page-theme-a .footer-transparent a.ui-btn
+            {
+                margin: 0.5em;
+                top: 0;
+                right: 0;
+            }
 
-  a[data-transition].ui-icon-star:after {
-  	background-color: #ff8080
-  }
+        a[data-transition].ui-icon-star:after
+        {
+            background-color: #ff8080;
+        }
 
-  .wrong_answer {
-	color: #ff0000 !important;
-	font-weight: 700 !important
-  }
-  .wrong_answer.extra {
-  	text-decoration: line-through !important
-  }
-  .fill_blank {
-  	text-decoration: underline
-  }
-  </style>
+        .wrong_answer
+        {
+            color: #ff0000 !important;
+            font-weight: 700 !important;
+        }
+
+            .wrong_answer.extra
+            {
+                text-decoration: line-through !important;
+            }
+
+        .fill_blank
+        {
+            text-decoration: underline;
+        }
+    </style>
 
 </head>
 <body>
 
-<!-- loginPage start -->
+    <!-- loginPage start -->
 
-<div data-role="page" id="loginPage">
-  <div data-role="header" data-position="fixed">
-    <h1>Parrot (Student)</h1>
-    <a data-transition="pop" href="#registerPage" class="ui-btn-right lang">Register</a>
-  </div>
+    <div data-role="page" id="loginPage">
+        <div data-role="header" data-position="fixed">
+            <h1>Parrot (Student)</h1>
+            <a data-transition="pop" href="#registerPage" class="ui-btn-right lang">Register</a>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  	<div align="center"><form><table>
-  		<tr><td class="lang">User ID:</td><td><input name="username"/></td></tr>
-  		<tr><td class="lang">Password:</td><td><input name="password" type="password"/></td></tr>
-  		<tr><td>&nbsp;</td><td><a data-role="button" class="lang">Login</a></td></tr>
-  	</table></form></div>
-  </div>
+        <div data-role="content" style="position: relative">
+            <div align="center">
+                <form>
+                    <table>
+                        <tr>
+                            <td class="lang">User ID:</td>
+                            <td>
+                                <input name="username" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Password:</td>
+                            <td>
+                                <input name="password" type="password" /></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><a data-role="button" class="lang">Login</a></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
 
-  <div data-role="footer" data-position="fixed">
-  </div>
-</div>
+        <div data-role="footer" data-position="fixed">
+        </div>
+    </div>
 
-<!-- inboxPage start -->
+    <!-- inboxPage start -->
 
-<div data-role="page" id="inboxPage">
-  <div data-role="header" data-position="fixed">
-  	<h1></h1>
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
-  </div>
+    <div data-role="page" id="inboxPage">
+        <div data-role="header" data-position="fixed">
+            <h1></h1>
+            <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  	<div class="tab_content"><ul id="inboxList"></ul></div>
-  </div>
+        <div data-role="content" style="position: relative">
+            <div class="tab_content">
+                <ul id="inboxList"></ul>
+            </div>
+        </div>
 
-  <div id="inboxMenu" data-role="popup" data-history="false">
-	  <ul data-role="listview" data-inset="true" data-icon="false" style="min-width:8em">
-		<li><a id="inboxMenuNotification" class="lang">Notification</a></li>
-		<li><a id="inboxMenuMessage" class="lang">Message</a></li>
-	  </ul>
-  </div>
-</div>
+        <div id="inboxMenu" data-role="popup" data-history="false">
+            <ul data-role="listview" data-inset="true" data-icon="false" style="min-width: 8em">
+                <li><a id="inboxMenuNotification" class="lang">Notification</a></li>
+                <li><a id="inboxMenuMessage" class="lang">Message</a></li>
+            </ul>
+        </div>
+    </div>
 
-<div data-role="page" id="inboxContentPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left"></h1>
-    <a id="inboxContentBtnFlag" data-icon="star" data-iconpos="notext"></a>
-  </div>
+    <div data-role="page" id="inboxContentPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left"></h1>
+            <a id="inboxContentBtnFlag" data-icon="star" data-iconpos="notext"></a>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  </div>
-</div>
+        <div data-role="content" style="position: relative">
+        </div>
+    </div>
 
-<!-- testPage start -->
+    <!-- testPage start -->
 
-<div data-role="page" id="testPage">
-  <div data-role="header" data-position="fixed">
-    <h1></h1>
-      
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
-  </div>
+    <div data-role="page" id="testPage">
+        <div data-role="header" data-position="fixed">
+            <h1></h1>
 
-  <div data-role="content" style="position:relative">
-  	<div class="tab_content"><ul id="testList"></ul></div>
-  </div>
+            <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+        </div>
 
-  <div id="testMenu" data-role="popup" data-history="false">
-	  <ul data-role="listview" data-icon="false" style="min-width:8em">
-		<li><a id="testMenuAssignment" class="lang">Assignment</a></li>
-		<li><a id="testMenuExam" class="lang">Exam</a></li>
-	  </ul>
-  </div>
-</div>
+        <div data-role="content" style="position: relative">
+            <div class="tab_content">
+                <ul id="testList"></ul>
+            </div>
+        </div>
 
-<div data-role="page" id="testContentPage">
-  <div data-role="header" data-position="fixed">
-    <a data-role="button" data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left"></h1>
-    <a data-icon="bars" data-iconpos="notext" href="#testContentCatalog"></a>
-  </div>
+        <div id="testMenu" data-role="popup" data-history="false">
+            <ul data-role="listview" data-icon="false" style="min-width: 8em">
+                <li><a id="testMenuAssignment" class="lang">Assignment</a></li>
+                <li><a id="testMenuExam" class="lang">Exam</a></li>
+            </ul>
+        </div>
+    </div>
 
-  <div data-role="content" style="position:relative">
-  </div>
+    <div data-role="page" id="testContentPage">
+        <div data-role="header" data-position="fixed">
+            <a data-role="button" data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left"></h1>
+            <a data-icon="bars" data-iconpos="notext" href="#testContentCatalog"></a>
+        </div>
 
-  <div data-role="footer" data-position="fixed" class="footer-transparent">
-	<div class="ui-title" style="position:absolute;left:0;right:0;top:-0.7em">
-		<a id="testContentBtnSubmit" data-role="button" data-transition="slide" data-direction="reverse"></a>
-	</div>
-  </div>
+        <div data-role="content" style="position: relative">
+        </div>
 
-  <div id="testContentCatalog" data-role="panel" data-position="right" data-display="overlay">
-	<ul id="testContentCatalogList"></ul>
-  </div>
-</div>
+        <div data-role="footer" data-position="fixed" class="footer-transparent">
+            <div class="ui-title" style="position: absolute; left: 0; right: 0; top: -0.7em">
+                <a id="testContentBtnSubmit" data-role="button" data-transition="slide" data-direction="reverse"></a>
+            </div>
+        </div>
 
-<!-- qaPage start -->
+        <div id="testContentCatalog" data-role="panel" data-position="right" data-display="overlay">
+            <ul id="testContentCatalogList"></ul>
+        </div>
+    </div>
 
-<div data-role="page" id="qaPage">
-  <div data-role="header" data-position="fixed">
-  	<a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
-    <h1 class="lang">Q &amp; A</h1>
-      <a data-transition="pop" href="#CreateQaPage" class="ui-btn-right lang">Create</a>
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
-  </div>
+    <!-- qaPage start -->
 
-  <div data-role="content" style="position:relative">
-  	<div class="tab_content">
-  		<input data-type="search" id="qaSearch" value="">
-  		<div style="margin-top:1em;padding:1em;overflow-y:auto;overflow-x:hidden"><ul id="qaList"></ul></div>
-  	</div>
-  </div>
-</div>
+    <div data-role="page" id="qaPage">
+        <div data-role="header" data-position="fixed">
+            <a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
+            <h1 class="lang">Q &amp; A</h1>
+            <a data-transition="pop" href="#CreateQaPage" class="ui-btn-right lang" style="width:60px;margin-right:60px;">Create</a>
+            <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+        </div>
 
-<div data-role="page" id="qaContentPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Q &amp; A</h1>
-  </div>
+        <div data-role="content" style="position: relative">
+            <div class="tab_content">
+                <input data-type="search" id="qaSearch" value="">
+                <div style="margin-top: 1em; padding: 1em; overflow-y: auto; overflow-x: hidden">
+                    <ul id="qaList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <div data-role="content" style="position:relative">
-  </div>
-</div>
+    <div data-role="page" id="qaContentPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Q &amp; A</h1>
+        </div>
 
-<div data-role="page" id="qaAskqPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Raise Question</h1>
-  </div>
+        <div data-role="content" style="position: relative">
+        </div>
+    </div>
 
-  <div data-role="content">
-  <form>
-  	<select><option class="lang">Class ...</option></select>
-  	<textarea></textarea>
-  	<div align="right"><a id="qaAskqBtnSubmit" data-role="button" data-icon="action" data-inline="true" class="lang">Submit</a></div>
-  </form>
-  </div>
-</div>
+    <div data-role="page" id="qaAskqPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Raise Question</h1>
+        </div>
+
+        <div data-role="content">
+            <form>
+                <select>
+                    <option class="lang">Class ...</option>
+                </select>
+                <textarea></textarea>
+                <div align="right"><a id="qaAskqBtnSubmit" data-role="button" data-icon="action" data-inline="true" class="lang">Submit</a></div>
+            </form>
+        </div>
+    </div>
 
 
-<!--<div data-role="page" id="CreateQaPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1>Create Question</h1>
-  </div>
+    <div data-role="page" id="CreateQaPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1>Create Question</h1>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  	<div align="center"><form><table>
-  		<tr><td class="lang">Question:</td><td><input name="question"/></td></tr>
-  		<tr><td class="lang">Answer:</td><td><textarea name="answer"/></td></tr>
-  		<tr><td>&nbsp;</td><td><a data-role="button" class="lang">Save</a></td></tr>
-  	</table></form></div>
-  </div>
+        <div data-role="content" style="position: relative">
+            <div align="center">
+                <form>
+                    <table>
+                        <tr>
+                            <td class="lang">Question:</td>
+                            <td>
+                                <input name="question" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Answer:</td>
+                            <td>
+                                <textarea name="answer" rows="3"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><a data-role="button" class="lang" id="saveanswer">Save</a></td>
+                        </tr>
+                        <tr>
+                            <td><input id="condition" /></td>
+                            <td><a data-role="button" class="lang" id="loadquestion">Search</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <ul id="questionresult">
+                                
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
 
-  <div data-role="footer" data-position="fixed">
-  </div>
-</div>-->
-<!-- classPage start -->
+        <div data-role="footer" data-position="fixed">
+        </div>
+    </div>
+    <!-- classPage start -->
 
-<div data-role="page" id="classPage">
-  <div data-role="header" data-position="fixed">
-	<a data-transition="pop" href="#classJoinPage" class="lang">Join Class</a>
-    <h1></h1>
-    <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
-  </div>
+    <div data-role="page" id="classPage">
+        <div data-role="header" data-position="fixed">
+            <a data-transition="pop" href="#classJoinPage" class="lang">Join Class</a>
+            <h1></h1>
+            <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  	<div class="tab_content"><ul id="classList"></ul></div>
-  </div>
+        <div data-role="content" style="position: relative">
+            <div class="tab_content">
+                <ul id="classList"></ul>
+            </div>
+        </div>
 
-  <div id="classMenu" data-role="popup" data-history="false">
-	<ul data-role="listview" data-icon="false" style="min-width:8em">
-		<li><a id="classMenuActive" class="lang">Active</a></li>
-		<li><a id="classMenuPending" class="lang">Pending</a></li>
-	</ul>
-  </div>
-</div>
+        <div id="classMenu" data-role="popup" data-history="false">
+            <ul data-role="listview" data-icon="false" style="min-width: 8em">
+                <li><a id="classMenuActive" class="lang">Active</a></li>
+                <li><a id="classMenuPending" class="lang">Pending</a></li>
+            </ul>
+        </div>
+    </div>
 
-<div data-role="page" id="classContentPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left"></h1>
-  </div>
+    <div data-role="page" id="classContentPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left"></h1>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  	<div></div>
-  	<div align="right"><a id="classContentBtnQuit" data-role="button" data-icon="delete" data-inline="true" class="lang">Quit</a></div>
-  </div>
-</div>
+        <div data-role="content" style="position: relative">
+            <div></div>
+            <div align="right"><a id="classContentBtnQuit" data-role="button" data-icon="delete" data-inline="true" class="lang">Quit</a></div>
+        </div>
+    </div>
 
-<div data-role="page" id="classJoinPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Join Class</h1>
-  </div>
+    <div data-role="page" id="classJoinPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Join Class</h1>
+        </div>
 
-  <div data-role="content" style="position:relative">
-  <form>
-  	<table width="100%"><tr valign="middle">
-  		<td><a id="classJoinBtnQrcode" data-role="button" data-icon="camera" data-inline="true" class="lang">QR Code</a></td>
-  		<td width="100%"><input id="classJoinTxtUuid"/></td>
-  	</tr></table>
-  	<div id="classJoinTxtDetail"></div>
-  	<div align="right"><a id="classJoinBtnSubmit" data-role="button" data-icon="check" data-inline="true" style="display:none" class="lang">Submit</a></div>
-  <form>
-  </div>
-</div>
+        <div data-role="content" style="position: relative">
+            <form>
+                <table width="100%">
+                    <tr valign="middle">
+                        <td><a id="classJoinBtnQrcode" data-role="button" data-icon="camera" data-inline="true" class="lang">QR Code</a></td>
+                        <td width="100%">
+                            <input id="classJoinTxtUuid" /></td>
+                    </tr>
+                </table>
+                <div id="classJoinTxtDetail"></div>
+                <div align="right"><a id="classJoinBtnSubmit" data-role="button" data-icon="check" data-inline="true" style="display: none" class="lang">Submit</a></div>
+                <form>
+        </div>
+    </div>
 
-<!-- settingPage start -->
+    <!-- settingPage start -->
 
-<div data-role="page" id="settingPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Settings</h1>
-  </div>
+    <div data-role="page" id="settingPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Settings</h1>
+        </div>
 
-  <div data-role="content">
-	  <div id="setLang" data-role="collapsible">
-		<h4 class="lang">Language</h4>
-		<form><fieldset data-role="controlgroup">
-			<input type="radio" name="language" id="lang_cn_zh" value="cn_zh"/><label for="lang_cn_zh">Chinese</label>
-			<input type="radio" name="language" id="lang_us_en" value="us_en"/><label for="lang_us_en">English</label>
-			<input type="radio" name="language" id="lang_fr_fr" value="fr_fr"/><label for="lang_fr_fr">French</label>
-		</fieldset></form>
-	  </div>
-	  <div>
-		<a data-role="button" href="#legalPage" data-transition="pop" style="text-align:left" class="lang">Read legal conditions and terms</a>
-	  </div>
-  </div>
-</div>
+        <div data-role="content">
+            <div id="setLang" data-role="collapsible">
+                <h4 class="lang">Language</h4>
+                <form>
+                    <fieldset data-role="controlgroup">
+                        <input type="radio" name="language" id="lang_cn_zh" value="cn_zh" /><label for="lang_cn_zh">Chinese</label>
+                        <input type="radio" name="language" id="lang_us_en" value="us_en" /><label for="lang_us_en">English</label>
+                        <input type="radio" name="language" id="lang_fr_fr" value="fr_fr" /><label for="lang_fr_fr">French</label>
+                    </fieldset>
+                </form>
+            </div>
+            <div>
+                <a data-role="button" href="#legalPage" data-transition="pop" style="text-align: left" class="lang">Read legal conditions and terms</a>
+            </div>
+        </div>
+    </div>
 
-<!-- registerPage start -->
+    <!-- registerPage start -->
 
-<div data-role="page" id="registerPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Register</h1>
-  </div>
+    <div data-role="page" id="registerPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Register</h1>
+        </div>
 
-  <div data-role="content">
-    <div align="center"><form><table>
-      <tr><td class="lang">User ID:</td><td><input name="username" /></td></tr>
-      <tr><td class="lang">Password:</td><td><input name="password" type="password"/></td></tr>
-      <tr><td class="lang">Password Confirm:</td><td><input name="password2" type="password"/></td></tr>
-      <tr><td class="lang">Name:</td><td><input name="name" /></td></tr>
-      <tr><td>&nbsp;</td><td><a data-role="button" class="lang">Register</a></td></tr>
-      <tr><td>&nbsp;</td><td style="padding-top:2em">
-      	<span class="lang">By registering, I hereby agree the</span><br/>
-      	<a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
-      </td></tr>
-    </table></form></div>
-  </div>
-</div>
+        <div data-role="content">
+            <div align="center">
+                <form>
+                    <table>
+                        <tr>
+                            <td class="lang">User ID:</td>
+                            <td>
+                                <input name="username" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Password:</td>
+                            <td>
+                                <input name="password" type="password" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Password Confirm:</td>
+                            <td>
+                                <input name="password2" type="password" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Name:</td>
+                            <td>
+                                <input name="name" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Email:</td>
+                            <td>
+                                <input name="email" /></td>
+                        </tr>
+                        <tr>
+                            <td class="lang">Phone:</td>
+                            <td>
+                                <input name="phone" /></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><a data-role="button" class="lang">Register</a></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td style="padding-top: 2em">
+                                <span class="lang">By registering, I hereby agree the</span><br />
+                                <a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
 
-<!-- legalPage start -->
+    <!-- legalPage start -->
 
-<div data-role="page" id="legalPage">
-  <div data-role="header" data-position="fixed">
-    <a data-icon="back" data-rel="back" class="lang">Back</a>
-    <h1 class="title-align-left lang">Legal Conditions &amp; Terms</h1>
-  </div>
+    <div data-role="page" id="legalPage">
+        <div data-role="header" data-position="fixed">
+            <a data-icon="back" data-rel="back" class="lang">Back</a>
+            <h1 class="title-align-left lang">Legal Conditions &amp; Terms</h1>
+        </div>
 
-  <div data-role="content">
-    <div align="center">This is legal conditions and terms</div>
-  </div>
-</div>
+        <div data-role="content">
+            <div align="center">This is legal conditions and terms</div>
+        </div>
+    </div>
 
-<!-- done with all pages -->
-<script src="js/jquery-2.1.1.min.js"></script>
-<script src="js/jquery.mobile-1.4.4.min.js"></script>
-<script src="js/q.min.js"></script>
-<script src="js/breeze.min.js"></script>
-<!--<script src="js/data.js"></script>-->
-<script src="cordova.js"></script>
+    <!-- done with all pages -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.4.min.js"></script>
+    <script src="js/q.min.js"></script>
+    <script src="js/breeze.min.js"></script>
+    <script src="js/data.js"></script>
+    <!--<script src="cordova.js"></script>-->
 
-<script src="js/toolbox.js"></script>
-<script src="js/restfulApi.js"></script>
+    <script src="js/toolbox.js"></script>
+    <!--<script src="js/restfulApi.js"></script>-->
 
-<script src="js/locale.js"></script>
-<script src="js/qrCode.js"></script>
-<!--<script src="js/testQuizRender.js"></script>-->
+    <script src="js/locale.js"></script>
+    <script src="js/qrCode.js"></script>
+    <!--<script src="js/testQuizRender.js"></script>-->
 
-<script src="js/inboxData.js"></script>
-<script src="js/testData.js"></script>
-<script src="js/qaData.js"></script>
-<script src="js/classData.js"></script>
+    <script src="js/inboxData.js"></script>
+    <!--<script src="js/testData.js"></script>-->
+    <script src="js/qaData.js"></script>
+    <script src="js/classData.js"></script>
 
-<script src="js/loginPage.js"></script>
-<script src="js/inboxPage.js"></script>
-<script src="js/testPage.js"></script>
-<script src="js/qaPage.js"></script>
-<script src="js/createQaPage.js"></script>
-<script src="js/classPage.js"></script>
+    <script src="js/loginPage.js"></script>
+    <script src="js/inboxPage.js"></script>
+   <!-- <script src="js/testPage.js"></script>-->
+    <script src="js/qaPage.js"></script>
+    <script src="js/createQaPage.js"></script>
+    <script src="js/classPage.js"></script>
 
-<script src="js/settingPage.js"></script>
-<script type="text/javascript">
-var _storage = {};
+    <script src="js/settingPage.js"></script>
+    <script type="text/javascript">
+        var _storage = {};
 
-$(function() {
-	$.mobile.defaultPageTransition = 'none';
+        $(function () {
+            $.mobile.defaultPageTransition = 'none';
 
-	if (window.devicePixelRatio >= 2) {
-		$.event.special.swipe.horizontalDistanceThreshold = 15;
-	}
+            if (window.devicePixelRatio >= 2) {
+                $.event.special.swipe.horizontalDistanceThreshold = 15;
+            }
 
-	loginPage();
+            loginPage();
 
-	inboxPage();
-	inboxContentPage();
+            inboxPage();
+            inboxContentPage();
 
-	testPage();
-	testContentPage();
+            //testPage();
+            //testContentPage();
 
-	qaPage();
-	qaContentPage();
-	qaAskqPage();
+            qaPage();
+            qaContentPage();
+            qaAskqPage();
+            createQaPage();
 
-	classPage();
-	classContentPage();
-	classJoinPage();
+            classPage();
+            classContentPage();
+            classJoinPage();
 
-	settingPage();
-	registerPage();
+            settingPage();
+            registerPage();
 
-	$('.lang').each(function() {
-		var self = $(this);
-		self.data('lang', self.html());
-	});
-	setLocaleLanguage('cn_zh');
+            $('.lang').each(function () {
+                var self = $(this);
+                self.data('lang', self.html());
+            });
+            setLocaleLanguage('cn_zh');
 
-	$(window).on('hashchange', function() {
-		testContentPage.stopOnQuiz(true);
-	});
-	$(document).on('pause', function() {
-		testContentPage.stopOnQuiz(false);
-	});
-});
+            //$(window).on('hashchange', function () {
+            //    testContentPage.stopOnQuiz(true);
+            //});
+            //$(document).on('pause', function () {
+            //    testContentPage.stopOnQuiz(false);
+            //});
+        });
 
-</script>
+    </script>
 </body>
 </html>
