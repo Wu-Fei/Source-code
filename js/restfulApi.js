@@ -3,12 +3,12 @@ var restfulApi = {
 
 
 
-//restfulApi.host = 'http://eclasso2o.azurewebsites.net';
-restfulApi.host = 'http://localhost:56360/';
+restfulApi.host = 'http://eclasso2o.azurewebsites.net';
+//restfulApi.host = 'http://localhost:56360/';
 restfulApi.caller = new breeze.EntityManager(restfulApi.host + '/breeze/eClassO2OApi');
 breeze.NamingConvention.camelCase.setAsDefault();
 
-restfulApi.registerUser = function(username, password, name, email, phone, okFunc, errFunc) {
+restfulApi.registerUser = function(username, password, name, okFunc, errFunc) {
 	$.ajax({
 		url : restfulApi.host + '/api/account/register',
 		type : 'POST',
@@ -17,9 +17,7 @@ restfulApi.registerUser = function(username, password, name, email, phone, okFun
 			'userName': username,
 			'password': password,
 			'confirmPassword': password,
-			'name': name,
-			'email': email,
-			'phone': phone
+			'name': name
         }
 	}).fail(errFunc).done(okFunc);
 };
@@ -43,10 +41,10 @@ restfulApi.login = function(username, password, okFunc, errFunc) {
 			var auth = 'Bearer ' + result.access_token;
 			breeze.config.getAdapterInstance('ajax').defaultSettings = {
 				beforeSend: function (xhr, settings) {
-                if (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + getAccessToken());
-                }
-            }
+					if (xhr) {
+						xhr.setRequestHeader("Authorization", auth);
+					}
+				}
 			};
 			okFunc();
 		} else {

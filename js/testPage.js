@@ -97,7 +97,7 @@ var testPage = function() {
 				: testDataStore.getAssignmentDataList()
 			);
 		}
-	}).trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
+	});
 };
 
 var testContentPage = function() {
@@ -183,8 +183,8 @@ var testContentPage = function() {
 						list.push('<li>', prob.seq, prob.name ? ' <span class="lang">' + prob.name + '</span>' : '', '</li>');
 					}
 				}
-				var read = item.answer.length;
-				var wrong = !working && !toolbox.arrayCompare(item.answer, item.key);
+				var read = item.isAnswerReady();
+				var wrong = !working && !isAnswerCorrect(item);
 				list.push(
 					'<li><a seq="', i, '" class="', read ? 'list_read' : '', wrong ? ' wrong_answer': '', '"',
 						'><div style="float:left">', item.seq, '</div>',
@@ -274,28 +274,16 @@ var testContentPage = function() {
 			);
 			list.push(!data.score ? '<br/>' : '<div style="text-align:right"><span class="lang">Score:</span> ', data.score, '</div>');
 			list.push('<span>', data.seq, ') </span>');
-			renderQuiz(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
+			renderQuizChallenge(list, data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
 
 		localizeAll(content.html(list.join('')));
-		renderAudio(content);
 
-		var answer = content.find('input').on('change', function() {
-			var val = answer.filter(':checked').map(function() {
-				return $(this).val() * 1;
-			}).get();
-			data.setAnswer(val);
-			if (val.length) {
-				catalog.find('a[seq=' + seq + ']').addClass('list_read');
-			} else {
-				catalog.find('a[seq=' + seq + ']').removeClass('list_read');
-			}
-		});
-		if (_storage.testExercise.test.status != TEST_STATUS.WORKING) {
-			answer.parent().on('click', function() {
-				return false;
-			});
+		if (data instanceof testDataStore.Quiz) {
+			renderQuizAnswer(content, catalog.find('a[seq=' + seq + ']'), data, _storage.testExercise.test.status == TEST_STATUS.WORKING);
 		}
+
+		renderAudio(content);
 
 		content.trigger('create');
 		data.t0 = new Date();
@@ -344,14 +332,18 @@ var testContentPage = function() {
 	};
 
 	setInterval(function() {
+		if (!_storage.testData || !_storage.testDataIndex) {
+			return;
+		}
 		var data = _storage.testData[_storage.testDataIndex];
-		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
-			data = _storage.testExercise.asList()[seq];
-			if (data.t0) {
-				var now = new Date()
-				data.addUsedTime(now - data.t0);
-				data.t0 = now;
-			}
+		if (!data || !_storage.testExercise || _storage.testExercise.pk != data.pk) {
+			return;
+		}
+		data = _storage.testExercise.asList()[seq];
+		if (data.t0) {
+			var now = new Date()
+			data.addUsedTime(now - data.t0);
+			data.t0 = now;
 		}
 	}, 1000);
 };

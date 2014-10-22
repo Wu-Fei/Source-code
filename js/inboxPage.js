@@ -110,7 +110,7 @@ var inboxPage = function() {
 				: inboxDataStore.getMessageDataList()
 			);
 		}
-	}).trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
+	});
 };
 
 var inboxContentPage = function() {

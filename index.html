@@ -12,6 +12,11 @@
     font-weight: normal
   }
 
+  .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled  {
+    filter: Alpha(Opacity=100);
+    opacity: 1
+  }
+
   .list_read * {
     font-weight: normal
   }
@@ -58,8 +63,11 @@
   .wrong_answer.extra {
   	text-decoration: line-through !important
   }
+  .fill_blank {
+  	text-decoration: underline
+  }
   </style>
-  
+
 </head>
 <body>
 
@@ -285,6 +293,9 @@
 			<input type="radio" name="language" id="lang_fr_fr" value="fr_fr"/><label for="lang_fr_fr">French</label>
 		</fieldset></form>
 	  </div>
+	  <div>
+		<a data-role="button" href="#legalPage" data-transition="pop" style="text-align:left" class="lang">Read legal conditions and terms</a>
+	  </div>
   </div>
 </div>
 
@@ -302,27 +313,43 @@
       <tr><td class="lang">Password:</td><td><input name="password" type="password"/></td></tr>
       <tr><td class="lang">Password Confirm:</td><td><input name="password2" type="password"/></td></tr>
       <tr><td class="lang">Name:</td><td><input name="name" /></td></tr>
-      <tr><td class="lang">Email:</td><td><input name="email" /></td></tr>
-      <tr><td class="lang">Phone:</td><td><input name="phone" /></td></tr>
       <tr><td>&nbsp;</td><td><a data-role="button" class="lang">Register</a></td></tr>
+      <tr><td>&nbsp;</td><td style="padding-top:2em">
+      	<span class="lang">By registering, I hereby agree the</span><br/>
+      	<a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
+      </td></tr>
     </table></form></div>
+  </div>
+</div>
+
+<!-- legalPage start -->
+
+<div data-role="page" id="legalPage">
+  <div data-role="header" data-position="fixed">
+    <a data-icon="back" data-rel="back" class="lang">Back</a>
+    <h1 class="title-align-left lang">Legal Conditions &amp; Terms</h1>
+  </div>
+
+  <div data-role="content">
+    <div align="center">This is legal conditions and terms</div>
   </div>
 </div>
 
 <!-- done with all pages -->
 <script src="js/jquery-2.1.1.min.js"></script>
-<script src="js/jquery.mobile-1.4.2.min.js"></script>
+<script src="js/jquery.mobile-1.4.4.min.js"></script>
 <script src="js/q.min.js"></script>
 <script src="js/breeze.min.js"></script>
-<script src="js/data.js"></script>
-<!--<script src="cordova.js"></script>-->
+<!--<script src="js/data.js"></script>-->
+<script src="cordova.js"></script>
 
 <script src="js/toolbox.js"></script>
+<script src="js/restfulApi.js"></script>
+
 <script src="js/locale.js"></script>
 <script src="js/qrCode.js"></script>
 <!--<script src="js/testQuizRender.js"></script>-->
 
-<!--<script src="js/restfulApi.js"></script>-->
 <script src="js/inboxData.js"></script>
 <script src="js/testData.js"></script>
 <script src="js/qaData.js"></script>

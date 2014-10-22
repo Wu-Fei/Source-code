@@ -2,6 +2,7 @@ QUIZ_TYPE = {};
 QUIZ_TYPE.TRUE_FALSE = 'T';
 QUIZ_TYPE.SINGLE_CHOICE = 'S';
 QUIZ_TYPE.MULTIPLE_CHOICE = 'M';
+QUIZ_TYPE.FILL_BLANK = 'B';
 
 TEST_STATUS = {};
 TEST_STATUS.NEW = 'n';
@@ -63,6 +64,12 @@ mediaManager.release = function() {
 
 var toolbox = {
 };
+
+toolbox.htmlEncoder = $('<div></div>');
+
+toolbox.htmlEncode = function(text) {
+	return toolbox.htmlEncoder.text(text).html();
+}
 
 toolbox.dtStr = function(dt, today) {
 	if (!today) {

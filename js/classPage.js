@@ -94,7 +94,7 @@ var classPage = function() {
 				: classDataStore.getActiveDataList()
 			);
 		}
-	}).trigger('listchanged', [localStorage.classActiveTab == 'Pending']);
+	});
 };
 
 var classContentPage = function() {
