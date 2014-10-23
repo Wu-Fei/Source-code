@@ -1,6 +1,7 @@
-﻿var DataContext = function DataContext() {
-    //var host = 'http://eclasso2o.azurewebsites.net';
-    var host = 'http://localhost:56360'
+﻿var eclasso2o = eclasso2o || {};
+var DataContext = function DataContext() {
+    var host = 'http://eclasso2o.azurewebsites.net';
+    //var host = 'http://localhost:56360'
     var dataurl = host + '/breeze/eClassO2OApi';
     
     var manager = new breeze.EntityManager(dataurl);
@@ -105,7 +106,7 @@
         var query = breeze.EntityQuery.from("currentUser");
         manager.executeQuery(query).then
             (function (result) {
-                data.user = result.results[0];
+                eclasso2o.data.user = result.results[0];
                 callback()
             });
     }
@@ -127,4 +128,4 @@
 
 };
 
-var data = new DataContext();
+eclasso2o.data = new DataContext();

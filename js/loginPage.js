@@ -32,7 +32,7 @@ var loginPage = function () {
         }
         //Save the q and a
         //var question = data.create('Question');
-        data.signin(username, password, function (result) {
+        eclasso2o.data.signin(username, password, function (result) {
             if (result) {
                 alert('login failed!');
             }
@@ -87,7 +87,7 @@ var registerPage = function() {
 			return;
 		}
 
-		data.register(username, password, name, email, phone).done(function(result) {
+	    eclasso2o.data.register(username, password, name, email, phone).done(function (result) {
 				console.log(result);
 			}).fail(function(err) {
 				console.log(err);

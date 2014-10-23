@@ -16,14 +16,14 @@ var createQaPage = function() {
         //Validation Skipped
 
         //Save Question Example
-        var newquestion = data.create('Question');
+        var newquestion = eclasso2o.data.create('Question');
         newquestion.IsPublic = true;
         newquestion.QuestionDetail = question;
         newquestion.Answer = answer;
         newquestion.Create = Date();
-        newquestion.UserId = data.user.Id;
+        newquestion.UserId = eclasso2o.data.user.Id;
 
-        data.save(newquestion).then(function () {
+        eclasso2o.data.save(newquestion).then(function () {
             alert('Question saved!');
         }).fail(function () {
             alert('Save failed!');
@@ -40,7 +40,7 @@ var createQaPage = function() {
         //Validation Skipped
 
         //Save Question Example
-        data.searchQuestion(condition).then(function (data) {
+        eclasso2o.data.searchQuestion(condition).then(function (data) {
             data.results.forEach(function (q) {
                 $('#questionresult').append('<li><span>' + q.QuestionDetail + ' ' + q.Answer + '</span></li>');
             });
