@@ -40,7 +40,7 @@ var qaPage = function() {
 			timer = setTimeout(function() {
 				timer = null;
 				toolbox.loading(true);
-				searchAnswers(txt, function(answerList) {
+				qaDataStore.searchAnswers(txt, function(answerList) {
 					if (txt != $.trim(search.val()))
 						return;
 
@@ -131,7 +131,7 @@ var qaAskqPage = function() {
 			return false;
 		}
 
-		askQuestion(clazz, question, function() {
+		qaDataStore.askQuestion(clazz, question, function() {
 			$.mobile.changePage('#qaPage', {transition: 'pop', reverse: true});
 		}, function() {
 			alert(getLocale('Failed to send your question. Please check your Internet connection and try again.'));

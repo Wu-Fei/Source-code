@@ -145,6 +145,12 @@ toolbox.initPage = function(pagename) {
 	tabItems.push('</ul>', '</div>', '</div>');
 	var footer = page.append(tabItems.join('')).children('div[data-role=footer]');
 
+	page.on('pagebeforeshow', function() {
+		if (!dataContext.getAccessToken()) {
+			location.replace('#loginPage');
+		}
+	});
+
 	page.on('pageshow', function() {
 		var height = $.mobile.getScreenHeight()
 			- header.outerHeight()

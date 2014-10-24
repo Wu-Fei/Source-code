@@ -7,7 +7,6 @@ var loginPage = function () {
 
     var realStart = function (user) {
 		dataContext.user = user;
-		console.log('here1');
 
         $('#inboxPage').trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
         $('#testPage').trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
@@ -16,15 +15,16 @@ var loginPage = function () {
         var p = localStorage.activePage || 'inbox';
         localStorage.activePage = '';
         location.replace('#' + p + 'Page');
-        console.log('here');
     };
 
 	dataContext.user = null;
 	var accessToken = dataContext.getAccessToken();
 	if (accessToken) {
 		dataContext.setAccessToken(accessToken);
+		toolbox.loading(true, true);
 		dataContext.getCurrentUser(function(user) {
-			if (user) {
+			toolbox.loading(false);
+			if (user && typeof(user)!=='string') {
 				realStart(user);
 			}
 		});
@@ -48,14 +48,18 @@ var loginPage = function () {
             toolbox.loading(false);
             if (!user) {
                 alert(getLocale('Failed to login.'));
-            } else {
+            } else if (typeof(user)==='string') {
+				alert(getLocale('Failed to login.') + '\n' + user);
+			} else {
 				realStart(user);
 			}
-        }, function (err) {
-		    toolbox.loading(false);
-		    alert(getLocale(err));
-		});
+        });
     });
+
+	page.on('pageshow', function() {
+		txtUserName.val('');
+		txtPassword.val('');
+	});
 };
 
 var registerPage = function() {

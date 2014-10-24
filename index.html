@@ -82,7 +82,7 @@
         </div>
 
         <div data-role="content" style="position: relative">
-            <div align="center"><form><table>
+            <form><table align="center">
 				<tr>
 					<td class="lang">User ID:</td>
 					<td><input name="username" /></td>
@@ -95,7 +95,7 @@
 					<td>&nbsp;</td>
 					<td><a data-role="button" class="lang">Login</a></td>
 				</tr>
-			</table></form></div>
+			</table></form>
         </div>
 
         <div data-role="footer" data-position="fixed">
@@ -330,6 +330,12 @@
         </div>
 
         <div data-role="content">
+            <div data-role="collapsible">
+            	<h4 class="lang">Account</h4>
+            	<div>Account information</div>
+            	<a id="setBtnChgPwd" data-role="button" class="lang">Change Password</a>
+                <a id="setBtnLogout" data-role="button" class="lang">Logout</a>
+            </div>
             <div id="setLang" data-role="collapsible">
                 <h4 class="lang">Language</h4>
                 <form><fieldset data-role="controlgroup">
@@ -383,8 +389,7 @@
 					<td><a data-role="button" class="lang">Register</a></td>
 				</tr>
 				<tr>
-					<td>&nbsp;</td>
-					<td style="padding-top: 2em">
+					<td colspan="2" style="padding-top: 2em">
 						<span class="lang">By registering, I hereby agree the</span><br />
 						<a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
 					</td>

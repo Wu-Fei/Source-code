@@ -31,7 +31,7 @@ dataContext.setAccessToken = function(accessToken) {
 	localStorage.accessToken = accessToken;
 	breeze.NamingConvention.camelCase.setAsDefault();
 	var ajaxAdapter = breeze.config.getAdapterInstance('ajax');
-	ajaxAdapter.defaultSettings = {
+	ajaxAdapter.defaultSettings = !accessToken ? {} : {
 		beforeSend: function (xhr, settings) {
 			if (xhr) {
 				xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
@@ -42,13 +42,14 @@ dataContext.setAccessToken = function(accessToken) {
 
 dataContext.makeQuery = function(query, callback) {
 	dataContext.manager.executeQuery(query).then(function(result) {
+		console.log('query result', result);
 		if (result && $.isArray(result.results)) {
 			callback(result.results);
 		} else {
 			callback(null);
 		}
 	}, function(err) {
-		console.log(err);
+		console.log('query erro', err);
 		callback(null);
 	});
 };
@@ -72,21 +73,26 @@ dataContext.searchQuestion = function(search, callback) {
 	dataContext.makeQuery(query, callback);
 };
 
-dataContext.signin = function(username, password, callback, errcallback) {
+dataContext.signin = function(username, password, callback) {
 	$.post(dataContext.host + '/token', {
 		grant_type: 'password',
 		username: username,
 		password: password
 	}).fail(function (err) {
-		errcallback(err && err.responseJSON && err.responseJSON.error_description ? err.responseJSON.error_description : 'Failed to login.');
+		callback(err && err.responseJSON && err.responseJSON.error_description ? err.responseJSON.error_description : null);
 	}).done(function (result) {
 		if (result.access_token) {
 			dataContext.setAccessToken(result.access_token);
 			dataContext.getCurrentUser(callback);
 		} else {
-			errcallback('Failed to login.');
+			callback(null);
 		}
 	});
+};
+
+dataContext.signout = function(callback) {
+	dataContext.setAccessToken('');
+	callback();
 };
 
 dataContext.register = function(username, password, name, email, phone, callback, errcallback) {
