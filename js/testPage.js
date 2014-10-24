@@ -311,19 +311,23 @@ var testContentPage = function() {
 	});
 
 	page.on('stopOnQuiz', function(evt, isStop) {
-		var data = _storage.testData[_storage.testDataIndex];
-		if (_storage.testExercise && _storage.testExercise.pk == data.pk) {
-			data = _storage.testExercise.asList()[seq];
-			if (data.t0) {
-				data.addUsedTime(new Date() - data.t0);
-				data.t0 = null;
-			}
-		}
-
 		if (isStop) {
 			mediaManager.release();
 		} else {
 			mediaManager.pause();
+		}
+
+		if (!_storage.testData || !_storage.testDataIndex) {
+			return;
+		}
+		var data = _storage.testData[_storage.testDataIndex];
+		if (!data || !_storage.testExercise || _storage.testExercise.pk != data.pk) {
+			return;
+		}
+		data = _storage.testExercise.asList()[seq];
+		if (data.t0) {
+			data.addUsedTime(new Date() - data.t0);
+			data.t0 = null;
 		}
 	});
 

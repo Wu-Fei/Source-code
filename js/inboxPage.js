@@ -54,7 +54,7 @@ var inboxPage = function() {
 	}
 
 	var setTitle = function() {
-	    localize(txtTitle, localStorage.inboxActiveTab + ' - ' + eclasso2o.data.user.Name);
+	    localize(txtTitle, localStorage.inboxActiveTab);
 		menuDropdown.css('left', txtTitle.position().left + txtTitle.outerWidth(true));
 	};
 

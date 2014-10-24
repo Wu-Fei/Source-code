@@ -8,76 +8,64 @@
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
     <style>
-        .ui-radio .ui-btn, .ui-checkbox .ui-btn
-        {
+        .ui-radio .ui-btn, .ui-checkbox .ui-btn {
             font-weight: normal;
         }
 
-        .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled
-        {
+        .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled {
             filter: Alpha(Opacity=100);
             opacity: 1;
         }
 
-        .list_read *
-        {
+        .list_read * {
             font-weight: normal;
         }
 
-        .tab_content
-        {
-            left: 1em;
-            right: 1em;
-            bottom: 0;
-            height: 100%;
-            position: absolute;
-            display: none;
+        .tab_content {
+        	left: 1em;
+        	right: 1em;
+        	bottom: 0;
+        	height: 100%;
+        	position: absolute;
+        	display: none;
         }
 
-        .title-dropdown-icon
-        {
+        .title-dropdown-icon {
             position: absolute;
             top: 0.5em;
             margin-left: 0.5em;
         }
 
-        .ui-header .ui-title-align-left
-        {
+        .ui-header .ui-title-align-left {
             margin-left: 5.5em;
             text-align: left;
         }
 
-        .ui-page-theme-a .footer-transparent
-        {
+        .ui-page-theme-a .footer-transparent {
             background-color: transparent;
             border-color: transparent;
         }
 
-            .ui-page-theme-a .footer-transparent a.ui-btn
-            {
-                margin: 0.5em;
-                top: 0;
-                right: 0;
-            }
+		.ui-page-theme-a .footer-transparent a.ui-btn {
+			margin: 0.5em;
+			top: 0;
+			right: 0;
+		}
 
-        a[data-transition].ui-icon-star:after
-        {
+        a[data-transition].ui-icon-star:after {
             background-color: #ff8080;
         }
 
-        .wrong_answer
-        {
+        .wrong_answer {
             color: #ff0000 !important;
             font-weight: 700 !important;
         }
 
-            .wrong_answer.extra
-            {
-                text-decoration: line-through !important;
-            }
+		.wrong_answer.extra {
+			text-decoration: line-through !important;
+		}
 
-        .fill_blank
-        {
+        .fill_blank {
             text-decoration: underline;
         }
     </style>
@@ -94,26 +82,20 @@
         </div>
 
         <div data-role="content" style="position: relative">
-            <div align="center">
-                <form>
-                    <table>
-                        <tr>
-                            <td class="lang">User ID:</td>
-                            <td>
-                                <input name="username" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Password:</td>
-                            <td>
-                                <input name="password" type="password" /></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><a data-role="button" class="lang">Login</a></td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+            <div align="center"><form><table>
+				<tr>
+					<td class="lang">User ID:</td>
+					<td><input name="username" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Password:</td>
+					<td><input name="password" type="password" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a data-role="button" class="lang">Login</a></td>
+				</tr>
+			</table></form></div>
         </div>
 
         <div data-role="footer" data-position="fixed">
@@ -158,7 +140,6 @@
     <div data-role="page" id="testPage">
         <div data-role="header" data-position="fixed">
             <h1></h1>
-
             <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
         </div>
 
@@ -239,7 +220,9 @@
                     <option class="lang">Class ...</option>
                 </select>
                 <textarea></textarea>
-                <div align="right"><a id="qaAskqBtnSubmit" data-role="button" data-icon="action" data-inline="true" class="lang">Submit</a></div>
+                <div align="right">
+                	<a id="qaAskqBtnSubmit" data-role="button" data-icon="action" data-inline="true" class="lang">Submit</a>
+                </div>
             </form>
         </div>
     </div>
@@ -252,42 +235,33 @@
         </div>
 
         <div data-role="content" style="position: relative">
-            <div align="center">
-                <form>
-                    <table>
-                        <tr>
-                            <td class="lang">Question:</td>
-                            <td>
-                                <input name="question" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Answer:</td>
-                            <td>
-                                <textarea name="answer" rows="3"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><a data-role="button" class="lang" id="saveanswer">Save</a></td>
-                        </tr>
-                        <tr>
-                            <td><input id="condition" /></td>
-                            <td><a data-role="button" class="lang" id="loadquestion">Search</a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <ul id="questionresult">
-                                
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+            <div align="center"><form><table>
+				<tr>
+					<td class="lang">Question:</td>
+					<td><input name="question" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Answer:</td>
+					<td><textarea name="answer" rows="3"></textarea></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a data-role="button" class="lang" id="saveanswer">Save</a></td>
+				</tr>
+				<tr>
+					<td><input id="condition" /></td>
+					<td><a data-role="button" class="lang" id="loadquestion">Search</a></td>
+				</tr>
+				<tr>
+					<td colspan="2"><ul id="questionresult"></ul></td>
+				</tr>
+            </table></form></div>
         </div>
 
         <div data-role="footer" data-position="fixed">
         </div>
     </div>
+
     <!-- classPage start -->
 
     <div data-role="page" id="classPage">
@@ -319,7 +293,9 @@
 
         <div data-role="content" style="position: relative">
             <div></div>
-            <div align="right"><a id="classContentBtnQuit" data-role="button" data-icon="delete" data-inline="true" class="lang">Quit</a></div>
+            <div align="right">
+            	<a id="classContentBtnQuit" data-role="button" data-icon="delete" data-inline="true" class="lang">Quit</a>
+            </div>
         </div>
     </div>
 
@@ -334,13 +310,14 @@
                 <table width="100%">
                     <tr valign="middle">
                         <td><a id="classJoinBtnQrcode" data-role="button" data-icon="camera" data-inline="true" class="lang">QR Code</a></td>
-                        <td width="100%">
-                            <input id="classJoinTxtUuid" /></td>
+                        <td width="100%"><input id="classJoinTxtUuid" /></td>
                     </tr>
                 </table>
                 <div id="classJoinTxtDetail"></div>
-                <div align="right"><a id="classJoinBtnSubmit" data-role="button" data-icon="check" data-inline="true" style="display: none" class="lang">Submit</a></div>
-                <form>
+                <div align="right">
+                	<a id="classJoinBtnSubmit" data-role="button" data-icon="check" data-inline="true" style="display: none" class="lang">Submit</a>
+                </div>
+            <form>
         </div>
     </div>
 
@@ -355,13 +332,11 @@
         <div data-role="content">
             <div id="setLang" data-role="collapsible">
                 <h4 class="lang">Language</h4>
-                <form>
-                    <fieldset data-role="controlgroup">
-                        <input type="radio" name="language" id="lang_cn_zh" value="cn_zh" /><label for="lang_cn_zh">Chinese</label>
-                        <input type="radio" name="language" id="lang_us_en" value="us_en" /><label for="lang_us_en">English</label>
-                        <input type="radio" name="language" id="lang_fr_fr" value="fr_fr" /><label for="lang_fr_fr">French</label>
-                    </fieldset>
-                </form>
+                <form><fieldset data-role="controlgroup">
+					<input type="radio" name="language" id="lang_cn_zh" value="cn_zh" /><label for="lang_cn_zh">Chinese</label>
+					<input type="radio" name="language" id="lang_us_en" value="us_en" /><label for="lang_us_en">English</label>
+					<input type="radio" name="language" id="lang_fr_fr" value="fr_fr" /><label for="lang_fr_fr">French</label>
+                </fieldset></form>
             </div>
             <div>
                 <a data-role="button" href="#legalPage" data-transition="pop" style="text-align: left" class="lang">Read legal conditions and terms</a>
@@ -378,53 +353,43 @@
         </div>
 
         <div data-role="content">
-            <div align="center">
-                <form>
-                    <table>
-                        <tr>
-                            <td class="lang">User ID:</td>
-                            <td>
-                                <input name="username" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Password:</td>
-                            <td>
-                                <input name="password" type="password" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Password Confirm:</td>
-                            <td>
-                                <input name="password2" type="password" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Name:</td>
-                            <td>
-                                <input name="name" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Email:</td>
-                            <td>
-                                <input name="email" /></td>
-                        </tr>
-                        <tr>
-                            <td class="lang">Phone:</td>
-                            <td>
-                                <input name="phone" /></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><a data-role="button" class="lang">Register</a></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td style="padding-top: 2em">
-                                <span class="lang">By registering, I hereby agree the</span><br />
-                                <a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+            <form><table align="center">
+				<tr>
+					<td class="lang">User ID:</td>
+					<td><input name="username" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Password:</td>
+					<td><input name="password" type="password" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Password Confirm:</td>
+					<td><input name="password2" type="password" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Name:</td>
+					<td><input name="name" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Email:</td>
+					<td><input name="email" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Phone:</td>
+					<td><input name="phone" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a data-role="button" class="lang">Register</a></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td style="padding-top: 2em">
+						<span class="lang">By registering, I hereby agree the</span><br />
+						<a data-transition="pop" href="#legalPage" class="lang">legal conditions and terms</a>
+					</td>
+				</tr>
+            </table></form>
         </div>
     </div>
 
@@ -442,6 +407,7 @@
     </div>
 
     <!-- done with all pages -->
+
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/jquery.mobile-1.4.4.min.js"></script>
     <script src="js/q.min.js"></script>
@@ -450,20 +416,19 @@
     <!--<script src="cordova.js"></script>-->
 
     <script src="js/toolbox.js"></script>
-    <!--<script src="js/restfulApi.js"></script>-->
 
     <script src="js/locale.js"></script>
     <script src="js/qrCode.js"></script>
-    <!--<script src="js/testQuizRender.js"></script>-->
+    <script src="js/testQuizRender.js"></script>
 
     <script src="js/inboxData.js"></script>
-    <!--<script src="js/testData.js"></script>-->
+    <script src="js/testData.js"></script>
     <script src="js/qaData.js"></script>
     <script src="js/classData.js"></script>
 
     <script src="js/loginPage.js"></script>
     <script src="js/inboxPage.js"></script>
-   <!-- <script src="js/testPage.js"></script>-->
+	<script src="js/testPage.js"></script>
     <script src="js/qaPage.js"></script>
     <script src="js/createQaPage.js"></script>
     <script src="js/classPage.js"></script>
@@ -479,18 +444,16 @@
                 $.event.special.swipe.horizontalDistanceThreshold = 15;
             }
 
-            loginPage();
-
             inboxPage();
             inboxContentPage();
 
-            //testPage();
-            //testContentPage();
+            testPage();
+            testContentPage();
 
             qaPage();
             qaContentPage();
             qaAskqPage();
-            createQaPage();
+            //createQaPage();
 
             classPage();
             classContentPage();
@@ -499,18 +462,20 @@
             settingPage();
             registerPage();
 
+            loginPage();
+
             $('.lang').each(function () {
                 var self = $(this);
                 self.data('lang', self.html());
             });
             setLocaleLanguage('cn_zh');
 
-            //$(window).on('hashchange', function () {
-            //    testContentPage.stopOnQuiz(true);
-            //});
-            //$(document).on('pause', function () {
-            //    testContentPage.stopOnQuiz(false);
-            //});
+            $(window).on('hashchange', function () {
+                testContentPage.stopOnQuiz(true);
+            });
+            $(document).on('pause', function () {
+                testContentPage.stopOnQuiz(false);
+            });
         });
 
     </script>

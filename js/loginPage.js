@@ -5,7 +5,10 @@ var loginPage = function () {
     var txtUserName = form.find('input[name=username]');
     var txtPassword = form.find('input[name=password]');
 
-    var realStart = function () {
+    var realStart = function (user) {
+		dataContext.user = user;
+		console.log('here1');
+
         $('#inboxPage').trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
         $('#testPage').trigger('listchanged', [localStorage.testActiveTab == 'Exam']);
         $('#classPage').trigger('listchanged', [localStorage.classActiveTab == 'Pending']);
@@ -13,12 +16,21 @@ var loginPage = function () {
         var p = localStorage.activePage || 'inbox';
         localStorage.activePage = '';
         location.replace('#' + p + 'Page');
+        console.log('here');
     };
 
-    form.find('a[data-role=button]').on('click', function () {
-        //realStart();
-        //return;
+	dataContext.user = null;
+	var accessToken = dataContext.getAccessToken();
+	if (accessToken) {
+		dataContext.setAccessToken(accessToken);
+		dataContext.getCurrentUser(function(user) {
+			if (user) {
+				realStart(user);
+			}
+		});
+	}
 
+    form.find('a[data-role=button]').on('click', function () {
         var username = $.trim(txtUserName.val());
         var password = $.trim(txtPassword.val());
 
@@ -30,26 +42,21 @@ var loginPage = function () {
             alert(getLocale('Invalid password.'));
             return;
         }
-        //Save the q and a
-        //var question = data.create('Question');
-        eclasso2o.data.signin(username, password, function (result) {
-            if (result) {
-                alert('login failed!');
-            }
-            else {
-                var p = localStorage.activePage || 'inbox';
-                localStorage.activePage = '';
-                location.replace('#' + p + 'Page');
-            }
-        }
-			//toolbox.loading(false);
-			//realStart();
-		, function (err) {
+
+		toolbox.loading(true, true);
+        dataContext.signin(username, password, function(user) {
+            toolbox.loading(false);
+            if (!user) {
+                alert(getLocale('Failed to login.'));
+            } else {
+				realStart(user);
+			}
+        }, function (err) {
 		    toolbox.loading(false);
 		    alert(getLocale(err));
 		});
     });
-}
+};
 
 var registerPage = function() {
 	var page = $('#registerPage');
@@ -87,10 +94,14 @@ var registerPage = function() {
 			return;
 		}
 
-	    eclasso2o.data.register(username, password, name, email, phone).done(function (result) {
-				console.log(result);
-			}).fail(function(err) {
-				console.log(err);
-			});
+		toolbox.loading(true, true);
+	    dataContext.register(username, password, name, email, phone, function () {
+			toolbox.loading(false);
+			alert(getLocale('Register user succeeded.'));
+			history.back();
+		}, function(err) {
+			toolbox.loading(false);
+			alert(getLocale(err));
+		});
 	});
 };

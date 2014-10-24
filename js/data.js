@@ -1,131 +1,115 @@
-﻿var eclasso2o = eclasso2o || {};
-var DataContext = function DataContext() {
-    var host = 'http://eclasso2o.azurewebsites.net';
-    //var host = 'http://localhost:56360'
-    var dataurl = host + '/breeze/eClassO2OApi';
-    
-    var manager = new breeze.EntityManager(dataurl);
-    var connection = true;
-    var user;
-    var islocal = false;
-    var isconnected = true;
-    var datacontext = {
-        signin: signin,
-        register: register,
-        configureBreeze: configureBreeze,
-        setAccessToken: setAccessToken,
-        getAccessToken: getAccessToken,
-        user: user,
-        connection: connection,
-        create:create,
-        save: save,
-        getClass: getClass,
-        searchQuestion: searchQuestion,
-        rollback: rejectChanges
-    }
-    return datacontext;
+var dataContext = {
+	host: 'http://eclasso2o.azurewebsites.net',
+//	host: 'http://localhost:56360',
 
-    function save(entity) {
-        manager.attachEntity(entity, entity.entityAspect.entityState);
-        return manager.saveChanges();
-    }
-
-    function rejectChanges() {
-        manager.rejectChanges();
-    }
-
-    function signin(username, password,callback,errcallback) {
-        //var rst;
-        if (!getAccessToken()) {
-            return $.post(host + '/token',
-                {
-                    grant_type: 'password',
-                    username: username,
-                    password: password
-                }).done(function (result) {
-                    if (result.access_token) {
-                        setAccessToken(result.access_token);
-                        configureBreeze();
-                        getCurrentUser(callback);
-                    }
-                    else {
-                        callback(result);
-                    }
-                }).fail(function (result) { errcallback(result) });
-
-        }
-        else {
-            configureBreeze();
-            getCurrentUser(callback);
-        };
-    }
-
-    function create(modelname) {
-        var result = manager.createEntity(modelname);
-        return result;
-    }
-
-    function register(username, password, name, email, phone)
-    {
-        return $.ajax({
-            url: host + '/api/account/register',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                'userName': username,
-                'password': password,
-                'confirmPassword': password,
-                'name': name,
-                'email': email,
-                'phone': phone,
-                'role': 'S'
-            }
-        });
-    }
-
-    function configureBreeze() {
-        breeze.NamingConvention.camelCase.setAsDefault();
-        var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
-        ajaxAdapter.defaultSettings = {
-            beforeSend: function (xhr, settings) {
-                if (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + getAccessToken());
-                }
-            }
-        }
-    }
-    function setAccessToken(accessToken) {
-        sessionStorage.setItem("accessToken", accessToken);
-    };
-
-    function getAccessToken() {
-        return sessionStorage.getItem("accessToken");
-    };
-
-    function getCurrentUser(callback) {
-        var query = breeze.EntityQuery.from("currentUser");
-        manager.executeQuery(query).then
-            (function (result) {
-                eclasso2o.data.user = result.results[0];
-                callback()
-            });
-    }
-
-    function getClass() {
-        var query = breeze.EntityQuery
-                    .from("Classes");
-        return manager.executeQuery(query);
-    }
-
-    function searchQuestion(condition) {
-        var query = breeze.EntityQuery
-                    .from("Questions")
-                    .orderBy("Create")
-                    .where("QuestionDetail","contains",condition);
-        return manager.executeQuery(query);
-    }
-
-
+	connection: true,
+    islocal: false,
+    isconnected: true
 };
 
-eclasso2o.data = new DataContext();
+
+dataContext.manager = new breeze.EntityManager(dataContext.host + '/breeze/eClassO2OApi');
+
+dataContext.create = function(modelname) {
+	return dataContext.manager.createEntity(modelname);
+};
+
+dataContext.save = function(entity) {
+	dataContext.manager.attachEntity(entity, entity.entityAspect.entityState);
+	return dataContext.manager.saveChanges();
+};
+
+dataContext.rejectChanges = function() {
+	dataContext.manager.rejectChanges();
+};
+
+dataContext.getAccessToken = function() {
+	return localStorage.accessToken;
+};
+
+dataContext.setAccessToken = function(accessToken) {
+	localStorage.accessToken = accessToken;
+	breeze.NamingConvention.camelCase.setAsDefault();
+	var ajaxAdapter = breeze.config.getAdapterInstance('ajax');
+	ajaxAdapter.defaultSettings = {
+		beforeSend: function (xhr, settings) {
+			if (xhr) {
+				xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+			}
+		}
+	};
+};
+
+dataContext.makeQuery = function(query, callback) {
+	dataContext.manager.executeQuery(query).then(function(result) {
+		if (result && $.isArray(result.results)) {
+			callback(result.results);
+		} else {
+			callback(null);
+		}
+	}, function(err) {
+		console.log(err);
+		callback(null);
+	});
+};
+
+dataContext.getCurrentUser = function(callback) {
+	var query = breeze.EntityQuery.from('currentUser');
+	dataContext.makeQuery(query, function(result) {
+		callback(result && result.length > 0 ? result[0] : null);
+	});
+};
+
+dataContext.getClass = function(callback) {
+	var query = breeze.EntityQuery.from("Classes");
+	dataContext.makeQuery(query, callback);
+};
+
+dataContext.searchQuestion = function(search, callback) {
+	var query = breeze.EntityQuery.from("Questions")
+					.where("QuestionDetail", "contains", search)
+					.orderBy("Create DESC");
+	dataContext.makeQuery(query, callback);
+};
+
+dataContext.signin = function(username, password, callback, errcallback) {
+	$.post(dataContext.host + '/token', {
+		grant_type: 'password',
+		username: username,
+		password: password
+	}).fail(function (err) {
+		errcallback(err && err.responseJSON && err.responseJSON.error_description ? err.responseJSON.error_description : 'Failed to login.');
+	}).done(function (result) {
+		if (result.access_token) {
+			dataContext.setAccessToken(result.access_token);
+			dataContext.getCurrentUser(callback);
+		} else {
+			errcallback('Failed to login.');
+		}
+	});
+};
+
+dataContext.register = function(username, password, name, email, phone, callback, errcallback) {
+	return $.ajax({
+		url: dataContext.host + '/api/account/register',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			'userName': username,
+			'password': password,
+			'confirmPassword': password,
+			'name': name,
+			'email': email,
+			'phone': phone,
+			'role': 'S'
+		}
+	}).fail(function(err) {
+		errcallback('Failed to register user.');
+	}).done(function(result) {
+		if (result && result.result === 'Success') {
+			callback();
+		} else {
+			errcallback('Failed to register user.');
+		}
+	});
+};
