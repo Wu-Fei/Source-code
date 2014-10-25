@@ -77,7 +77,8 @@ _localeStrList['cn_zh'] = {
 	'The class registration code is invalid.': '输入的班级注册码无效。',
 	'You have successfully joined a new class.': '您成功加入了一个新班级。',
 	'Sorry, failed to join the class.': '对不起，加入班级申请失败。',
-	'Are you sure you want to quit from this class?': '您确定要退出这个班级吗?'
+	'Are you sure you want to quit from this class?': '您确定要退出这个班级吗?',
+	'Are you sure you want to logout?': '您确定要退出登录吗?'
 
 };
 
