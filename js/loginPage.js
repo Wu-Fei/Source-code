@@ -6,7 +6,9 @@ var loginPage = function () {
     var txtPassword = form.find('input[name=password]');
 
     var realStart = function (user) {
+		console.log(user);
 		dataContext.user = user;
+		settingPage.setUser(user);
 
         $('#inboxPage').trigger('listchanged', [localStorage.inboxActiveTab == 'Notification']);
         $('#testPage').trigger('listchanged', [localStorage.testActiveTab == 'Exam']);

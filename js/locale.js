@@ -52,6 +52,7 @@ _localeStrList['cn_zh'] = {
 	'QR Code': '二维码',
 	'Account': '帐户',
 	'Language': '语言',
+	'Change Details': '更改信息',
 	'Change Password': '更改密码',
 	'Logout': '退出登录',
 	'Failed to login.': '登录失败。',

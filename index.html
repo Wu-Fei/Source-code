@@ -12,9 +12,12 @@
             font-weight: normal;
         }
 
-        .ui-radio.ui-state-disabled, .ui-checkbox.ui-state-disabled {
-            filter: Alpha(Opacity=100);
+        .ui-state-disabled {
+            border: none;
+			box-shadow: none;
+			-webkit-box-shadow: none;
             opacity: 1;
+            filter: Alpha(Opacity=100);
         }
 
         .list_read * {
@@ -330,11 +333,34 @@
         </div>
 
         <div data-role="content">
-            <div data-role="collapsible">
+        	<form></form>
+            <div id="setAccount" data-role="collapsible">
             	<h4 class="lang">Account</h4>
-            	<div>Account information</div>
-            	<a id="setBtnChgPwd" data-role="button" class="lang">Change Password</a>
-                <a id="setBtnLogout" data-role="button" class="lang">Logout</a>
+            	<form><table align="center">
+					<tr>
+						<td class="lang">User ID:</td>
+						<td><input name="username" disabled="disabled" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Name:</td>
+						<td><input name="name" disabled="disabled" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Email:</td>
+						<td><input name="email" disabled="disabled" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Phone:</td>
+						<td><input name="phone" disabled="disabled" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center" style="padding-top: 2em">
+                			<a id="setBtnChgAct" data-role="button" data-inline="true" class="lang">Change Details</a>
+							<a id="setBtnChgPwd" data-role="button" data-inline="true" class="lang">Change Password</a>
+						</td>
+					</tr>
+            	</table></form>
+            	<a id="setBtnLogout" data-role="button" class="lang">Logout</a>
             </div>
             <div id="setLang" data-role="collapsible">
                 <h4 class="lang">Language</h4>
