@@ -40,12 +40,16 @@ var createQaPage = function() {
         //Validation Skipped
 
         //Save Question Example
-        dataContext.searchQuestion(condition).then(function (data) {
-            data.results.forEach(function (q) {
-                $('#questionresult').append('<li><span>' + q.QuestionDetail + ' ' + q.Answer + '</span></li>');
-            });
+        dataContext.searchQuestion(condition, function(result) {
+			var list = [];
+			if ($.isArray(result)) {
+				for (var i = 0; i < result.length; ++i) {
+					var qa = result[i];
+					list.push('<li><span>', qa.QuestionDetail, ' - [answer]: ', qa.Answer, '</span></li>');
+				}
+			}
+			$('#questionresult').html(list.join(''));
         });
-
     });
 };
 

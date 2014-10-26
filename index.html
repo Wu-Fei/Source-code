@@ -187,7 +187,6 @@
         <div data-role="header" data-position="fixed">
             <a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
             <h1 class="lang">Q &amp; A</h1>
-            <a data-transition="pop" href="#CreateQaPage" class="ui-btn-right lang" style="width:60px;margin-right:60px;">Create</a>
             <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
         </div>
 
@@ -227,41 +226,6 @@
                 	<a id="qaAskqBtnSubmit" data-role="button" data-icon="action" data-inline="true" class="lang">Submit</a>
                 </div>
             </form>
-        </div>
-    </div>
-
-
-    <div data-role="page" id="CreateQaPage">
-        <div data-role="header" data-position="fixed">
-            <a data-icon="back" data-rel="back" class="lang">Back</a>
-            <h1>Create Question</h1>
-        </div>
-
-        <div data-role="content" style="position: relative">
-            <div align="center"><form><table>
-				<tr>
-					<td class="lang">Question:</td>
-					<td><input name="question" /></td>
-				</tr>
-				<tr>
-					<td class="lang">Answer:</td>
-					<td><textarea name="answer" rows="3"></textarea></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td><a data-role="button" class="lang" id="saveanswer">Save</a></td>
-				</tr>
-				<tr>
-					<td><input id="condition" /></td>
-					<td><a data-role="button" class="lang" id="loadquestion">Search</a></td>
-				</tr>
-				<tr>
-					<td colspan="2"><ul id="questionresult"></ul></td>
-				</tr>
-            </table></form></div>
-        </div>
-
-        <div data-role="footer" data-position="fixed">
         </div>
     </div>
 
@@ -461,7 +425,6 @@
     <script src="js/inboxPage.js"></script>
 	<script src="js/testPage.js"></script>
     <script src="js/qaPage.js"></script>
-    <script src="js/createQaPage.js"></script>
     <script src="js/classPage.js"></script>
 
     <script src="js/settingPage.js"></script>
@@ -484,7 +447,6 @@
             qaPage();
             qaContentPage();
             qaAskqPage();
-            //createQaPage();
 
             classPage();
             classContentPage();

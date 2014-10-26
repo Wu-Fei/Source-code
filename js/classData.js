@@ -28,10 +28,8 @@ var classPendingDataList = [
 ];
 
 classDataStore.getActiveDataList = function() {
-	dataContext.getClass(function(result) {
-		console.log(result);
-	}, function(err) {
-		console.log(err);
+	dataContext.getClass(function(result, err) {
+		console.log(result, err);
 	});
 	return classActiveDataList;
 };

@@ -5,8 +5,8 @@ qaDataStore.QaData = function(question, answer){
 	this.answer = answer;
 };
 
-qaDataStore.searchAnswers = function(q, okFunc) {
-	dataContext.searchQuestion(q, function(result) {
+qaDataStore.searchAnswers = function(q, callback) {
+	dataContext.searchQuestion(q, function(result, err) {
 		var list = [];
 		if ($.isArray(result)) {
 			for (var i = 0; i < result.length; ++i) {
@@ -14,7 +14,7 @@ qaDataStore.searchAnswers = function(q, okFunc) {
 				list.push(new qaDataStore.QaData(qa.QuestionDetail, qa.Answer));
 			}
 		}
-		okFunc(list);
+		callback(list);
 	});
 };
 

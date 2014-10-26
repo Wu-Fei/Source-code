@@ -24,9 +24,9 @@ var loginPage = function () {
 	if (accessToken) {
 		dataContext.setAccessToken(accessToken);
 		toolbox.loading(true, true);
-		dataContext.getCurrentUser(function(user) {
+		dataContext.getCurrentUser(function(user, err) {
 			toolbox.loading(false);
-			if (user && typeof(user)!=='string') {
+			if (user) {
 				realStart(user);
 			}
 		});
@@ -46,15 +46,13 @@ var loginPage = function () {
         }
 
 		toolbox.loading(true, true);
-        dataContext.signin(username, password, function(user) {
+        dataContext.signin(username, password, function(user, err) {
             toolbox.loading(false);
-            if (!user) {
-                alert(getLocale('Failed to login.'));
-            } else if (typeof(user)==='string') {
-				alert(getLocale('Failed to login.') + '\n' + user);
-			} else {
+            if (user) {
 				realStart(user);
-			}
+			} else {
+                alert(getLocale('Failed to login.') + (!err ? '' : ('\n' + err)));
+            }
         });
     });
 
@@ -101,13 +99,14 @@ var registerPage = function() {
 		}
 
 		toolbox.loading(true, true);
-	    dataContext.register(username, password, name, email, phone, function () {
+	    dataContext.register(username, password, name, email, phone, function (result, err) {
 			toolbox.loading(false);
-			alert(getLocale('Register user succeeded.'));
-			history.back();
-		}, function(err) {
-			toolbox.loading(false);
-			alert(getLocale(err));
+			if (result) {
+				alert(getLocale('Register user succeeded.'));
+				history.back();
+			} else {
+				alert(getLocale('Failed to register user.') + (!err ? '' : ('\n' + err)));
+			}
 		});
 	});
 };

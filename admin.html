@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parrot (Admin)</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
+    <style>
+    </style>
+
+</head>
+<body>
+
+    <!-- loginPage start -->
+
+    <div data-role="page" id="loginPage">
+        <div data-role="header" data-position="fixed">
+            <h1>Parrot (Admin)</h1>
+        </div>
+
+        <div data-role="content" style="position: relative">
+            <form><table align="center">
+				<tr>
+					<td class="lang">User ID:</td>
+					<td><input name="username" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Password:</td>
+					<td><input name="password" type="password" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a data-role="button" class="lang">Login</a></td>
+				</tr>
+			</table></form>
+        </div>
+    </div>
+
+	<!-- CreateQaPage start -->
+
+    <div data-role="page" id="CreateQaPage">
+        <div data-role="header" data-position="fixed">
+            <h1>Create Question</h1>
+        </div>
+
+        <div data-role="content" style="position: relative">
+			<a href="#CreateQaPage">Create Q&amp;A</a>&nbsp;
+			<a href="#CreateTestPage">Create Test</a>&nbsp;
+			<a href="#CreateClassPage">Create Class</a>&nbsp;
+			<a href="#CreateMessagePage">Create Message</a>&nbsp;
+			<br />
+            <form><table>
+				<tr>
+					<td class="lang">Question:</td>
+					<td><input name="question" /></td>
+				</tr>
+				<tr>
+					<td class="lang">Answer:</td>
+					<td><textarea name="answer" rows="3"></textarea></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a data-role="button" class="lang" id="saveanswer">Save</a></td>
+				</tr>
+				<tr>
+					<td><input id="condition" /></td>
+					<td><a data-role="button" class="lang" id="loadquestion">Search</a></td>
+				</tr>
+				<tr>
+					<td colspan="2"><ul id="questionresult"></ul></td>
+				</tr>
+            </table></form>
+        </div>
+
+    </div>
+
+    <!-- done with all pages -->
+
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.4.min.js"></script>
+    <script src="js/q.min.js"></script>
+    <script src="js/breeze.min.js"></script>
+    <script src="js/dataAdmin.js"></script>
+    <!--<script src="cordova.js"></script>-->
+
+    <script src="js/toolbox.js"></script>
+
+	<script src="js/locale.js"></script>
+
+
+    <script src="js/loginAdminPage.js"></script>
+    <script src="js/createQaPage.js"></script>
+
+    <script type="text/javascript">
+        var _storage = {};
+
+        $(function () {
+            createQaPage();
+
+            loginPage();
+        });
+
+    </script>
+</body>
+</html>
