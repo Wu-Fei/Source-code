@@ -59,6 +59,20 @@
             background-color: #ff8080;
         }
 
+		#intruduceImage {
+			position: absolute;
+			left: 1em;
+			right: 1em;
+			bottom: 1em;
+			background: -webkit-radial-gradient(
+							center,
+							ellipse cover,
+							rgba(255,255,255,0) 40%,
+							rgba(250,250,250,1) 80%
+						),
+						url(img/introduce.jpg);
+		}
+
         .wrong_answer {
             color: #ff0000 !important;
             font-weight: 700 !important;
@@ -76,12 +90,20 @@
 </head>
 <body>
 
+	<!-- homePage start -->
+	<div data-role="page" id="homepage">
+        <div data-role="content" style="position: relative">
+        	<h1>EclassO2O</h1>
+        	<h2>-- A new experience of learning languages</h2>
+        	initializing ...
+        </div>
+	</div>
+
     <!-- loginPage start -->
 
     <div data-role="page" id="loginPage">
         <div data-role="header" data-position="fixed">
             <h1>Parrot (Student)</h1>
-            <a data-transition="pop" href="#registerPage" class="ui-btn-right lang">Register</a>
         </div>
 
         <div data-role="content" style="position: relative">
@@ -95,10 +117,11 @@
 					<td><input name="password" type="password" /></td>
 				</tr>
 				<tr>
-					<td>&nbsp;</td>
-					<td><a data-role="button" class="lang">Login</a></td>
+					<td><a data-role="button" data-transition="pop" href="#registerPage" class="lang">Register</a></td>
+					<td><a id="loginBtnLogin" data-role="button" class="lang">Login</a></td>
 				</tr>
 			</table></form>
+			<div id="intruduceImage"></div>
         </div>
 
         <div data-role="footer" data-position="fixed">

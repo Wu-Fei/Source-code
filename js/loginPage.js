@@ -1,5 +1,7 @@
 var loginPage = function () {
     var page = $('#loginPage');
+	var header = page.children('div[data-role=header]');
+	var content = page.children('div[data-role=content]');
 
     var form = page.find('form');
     var txtUserName = form.find('input[name=username]');
@@ -19,20 +21,7 @@ var loginPage = function () {
         location.replace('#' + p + 'Page');
     };
 
-	dataContext.user = null;
-	var accessToken = dataContext.getAccessToken();
-	if (accessToken) {
-		dataContext.setAccessToken(accessToken);
-		toolbox.loading(true, true);
-		dataContext.getCurrentUser(function(user, err) {
-			toolbox.loading(false);
-			if (user) {
-				realStart(user);
-			}
-		});
-	}
-
-    form.find('a[data-role=button]').on('click', function () {
+    $('#loginBtnLogin').on('click', function () {
         var username = $.trim(txtUserName.val());
         var password = $.trim(txtPassword.val());
 
@@ -57,9 +46,40 @@ var loginPage = function () {
     });
 
 	page.on('pageshow', function() {
+		var height = $.mobile.getScreenHeight()
+					- header.outerHeight()
+					- (content.outerHeight() - content.height())
+					- 2;
+		content.height(height);
+		form.next().css('top', form.position().top + form.outerHeight(true) + 10);
+
 		txtUserName.val('');
 		txtPassword.val('');
 	});
+
+	dataContext.user = null;
+	var accessToken = dataContext.getAccessToken();
+	if (!accessToken) {
+		console.log('here');
+		setTimeout(function() {
+			location.replace('#loginPage');
+		}, 3000);
+	} else {
+		var t0 = new Date();
+		dataContext.setAccessToken(accessToken);
+		dataContext.getCurrentUser(function(user, err) {
+			if (user) {
+				realStart(user);
+			} else {
+				t0 = 3000 - (new Date() - t0);
+				if (t0 < 0) t0 = 0;
+				console.log('here', t0);
+				setTimeout(function() {
+					location.replace('#loginPage');
+				}, t0);
+			}
+		});
+	}
 };
 
 var registerPage = function() {
