@@ -60,7 +60,6 @@ var loginPage = function () {
 	dataContext.user = null;
 	var accessToken = dataContext.getAccessToken();
 	if (!accessToken) {
-		console.log('here');
 		setTimeout(function() {
 			location.replace('#loginPage');
 		}, 3000);
@@ -73,7 +72,6 @@ var loginPage = function () {
 			} else {
 				t0 = 3000 - (new Date() - t0);
 				if (t0 < 0) t0 = 0;
-				console.log('here', t0);
 				setTimeout(function() {
 					location.replace('#loginPage');
 				}, t0);
