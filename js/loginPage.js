@@ -88,16 +88,14 @@ var registerPage = function() {
 	var txtPassword = form.find('input[name=password]');
 	var txtPassword2 = form.find('input[name=password2]');
 	var txtName = form.find('input[name=name]');
-	var txtEmail = form.find('input[name=email]');
-	var txtPhone = form.find('input[name=phone]');
 
 	form.find('a[data-role=button]').on('click', function() {
 		var username = $.trim(txtUserName.val());
 		var password = $.trim(txtPassword.val());
 		var password2 = $.trim(txtPassword2.val());
 		var name = $.trim(txtName.val());
-		var email = $.trim(txtEmail.val());
-		var phone = $.trim(txtPhone.val());
+		var email = '';
+		var phone = '';
 
 		if (username.length < 4) {
 			alert(getLocale('Invalid user ID.'));

@@ -19,7 +19,7 @@ var qaPage = function() {
 		}
 	});
 
-	var btnAskq = $('#qaBtnAskq').hide();
+	var btnAskq = $('#qaBtnAskq').addClass('ui-state-disabled').css('opacity', 0.3);
 	var timer = null;
 	var search = $('#qaSearch').on('input', function(e) {
 		var txt = $.trim(search.val());
@@ -29,10 +29,10 @@ var qaPage = function() {
 				clearTimeout(timer);
 				timer = null;
 			}
-			btnAskq.hide();
+			btnAskq.addClass('ui-state-disabled').css('opacity', 0.3);
 			mainList.html('');
 		} else {
-			btnAskq.show();
+			btnAskq.removeClass('ui-state-disabled').css('opacity', 1);
 
 			if (timer) {
 				clearTimeout(timer);
@@ -82,7 +82,9 @@ var qaContentPage = function() {
 		content.html([
 			'<h2>', data.question, '</h2>',
 			data.answer
-		].join(''));
+		].join(''))
+		.find('table').removeAttr('width').css('width', '')
+		.find('td').removeAttr('width').css('width', '');
 	};
 
 	toolbox.setPrevNext(page, content, null, displayContent,

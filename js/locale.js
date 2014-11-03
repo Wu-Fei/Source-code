@@ -19,7 +19,7 @@ _localeStrList['cn_zh'] = {
 	'Exam': '考题',
 	'Login': '登录',
 	'Register': '注册',
-	'User ID:': '用户名:',
+	'Login ID:': '登录帐号:',
 	'Password:': '密码:',
 	'Password Confirm:': '确认密码:',
 	'Name:': '姓名:',

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Parrot (Student)</title>
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
@@ -208,14 +208,16 @@
 
     <div data-role="page" id="qaPage">
         <div data-role="header" data-position="fixed">
-            <a id="qaBtnAskq" href="#qaAskqPage" data-transition="pop" class="lang">Raise Question</a>
             <h1 class="lang">Q &amp; A</h1>
             <a data-icon="gear" data-iconpos="notext" data-transition="pop" href="#settingPage" class="ui-btn-right"></a>
         </div>
 
         <div data-role="content" style="position: relative">
             <div class="tab_content">
-                <input data-type="search" id="qaSearch" value="">
+            	<table><tr>
+					<td style="width:100%;padding-right:1em"><input id="qaSearch" data-type="search" value="" style="width:100%"></td>
+					<td><a id="qaBtnAskq" href="#qaAskqPage" data-role="button" data-transition="pop" style="border:1px solid #ddd" class="lang">Raise Question</a></td>
+				</tr></table>
                 <div style="margin-top: 1em; padding: 1em; overflow-y: auto; overflow-x: hidden">
                     <ul id="qaList"></ul>
                 </div>
@@ -229,7 +231,7 @@
             <h1 class="title-align-left lang">Q &amp; A</h1>
         </div>
 
-        <div data-role="content" style="position: relative">
+        <div data-role="content" data-scroll="true" style="position: relative;">
         </div>
     </div>
 
@@ -325,7 +327,7 @@
             	<h4 class="lang">Account</h4>
             	<form><table align="center">
 					<tr>
-						<td class="lang">User ID:</td>
+						<td class="lang">Login ID:</td>
 						<td><input name="username" disabled="disabled" /></td>
 					</tr>
 					<tr>
@@ -374,7 +376,7 @@
         <div data-role="content">
             <form><table align="center">
 				<tr>
-					<td class="lang">User ID:</td>
+					<td class="lang">Login ID:</td>
 					<td><input name="username" /></td>
 				</tr>
 				<tr>
@@ -388,14 +390,6 @@
 				<tr>
 					<td class="lang">Name:</td>
 					<td><input name="name" /></td>
-				</tr>
-				<tr>
-					<td class="lang">Email:</td>
-					<td><input name="email" /></td>
-				</tr>
-				<tr>
-					<td class="lang">Phone:</td>
-					<td><input name="phone" /></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -456,10 +450,12 @@
 
         $(function () {
             $.mobile.defaultPageTransition = 'none';
-
+            /*
+			$.event.special.swipe.scrollSupressionThreshold = 100;
             if (window.devicePixelRatio >= 2) {
                 $.event.special.swipe.horizontalDistanceThreshold = 15;
             }
+            */
 
             inboxPage();
             inboxContentPage();
