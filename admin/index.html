@@ -77,6 +77,114 @@
 
     </div>
 
+	<!-- CreateTestPage start -->
+
+    <div data-role="page" id="CreateTestPage">
+        <div data-role="header" data-position="fixed">
+            <h1>Create Test</h1>
+        </div>
+
+        <div data-role="content" style="position: relative">
+			<a href="#CreateQaPage">Create Q&amp;A</a>&nbsp;
+			<a href="#CreateTestPage">Create Test</a>&nbsp;
+			<a href="#CreateClassPage">Create Class</a>&nbsp;
+			<a href="#CreateMessagePage">Create Message</a>&nbsp;
+			<br />
+
+			<div id="testEditExercise"><form><table>
+				<tr>
+					<td class="lang">Test Name:</td>
+					<td><input name="name" /></td>
+					<td class="lang">Class:</td>
+					<td><input name="class" /></td>
+					<td class="lang">Is Exame:</td>
+					<td><input name="isexam" type="checkbox" /></td>
+				</tr>
+				<tr><td colspan="6">
+					<a id="testBtnAddSection" data-role="button" data-inline="true" class="lang">Add Section</a>
+				</td></tr>
+			</table></form></div>
+
+			<div id="testCatalog" style="float:left;width:30%;background:#ddd;margin:2em;">
+			</div>
+
+			<div id="testContent" style="float:left">
+
+				<div id="testEditSection" style="display:none"><form><table>
+					<tr>
+						<td class="lang">Section Name:</td>
+						<td><input name="name" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<a id="testBtnMoveUpSection" data-role="button" data-inline="true" class="lang">Move Up</a>
+							<a id="testBtnMoveDownSection" data-role="button" data-inline="true" class="lang">Move Down</a>
+							<a id="testBtnDeleteSection" data-role="button" data-inline="true" class="lang">Delete</a>
+							<a id="testBtnAddProblem" data-role="button" data-inline="true" class="lang">Add Problem</a>
+						</td>
+					</tr>
+				</table></form></div>
+
+				<div id="testEditProblem" style="display:none"><form><table>
+					<tr>
+						<td class="lang">Problem Title:</td>
+						<td><input name="name" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Problem Content:</td>
+						<td><input name="content" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<a id="testBtnMoveUpProblem" data-role="button" data-inline="true" class="lang">Move Up</a>
+							<a id="testBtnMoveDownProblem" data-role="button" data-inline="true" class="lang">Move Down</a>
+							<a id="testBtnDeleteProblem" data-role="button" data-inline="true" class="lang">Delete</a>
+							<a id="testBtnAddQuiz" data-role="button" data-inline="true" class="lang">Add Quiz</a>
+						</td>
+					</tr>
+				</table></form></div>
+
+				<div id="testEditQuiz" style="display:none"><form><table>
+					<tr>
+						<td class="lang">Quiz Type:</td>
+						<td><select name="type">
+							<option class="lang">True or False</option>
+							<option class="lang">Single Choice</option>
+							<option class="lang">Multiple Choice</option>
+							<option class="lang">Fill in the Blank</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td class="lang">Quiz Score:</td>
+						<td><input name="score" /></td>
+					</tr>
+
+					<tr>
+						<td class="lang">Quiz Content:</td>
+						<td><input name="content" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Quiz Choices:</td>
+						<td><input name="challenge" /></td>
+					</tr>
+					<tr>
+						<td class="lang">Quiz Answers:</td>
+						<td><input name="answers" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<a id="testBtnMoveUpQuiz" data-role="button" class="lang">Move Up</a>
+							<a id="testBtnMoveDownQuiz" data-role="button" class="lang">Move Down</a>
+							<a id="testBtnDeleteQuiz" data-role="button" class="lang">Delete</a>
+						</td>
+					</tr>
+				</table></form></div>
+			</div>
+
+        </div>
+
+    </div>
+
     <!-- done with all pages -->
 
     <script src="js/jquery-2.1.1.min.js"></script>
@@ -92,15 +200,17 @@
 
 	<script src="js/locale.js"></script>
 
-
+	<script src="js/testData.js"></script>
     <script src="js/loginAdminPage.js"></script>
     <script src="js/createQaPage.js"></script>
+    <script src="js/createTestPage.js"></script>
 
     <script type="text/javascript">
         var _storage = {};
 
         $(function () {
             createQaPage();
+            createTestPage();
 
             loginPage();
         });

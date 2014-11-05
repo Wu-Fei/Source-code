@@ -40,10 +40,6 @@ testDataStore.getExamDataList = function() {
 	return testExamDataList;
 };
 
-testDataStore.TRUE_FALSE = 'T';
-testDataStore.SINGLE_CHOICE = 'S';
-testDataStore.MULTIPLE_CHOICE = 'M';
-
 testDataStore.Quiz = function(pk, type, content, score, challenge, key) {
 	this.pk = pk;
 	this.type = type;
@@ -224,11 +220,11 @@ var testExerciseDataList = (function() {
 				new testDataStore.Quiz(3, _SC, 'Which is correct?', 5, ['He is best', 'He is worse', 'He is worst', 'None of above'], [1]),
 				new testDataStore.Quiz(4, _SC, 'Which is incorrect?', 5, ['He love her', 'You love him', 'We love you', 'They love me'], [0])
 			]),
-			new testDataStore.Problem(3, 'Multiple Choices', '', [
+			new testDataStore.Problem(3, 'Multiple Choice', '', [
 				new testDataStore.Quiz(5, _MC, 'Which is correct?', 10, ['He is the best', 'He is the worst', 'He is better', 'He is worse'], [0, 1, 2, 3]),
 				new testDataStore.Quiz(6, _MC, 'Which is incorrect?', 10, ['Find the other one', 'Find another one', 'Find other one', 'Find the another one'], [2, 3])
 			]),
-			new testDataStore.Problem(4, 'Fill Blanks', '', [
+			new testDataStore.Problem(4, 'Fill in the Blank', '', [
 				new testDataStore.Quiz(7, _FB, 'We ____ going to the park ____ the morning.', 5, [], ['are', 'in']),
 				new testDataStore.Quiz(8, _FB, 'The plane takes ____ in five minutes. Hurry ____.', 5, [], ['off', 'up'])
 			])
