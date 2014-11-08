@@ -161,7 +161,7 @@ prepareAnswer[QUIZ_TYPE.FILL_BLANK] = function(content, catalog, quiz, working) 
 
 var renderQuizChallenge = function(list, quiz, working) {
 	if (quiz.type == QUIZ_TYPE.FILL_BLANK) {
-		list.push(quiz.content.replace(/____/g, '<span class="fill_blank"></span>'));
+		list.push(quiz.content.replace(/_{4,}/g, '<span class="fill_blank"></span>'));
 	} else {
 		list.push(quiz.content);
 		list.push('<form>', '<fieldset data-role="controlgroup">');
