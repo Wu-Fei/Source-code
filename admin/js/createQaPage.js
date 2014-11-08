@@ -7,7 +7,7 @@ var createQaPage = function() {
     var txtSearch = $('#condition');
 
 	var editor = new TINY.editor.edit('editor', {
-		id: 'tinyeditor',
+	    id: 'answer',
 		width: 584,
 		height: 175,
 		cssclass: 'tinyeditor',

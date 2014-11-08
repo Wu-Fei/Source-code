@@ -1,6 +1,6 @@
 var dataContext = {
-	host: 'http://eclasso2o.azurewebsites.net',
-//	host: 'http://localhost:56360',
+	//host: 'http://eclasso2o.azurewebsites.net',
+	host: 'http://localhost:56360',
 
 	connection: true,
     islocal: false,

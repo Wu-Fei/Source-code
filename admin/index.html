@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="css/jquery.mobile-icon-extend.css" />
     <link rel="stylesheet" href="css/tinyeditor.css">
     <style>
+        .active
+        {
+            background-color: darkgray;
+            color: white;
+        }
+        .visible
+        {
+            visibility: visible !important;
+        }
     </style>
 
 </head>
@@ -47,7 +56,7 @@
         </div>
 
         <div data-role="content" style="position: relative">
-			<a href="#CreateQaPage">Create Q&amp;A</a>&nbsp;
+			<a href="#CreateQaPage" class="active">Create Q&amp;A</a>&nbsp;
 			<a href="#CreateTestPage">Create Test</a>&nbsp;
 			<a href="#CreateClassPage">Create Class</a>&nbsp;
 			<a href="#CreateMessagePage">Create Message</a>&nbsp;
@@ -59,7 +68,7 @@
 				</tr>
 				<tr>
 					<td class="lang">Answer:</td>
-					<td><textarea id="tinyeditor" name="answer" rows="3"></textarea></td>
+					<td><textarea id="answer" name="answer" rows="3"></textarea></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -77,6 +86,53 @@
 
     </div>
 
+
+    <div data-role="page" id="CreateMessagePage">
+        <div data-role="header" data-position="fixed">
+            <h1>Create Question</h1>
+        </div>
+
+        <div data-role="content" style="position: relative">
+            <a href="#CreateQaPage">Create Q&amp;A</a>&nbsp;
+            <a href="#CreateTestPage">Create Test</a>&nbsp;
+            <a href="#CreateClassPage">Create Class</a>&nbsp;
+            <a href="#CreateMessagePage" class="active">Create Message</a>&nbsp;
+            <br />
+            <form>
+                <table>
+                    <tr>
+                        <td class="lang">Annoucement:</td>
+                        <td><textarea id="announcement" name="announcement" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="lang">Priority:</td>
+                        <td><select id="priority">
+                            <option value="1" class="lang">High</option>
+                            <option value="2" selected="selected" class="lang">Normal</option>
+                            <option value="3" class="lang">Low</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><a data-role="button" class="lang" id="save">Save</a></td>
+                    </tr>
+                    <tr id="publishrow" style="visibility: hidden">
+                        <td>
+                            <select id="target_type">
+                                <option value="S_" class="lang">Student</option>
+                                <option value="C_" class="lang">Class</option>
+                                <option value="G_" selected="selected" class="lang">EveryOne</option>
+                            </select>
+                        </td>
+                        <td><input id="target" placeholder="Target" /></td>
+                        <td><a data-role="button" class="lang" id="publish">Publish</a></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
     <!-- done with all pages -->
 
     <script src="js/jquery-2.1.1.min.js"></script>
@@ -95,13 +151,14 @@
 
     <script src="js/loginAdminPage.js"></script>
     <script src="js/createQaPage.js"></script>
+    <script src="js/createMessagePage.js"></script>
 
     <script type="text/javascript">
         var _storage = {};
 
         $(function () {
             createQaPage();
-
+            createMessagePage();
             loginPage();
         });
 

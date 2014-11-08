@@ -1,6 +1,6 @@
 var dataContext = {
-	host: 'http://eclasso2o.azurewebsites.net',
-//	host: 'http://localhost:56360',
+	//host: 'http://eclasso2o.azurewebsites.net',
+	host: 'http://localhost:56360',
 
 	connection: true,
     islocal: false,
@@ -72,6 +72,20 @@ dataContext.searchQuestion = function(search, callback) {
 					.orderBy("Create DESC");
 	dataContext.makeQuery(query, callback);
 };
+
+dataContext.publishAnnouncement = function (announcementId, target, callback) {
+    var form = 'Id=' + announcementId + '&Target=' + target
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: dataContext.host + '/api/Account/PublishAnouncement?' + form,
+        beforeSend: function (request) {
+            request.setRequestHeader('Authorization', 'Bearer ' + localStorage.accessToken);
+        },
+        success: function (data) { callback(data, null); },
+        fail: function(jqXHR, textStatus, errorThrown) {callback(null, errorThrown)}
+    })
+}
 
 dataContext.signin = function(username, password, callback) {
 	$.post(dataContext.host + '/token', {
